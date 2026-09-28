@@ -1,53 +1,9 @@
-<h6>Version 0.0.1</h6>
-<h1 align=center>T1A03-Forms-Philipp.html</h1>
-<h3><font color=green>Proving that you can use: Forms 2026</font></h3><br>
-
-The following are the all from elements:<br>
-<form >
-    First Name:<input type=text id="myText1" value="Philipp"><br>
-    Checkbox: <br>
-    Beef:<input type=checkbox><br>
-    Veggy:<input type=checkbox><br>
-    Radio Buttons:<br>
-    95.4 <input type=radio name="myRad01" value=""><br>
-    101 <input type=radio name="myRad01" value=""><br>
-    
-    Hidden:<input type=hidden ><br>
-    File:<input type=file><br>
-    Reset:<input type=reset><br>
-    Submit:<input type=submit><br>
-    
-Button: <input type=button value="click" onclick="{
-        document.getElementById('myArea01').value = 'cool'
-    }"><br>
-Textarea: <BR>
-<textarea id="myArea01" cols=60 rows=5 > Cool this Works</textarea><br>
-
-Select Box:<BR>
-<select id="mySelect01" size=2 onChange="{
-    document.getElementById('myArea01').value =
-    document.getElementById('mySelect01').value
-    }">
-<option value="myDog"> Dog
-<option value="myCat"> Cat
-<option value="myMouse"> Mouse
-</select>
-</form>
-
-
-
-
-
-
-
-<pre>
-
     <h6>Version 0.0.1</h6>
 <h3 align=center>T1A03-Forms-Philipp.html</h3>
 <h3 align=center id="myTitle01">Forms 2026</h3><br>
 
 
-<form >
+<form>
     <i><h5>The following are the all from elements:</i></h5>
     <b>First Name:</b><input type=text id="myText1" value="Philipp"><br><br>
     <b>Checkbox: </b><br><br>
@@ -59,7 +15,7 @@ Select Box:<BR>
     <b>Hidden:</b><input type=hidden ><br><br>
     <b>File:</b><input type=file><br><br>
     <b>Reset:</b><input type=reset><br><br>
-    <b>Submit:/<b><input type=submit><br><br>
+    <b>Submit:<b><input type=submit><br><br>
     
 <b>Button:</b> <input type=button value="click" onclick="{
         document.getElementById('myArea01').value = 'cool'
@@ -79,18 +35,29 @@ Select Box:<BR>
 <br><br>
 Password: <input type=password>
 <br><br>
-Email <input type=email value="example@gmail.com">
+Email: <input type=email value="example@gmail.com">
 <br><br>
 Color: <input type=color>
 <br><br>
-Week:<input type=month>
+Week: <input type=month>
 <br><br>
-Datetime:<input type=datetime-local>
+Datetime: <input type=datetime-local>
 <br><br>
-Progress:<progress value=0.3>
-
-
-
+Progress: <progress id="myProg01" value=0.3>
+</progress> <BR>
+<input type=button value="+1 progress"onclick="{
+    document.getElementById('myProg01').value += 0.1
+    document.getElementById('myDiv01').innerHTML = 
+        '<h3>Progress: ' + Math.round(document.getElementById('myProg01').value * 100) + '%</h3>'
+    }">
+<input type=button value="-1 progress"onclick="{
+    document.getElementById('myProg01').value -= 0.1
+    document.getElementById('myDiv01').innerHTML = 
+        '<h3>Progress: ' + Math.round(document.getElementById('myProg01').value * 100) + '%</h3>'
+    }">
+    <br>
+    <div id="myDiv01" align="center"><h3>Progress: 30%</h3>
+</div>
 </form>
 
 <style>
@@ -132,14 +99,42 @@ Progress:<progress value=0.3>
         border: 1px solid #aaa;
         border-radius: 6px;
     }
-    input[type="submit"],
-        input[type="reset"],
-        input[type="button"] {
-            background-color: green;
-            color: white;
+
+        
+    input[type="button"] , input[type="reset"] , input[type="submit"] {
+        background-color: #e8f5e9;
+            color: #003D0B;
             border: none;
             padding: 10px 18px;
             border-radius: 6px;
-            cursor: grab;
-        }
-</pre>
+            cursor: pointer;
+            box-shadow: 1px 1px 2px;
+    }
+    
+    input[type="button"]:hover, input[type="reset"]:hover , input[type="submit"]:hover {
+        background-color: #003D0B;
+        transition: 0.3s;
+        color:#e8f5e9;
+        box-shadow: 1px 1px 2px #001704;
+    }
+    
+    input[type="button"]:active, input[type="reset"]:active , input[type="submit"]:active {
+        background-color: #006E0A;
+         transform: scale(0.9);
+        transition: 0.1s;
+        box-shadow: 1px 1px 2px #004D07;
+    }
+    
+    #myProg01 {
+    accent-color: #003D0B;
+}
+
+ #myDiv01 {
+    background-color: #e8f5e9;
+    color:#003D0B;
+    padding: 7px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px;
+ }
+</style> 

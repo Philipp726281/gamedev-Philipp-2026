@@ -1,1 +1,35 @@
+<h2 align=center>T1A08-Loops by Philipp</h2> <a href="">Good reference to Javascript loops</a><br> <h4>Example of working code</h4>
 
+Max loops: <input id="myNum01" type=number value="4"><br>
+weird number: <input id="myWeird01" type=number value="2"><br>
+
+<input type=button value="Basic for loops with decisions" onclick="{
+document.getElementById('myDiv01').innerHTML=''
+let myTemp = ''
+let myMax = parseInt(document.getElementById('myNum01').value)
+
+for (let myLoop = 0; myLoop < myMax; myLoop++){
+if (myLoop * 2 > myMax){
+myTemp += 'cool'
+}
+myTemp += 'Loop number: ' + myLoop + '<br>'
+}
+document.getElementById('myDiv01').innerHTML = myTemp
+}">
+
+<input type=button value="Even Number identifier" onclick="{
+document.getElementById('myDiv01').innerHTML= ''
+let myTemp = ''
+
+let myMax = parseInt(document.getElementById('myNum01').value)
+
+for (let myLoop = 0; myLoop < myMax; myLoop++ ){
+if (myLoop % 2 == 0){
+myTemp += 'Even Number, '
+}
+myTemp += 'loop number: ' + myLoop + '<br>'
+}
+document.getElementById('myDiv01').innerHTML = myTemp
+}">
+
+<div id="myDiv01"><font color=red>....</font></div>

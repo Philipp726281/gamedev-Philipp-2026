@@ -1,135 +1,256 @@
 <body>
 
-Version 0.0.1<br>
+    <div id="Version">Version 0.0.1</div>
 
-<h1 align="center">T1A04 CSS by Philipp 2026</h1>
-Reference Link<br>
-<a href="https://www.w3schools.com/cssref/default.asp">w3schools</a><br><br>
-Cascading Style Sheets (CSS) is properly done with a .css file listing all css commands for your website<br>
-Another way to do CSS is using the style tag at the top head part of a webpage<br><br>
-Here is typical in document style
+    <h1 align="center" id="myTitle01">T1A04 CSS by Philipp 2026</h1>
 
-<pre>
-b {
-    color: #00ff00;
-}
-</pre><br>
-I do CSS inline inside the tag. It overpowers all the other methods<br><br>
+    <div id="myContent">
 
-<i>This is Italic</i><br>
-<i id="myB1" style="color:#00ff00; background-color:blue;">
-    This is Italic with CSS background-color and maincolor
-</i>
+        Reference Link<br> <a href="https://www.w3schools.com/cssref/default.asp">w3schools</a>
 
-<input type="button" value="Change" onclick="{
-    document.getElementById('myB1').style.color = 'red'
-    document.getElementById('myB1').style.backgroundColor = 'yellow'
-}">
-<br><br>
+        <br><br>
 
-<textarea style="background-image: url('myImg.jpg'); position:relative; left:0; top:0; width:200px; height:50px;">
-Advanced see if you move this textarea
-</textarea><br>
+        Cascading Style Sheets (CSS) is properly done with a .css file listing all css commands for your website.
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br>
 
-<img src="" width=200 style="border-radius:200px">
+        Another way to do CSS is using the style tag at the top head part of a webpage.
 
-</body>
+        <br><br>
 
+        Here is typical in document style:
 
+        <pre> b { color: #00ff00; } </pre>
 
+        I do CSS inline inside the tag. It overpowers all the other methods.
 
+        <br><br>
 
+        <i>This is Italic</i><br>
 
+        <i id="myB1" style="color:#00ff00; background-color:blue;"> This is Italic with CSS background-color and maincolor </i>
 
-<pre>
-    <body>
+        <br><br>
 
-<div id="Version">Version 0.0.1</div><br>
+        <input type="button" id="myButton01" value="Change" onclick="{ document.getElementById('myB1').style.color = 'red'; document.getElementById('myB1').style.backgroundColor = 'yellow'; }">
 
-<h1 align="center" id="myTitle01">T1A04 CSS by Philipp 2026</h1>
-Reference Link<br>
-<a href="https://www.w3schools.com/cssref/default.asp">w3schools</a><br><br>
-Cascading Style Sheets (CSS) is properly done with a .css file listing all css commands for your website<br>
-Another way to do CSS is using the style tag at the top head part of a webpage<br><br>
-Here is typical in document style
+    </div>
 
-<pre>
-b {
-    color: #00ff00;
-}
-</pre><br>
-I do CSS inline inside the tag. It overpowers all the other methods<br><br>
+    <br>
 
-<i>This is Italic</i><br>
-<i id="myB1" style="color:#00ff00; background-color:blue;">
-    This is Italic with CSS background-color and maincolor
-</i>
+    <h2>Some CSS Examples</h2>
 
-<input type="button" value="Change" onclick="{
-    document.getElementById('myB1').style.color = 'red'
-    document.getElementById('myB1').style.backgroundColor = 'yellow'
-}">
-<br><br>
+    <div id="myBox01">
 
-<textarea style="background-image: url('myImg.jpg'); position:relative; left:0; top:0; width:200px; height:50px;">
-Advanced see if you move this textarea
-</textarea><br>
+        <p>Background Color</p>
+        <p>Border</p>
+        <p>Padding</p>
+        <p>Margin</p>
+        <p>Border Radius</p>
+        <p>Box Shadow</p>
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
 
-<img src="" width=200 style="border-radius:200px">
+    <br>
+
+    <h2>CSS Hover Example</h2>
+
+    <div id="myHover01"> Hover over me! </div>
+
+    <br>
+
+    <textarea id="myText01"> Advanced see if you move this textarea </textarea>
+
+    <br><br>
+
+    <div id="myColor01"> CSS can change colors, size, borders and more! </div>
+
+    <br><br>
+
+    <h2>CSS Change Buttons</h2>
+
+    <div id="myDemo01">
+
+        <p id="myText02">Change me with the buttons!</p>
+
+        <input type="button" value="Color" onclick="{ document.getElementById('myText02').style.color = 'red'; }">
+
+        <input type="button" value="Background" onclick="{ document.getElementById('myText02').style.backgroundColor = 'yellow'; }">
+
+        <input type="button" value="Big" onclick="{ document.getElementById('myText02').style.fontSize = '30px'; }">
+
+        <input type="button" value="Round" onclick="{ document.getElementById('myText02').style.borderRadius = '20px'; }">
+
+        <input type="button" value="Shadow" onclick="{ document.getElementById('myText02').style.boxShadow = '5px 5px 5px #D16500'; }">
+
+        <input type="button" value="Reset" onclick="{ document.getElementById('myText02').style.color = '#914A00'; document.getElementById('myText02').style.backgroundColor = '#FFC28A'; document.getElementById('myText02').style.fontSize = '20px'; document.getElementById('myText02').style.borderRadius = '0px'; document.getElementById('myText02').style.boxShadow = 'none'; }">
+
+    </div>
 
 </body>
 
 <style>
     body {
-        background:#FFC28A;
+        background: #FFC28A;
         font-family: Arial;
+        color: #914A00;
     }
-    
+
+
     #myTitle01 {
         font-size: 50px;
         background-color: #FF932E;
         padding: 15px;
-        border-radius: 20px;
-        margin-top: 20px;
-        margin-left: 60px;    
+        margin-left: 60px;
         margin-right: 60px;
-        margin-bottom: 20px;
+        border-radius: 20px;
         box-shadow: 2px 2px 2px #D16500;
         color: #FFC28A;
         text-shadow: 2px 2px 2px #D16500;
-        transition: transform 0.5s ease, background-color 0.5s ease; box-shadow 0.5s ease; text-shadow 0.5s ease;
-}
+        transition: .5s;
+    }
 
     #myTitle01:hover {
-    transform: scale(0.9);
-    background-color: #FF5F2E;
-    color:#FFC8B8;
-    box-shadow: 2px 2px 2px #A32600;
-    text-shadow:2px 2px 2px #A32600;
-    font-size: 50px;
-}
-
-    textarea {
-        background-color:#FF932E;
-        border:none;
-        padding: 20px 20px 2px;
-        border-radius:5px;
-        margin:auto;
-        color:#FFC28A;
-        text-shadow:2px 2px 1px #000;
+        background-color: #FF5F2E;
+        transform: scale(1.02);
     }
 
 
-    
-    
-    
+    #myContent {
+        background-color: #FFE0B8;
+        padding: 20px;
+        margin-left: 60px;
+        margin-right: 60px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 3px #D16500;
+        line-height: 1.5;
+    }
+
+
+    #myButton01 {
+        background-color: #FF932E;
+        border: 0;
+        padding: 10px;
+        width: 150px;
+        border-radius: 20px;
+        color: #FFC28A;
+        font-weight: bold;
+        font-size: 18px;
+        box-shadow: 2px 2px 2px #D16500;
+        transition: .3s;
+    }
+
+    #myButton01:hover {
+        background-color: #FF5F2E;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    #myButton01:active {
+        transform: scale(.95);
+    }
+
+
+    #myBox01 {
+        background-color: #FF932E;
+        padding: 15px;
+        margin-left: 60px;
+        margin-right: 60px;
+        border: 3px solid #D16500;
+        border-radius: 10px;
+        box-shadow: 2px 2px 2px #D16500;
+    }
+
+    #myBox01 p {
+        background-color: #FFC28A;
+        padding: 8px;
+        border-radius: 5px;
+    }
+
+
+    #myHover01 {
+        background-color: #FF932E;
+        padding: 20px;
+        margin-left: 60px;
+        margin-right: 60px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 2px 2px 2px #D16500;
+        transition: .5s;
+    }
+
+    #myHover01:hover {
+        background-color: #FF5F2E;
+        color: #FFC28A;
+        transform: scale(1.03);
+    }
+
+
+    #myText01 {
+        background-color: #FF932E;
+        border: 0;
+        padding: 15px;
+        margin-left: 60px;
+        border-radius: 5px;
+        color: #FFC28A;
+        box-shadow: 2px 2px 2px #D16500;
+    }
+
+
+    #myColor01 {
+        background-color: #FF5F2E;
+        color: #FFC28A;
+        padding: 20px;
+        margin-left: 60px;
+        margin-right: 60px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 20px;
+        text-shadow: 2px 2px 1px #914A00;
+    }
+
+
+    #myDemo01 {
+        background-color: #FFE0B8;
+        padding: 20px;
+        margin-left: 60px;
+        margin-right: 60px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 3px #D16500;
+    }
+
+    #myText02 {
+        background-color: #FFC28A;
+        color: #914A00;
+        padding: 10px;
+        font-size: 20px;
+        transition: .3s;
+    }
+
+
+    #myDemo01 input {
+        background-color: #FF932E;
+        border: 0;
+        padding: 8px;
+        margin: 4px;
+        border-radius: 10px;
+        color: #FFC28A;
+        font-weight: bold;
+        transition: .3s;
+    }
+
+    #myDemo01 input:hover {
+        background-color: #FF5F2E;
+        transform: scale(1.05);
+    }
+
+    #myDemo01 input:active {
+        transform: scale(.95);
+    }
+
+
     #Version {
-        color:#914A00;
+        color: #914A00;
+        margin-left: 60px;
     }
-    
 </style>
-</pre>

@@ -1,1 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibrant Mandelbrot Fractal Explorer</title>
 
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.myHintBox, .myControlsBox {
+  position: fixed;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+}
+
+.myHintBox {
+  top: 20px;
+  left: 20px;
+  padding: 10px 16px;
+  background: rgba(20, 20, 25, .85);
+  color: #22d3ee;
+  border: 1px solid rgba(34, 211, 238, .4);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.myHintBox:hover {
+  background: rgba(30, 30, 40, .98);
+}
+
+.myControlsBox {
+  bottom: 20px;
+  left: 20px;
+  max-width: calc(100vw - 40px);
+  padding: 10px 16px;
+  background: rgba(20, 20, 25, .85);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, .1);
+  font-size: 12px;
+  line-height: 1.7;
+  pointer-events: none;
+}
+
+.myModalOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  padding: 20px;
+  background: rgba(0, 0, 0, .78);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+}
+
+.myModalOverlay.isOpen {
+  display: flex;
+}
+
+.myModalContent {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  background: #111827;
+  color: #f3f4f6;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  line-height: 1.6;
+}
+
+.myModalTitle {
+  margin-bottom: 12px;
+  color: #38bdf8;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.myFormula {
+  margin: 14px 0;
+  padding: 12px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #1f2937;
+  color: #f43f5e;
+  font-family: monospace;
+  font-size: 18px;
+  text-align: center;
+}
+
+.myModalContent ul {
+  margin: 8px 0 12px 20px;
+}
+
+.myModalCloseBtn {
+  float: right;
+  margin-top: 20px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 6px;
+  background: #0284c7;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .myHintBox {
+    top: 12px;
+    left: 12px;
+    font-size: 12px;
+  }
+
+  .myControlsBox {
+    bottom: 12px;
+    left: 12px;
+    max-width: calc(100vw - 24px);
+    font-size: 11px;
+  }
+
+  .myModalContent {
+    padding: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="myCanvas"></canvas>
+
+<button id="myHintBox" class="myHintBox" type="button">
+  💡 How is this created? Click for Info
+</button>
+
+<div class="myControlsBox">
+  🔍 Move mouse: Preview zoom area<br>
+  📜 Scroll wheel: Adjust zoom box size<br>
+  🖱️ Click: Zoom in repeatedly<br>
+  🔄 Double-click: Reset view
+</div>
+
+<div id="myModalOverlay" class="myModalOverlay"
+     role="dialog" aria-modal="true"
+     aria-labelledby="myModalTitle">
+  <div class="myModalContent">
+    <div id="myModalTitle" class="myModalTitle">
+      The Mandelbrot Fractal
+    </div>
+
+    <p>
+      The Mandelbrot set consists of complex numbers C for which
+      the sequence remains bounded when repeatedly applying
+      the function, starting with Z = 0.
+    </p>
+
+    <div class="myFormula">
+      Z<sub>n+1</sub> = Z<sub>n</sub><sup>2</sup> + C
+    </div>
+
+    <p><strong>How it works:</strong></p>
+
+    <ul>
+      <li>Each pixel represents a complex number.</li>
+      <li>We repeatedly square Z and add C.</li>
+      <li>Points that remain bounded are colored black.</li>
+      <li>Points that escape receive colors based on their iteration count.</li>
+    </ul>
+
+    <p>Explore the fractal by clicking repeatedly on interesting details.</p>
+
+    <button id="myModalCloseBtn" class="myModalCloseBtn" type="button">
+      Close
+    </button>
+    <div style="clear:both"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const myCanvas = document.getElementById("myCanvas");
+const myCtx = myCanvas.getContext("2d", { alpha: false });
+
+const myBuffer = document.createElement("canvas");
+const myBufferCtx = myBuffer.getContext("2d", { alpha: false });
+
+const myHintBox = document.getElementById("myHintBox");
+const myModalOverlay = document.getElementById("myModalOverlay");
+const myModalCloseBtn = document.getElementById("myModalCloseBtn");
+
+// Fractal settings
+let myCenterX = -0.5;
+let myCenterY = 0;
+let myZoomWidth = 3.5;
+let myMaxIterations = 250;
+
+// Zoom preview
+let myMouseX = 0;
+let myMouseY = 0;
+let myPreviewScale = 0.3;
+let myIsHovering = false;
+
+// Rendering state
+let myRenderTaskId = 0;
+let myClickTimer = null;
+let myDpr = 1;
+
+// Resize canvas
+function myResizeCanvas() {
+  myDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  myCanvas.width = Math.max(1, Math.round(innerWidth * myDpr));
+  myCanvas.height = Math.max(1, Math.round(innerHeight * myDpr));
+
+  myBuffer.width = myCanvas.width;
+  myBuffer.height = myCanvas.height;
+
+  myRenderFractal();
+}
+
+function myClamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+// HSL to RGB conversion
+function myHslToRgb(h, s, l) {
+  h = ((h % 360) + 360) % 360;
+  s /= 100;
+  l /= 100;
+
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = l - c / 2;
+
+  let r = 0, g = 0, b = 0;
+
+  if (h < 60) {
+    r = c; g = x;
+  } else if (h < 120) {
+    r = x; g = c;
+  } else if (h < 180) {
+    g = c; b = x;
+  } else if (h < 240) {
+    g = x; b = c;
+  } else if (h < 300) {
+    r = x; b = c;
+  } else {
+    r = c; b = x;
+  }
+
+  return [
+    Math.round((r + m) * 255),
+    Math.round((g + m) * 255),
+    Math.round((b + m) * 255)
+  ];
+}
+
+function myGetColor(iteration, magnitudeSquared) {
+  if (iteration >= myMaxIterations) return [0, 0, 0];
+
+  const magnitude = Math.sqrt(magnitudeSquared);
+  const smooth = iteration + 1 -
+    Math.log2(Math.max(1e-12, Math.log2(magnitude)));
+
+  const hue = (smooth * 6 + 180) % 360;
+  const lightness = 50 + 20 * Math.sin(smooth * 0.1);
+
+  return myHslToRgb(hue, 85, lightness);
+}
+
+// Fractal renderer
+function myRenderFractal() {
+  const taskId = ++myRenderTaskId;
+
+  const width = myBuffer.width;
+  const height = myBuffer.height;
+
+  if (!width || !height) return;
+
+  const aspect = width / height;
+  const zoomHeight = myZoomWidth / aspect;
+
+  const minReal = myCenterX - myZoomWidth / 2;
+  const maxImag = myCenterY + zoomHeight / 2;
+
+  const image = myBufferCtx.createImageData(width, height);
+  const data = image.data;
+  const chunkHeight = 12;
+
+  let y = 0;
+
+  function renderChunk() {
+    if (taskId !== myRenderTaskId) return;
+
+    const endY = Math.min(y + chunkHeight, height);
+
+    for (let py = y; py < endY; py++) {
+      const ci = maxImag - (py / height) * zoomHeight;
+
+      for (let px = 0; px < width; px++) {
+        const cr = minReal + (px / width) * myZoomWidth;
+
+        let zr = 0;
+        let zi = 0;
+        let zr2 = 0;
+        let zi2 = 0;
+        let iteration = 0;
+
+        while (
+          zr2 + zi2 <= 256 &&
+          iteration < myMaxIterations
+        ) {
+          zi = 2 * zr * zi + ci;
+          zr = zr2 - zi2 + cr;
+
+          zr2 = zr * zr;
+          zi2 = zi * zi;
+
+          iteration++;
+        }
+
+        const index = (py * width + px) * 4;
+
+        if (iteration < myMaxIterations) {
+          const rgb = myGetColor(iteration, zr2 + zi2);
+          data[index] = rgb[0];
+          data[index + 1] = rgb[1];
+          data[index + 2] = rgb[2];
+        } else {
+          data[index] = 0;
+          data[index + 1] = 0;
+          data[index + 2] = 0;
+        }
+
+        data[index + 3] = 255;
+      }
+    }
+
+    myBufferCtx.putImageData(image, 0, 0, 0, y, width, endY - y);
+
+    y = endY;
+    myDrawCanvas();
+
+    if (y < height) {
+      requestAnimationFrame(renderChunk);
+    }
+  }
+
+  renderChunk();
+}
+
+// Draw base fractal and zoom preview
+function myDrawCanvas() {
+  myCtx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+  myCtx.drawImage(myBuffer, 0, 0);
+
+  if (!myIsHovering) return;
+
+  const boxW = myCanvas.width * myPreviewScale;
+  const boxH = myCanvas.height * myPreviewScale;
+  const boxX = myMouseX - boxW / 2;
+  const boxY = myMouseY - boxH / 2;
+
+  myCtx.save();
+
+  myCtx.fillStyle = "rgba(56, 189, 248, 0.08)";
+  myCtx.fillRect(boxX, boxY, boxW, boxH);
+
+  myCtx.strokeStyle = "#38bdf8";
+  myCtx.lineWidth = 2 * myDpr;
+  myCtx.setLineDash([8 * myDpr, 4 * myDpr]);
+  myCtx.strokeRect(boxX, boxY, boxW, boxH);
+
+  myCtx.setLineDash([]);
+  myCtx.strokeStyle = "rgba(255,255,255,0.8)";
+  myCtx.lineWidth = myDpr;
+
+  const arm = 6 * myDpr;
+
+  myCtx.beginPath();
+  myCtx.moveTo(myMouseX - arm, myMouseY);
+  myCtx.lineTo(myMouseX + arm, myMouseY);
+  myCtx.moveTo(myMouseX, myMouseY - arm);
+  myCtx.lineTo(myMouseX, myMouseY + arm);
+  myCtx.stroke();
+
+  myCtx.restore();
+}
+
+// Convert screen coordinates to canvas coordinates
+function myGetCanvasPosition(event) {
+  const rect = myCanvas.getBoundingClientRect();
+
+  return {
+    x: (event.clientX - rect.left) * myCanvas.width / rect.width,
+    y: (event.clientY - rect.top) * myCanvas.height / rect.height
+  };
+}
+
+// Zoom in at the clicked position
+function myZoomAt(x, y) {
+  const width = myCanvas.width;
+  const height = myCanvas.height;
+  const aspect = width / height;
+  const zoomHeight = myZoomWidth / aspect;
+
+  const minReal = myCenterX - myZoomWidth / 2;
+  const maxImag = myCenterY + zoomHeight / 2;
+
+  myCenterX = minReal + (x / width) * myZoomWidth;
+  myCenterY = maxImag - (y / height) * zoomHeight;
+
+  // Allow many more consecutive zoom clicks.
+  // The small lower bound avoids underflow, but floating-point
+  // precision will eventually limit meaningful detail.
+  myZoomWidth = Math.max(
+    1e-100,
+    myZoomWidth * myPreviewScale
+  );
+
+  myMaxIterations = Math.min(
+    10000,
+    Math.max(
+      250,
+      Math.floor(
+        250 + Math.log10(3.5 / myZoomWidth) * 200
+      )
+    )
+  );
+
+  myRenderFractal();
+}
+
+function myResetView() {
+  myCenterX = -0.5;
+  myCenterY = 0;
+  myZoomWidth = 3.5;
+  myMaxIterations = 250;
+  myPreviewScale = 0.3;
+
+  myRenderFractal();
+}
+
+// Track mouse position
+myCanvas.addEventListener("pointermove", event => {
+  const pos = myGetCanvasPosition(event);
+
+  myMouseX = pos.x;
+  myMouseY = pos.y;
+  myIsHovering = true;
+
+  myDrawCanvas();
+});
+
+myCanvas.addEventListener("pointerleave", () => {
+  myIsHovering = false;
+  myDrawCanvas();
+});
+
+// Scroll wheel adjusts preview box size
+myCanvas.addEventListener("wheel", event => {
+  event.preventDefault();
+
+  myPreviewScale = myClamp(
+    myPreviewScale * (event.deltaY < 0 ? 0.8 : 1.25),
+    0.02,
+    0.9
+  );
+
+  myDrawCanvas();
+}, { passive: false });
+
+// Delay single-click action to distinguish double-clicks
+myCanvas.addEventListener("click", event => {
+  if (event.detail > 1) return;
+
+  clearTimeout(myClickTimer);
+
+  const pos = myGetCanvasPosition(event);
+
+  myClickTimer = setTimeout(() => {
+    myZoomAt(pos.x, pos.y);
+    myClickTimer = null;
+  }, 230);
+});
+
+myCanvas.addEventListener("dblclick", event => {
+  event.preventDefault();
+
+  clearTimeout(myClickTimer);
+  myClickTimer = null;
+
+  myResetView();
+});
+
+// Information modal
+myHintBox.addEventListener("click", () => {
+  myModalOverlay.classList.add("isOpen");
+  myModalOverlay.setAttribute("aria-hidden", "false");
+  myModalCloseBtn.focus();
+});
+
+function myCloseModal() {
+  myModalOverlay.classList.remove("isOpen");
+  myModalOverlay.setAttribute("aria-hidden", "true");
+  myHintBox.focus();
+}
+
+myModalCloseBtn.addEventListener("click", myCloseModal);
+
+myModalOverlay.addEventListener("click", event => {
+  if (event.target === myModalOverlay) myCloseModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (
+    event.key === "Escape" &&
+    myModalOverlay.classList.contains("isOpen")
+  ) {
+    myCloseModal();
+  }
+});
+
+window.addEventListener("resize", myResizeCanvas);
+
+// Start
+myResizeCanvas();
+</script>
+
+</body>
+</html>

@@ -17,3 +17,44 @@
 }"><br>
 
 <div id="myDiv01">...</div>
+
+
+<input id="myPass01" type="number" value="1234"><br>
+
+<br>
+<input type="button" value="Continue" onclick="
+    let myPassword01 = parseFloat(document.getElementById('myPass01').value);
+
+    if (myPassword01 == 2432) {
+        document.getElementById('myDiv02').innerHTML = 'Access granted';
+        document.getElementById('I01').style.backgroundColor = '#004A00';
+        document.getElementById('I01').style.color = '#2EFF2E';
+        document.getElementById('I01').style.boxShadow = '2px 2px 2px #001A00';
+    }
+    else {
+        document.getElementById('myDiv02').innerHTML = 'Wrong Password';
+    }
+">
+
+<br>
+<div id="myDiv02">Enter Password</div>
+
+<br><br><br>
+<i id="I01">Password is 2432</i>
+
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    #I01 {
+        background-color: #910606;
+        color: #FCBABA;
+        padding: 14px;
+        font-family: Arial;
+        border-radius: 9px;
+        font-size: 15px;
+        font-weight: bold;
+        box-shadow: 2px 2px 2px #450303;
+    }
+</style>

@@ -1,60 +1,199 @@
-<h2 align=center>T1A05-input output by Philipp.html</h2> 
-<a href="https://www.w3schools.com/jsref/prop_html_innerhtml.asp">Good reference to input putput Javascript innerHTML value by Philipp</a> 
-<h4>Example input output code</h4> 
-<pre>
-     myIn01 = document.getElementById('Num01').value
-     document.getElementById('myDiv01').innerHTML = 'Hi'
-</pre>
+HTML
+<h6>Version 0.0.1</h6>
 
-<h4>Example working code</h4>
-
-<input id="myNum01" type=number value="4" ><br>
-
-<input type=button value="myEvent squares" onclick="{ 
-    let myIn01 = parseFloat(document.getElementById('myNum01').value) 
-    let myAnswer = myIn01 * myIn01
-    document.getElementById('myDiv01').innerHTML = myIn01 + ' squared = ' + myAnswer 
-}"><br>
-
-<div id="myDiv01">...</div>
-
-
-<input id="myPass01" type="number" value="1234"><br>
+<h3 align="center">T1A05-Input-Output-Philipp.html</h3>
+<h3 align="center" id="myTitle01">Input / Output 2026</h3>
 
 <br>
-<input type="button" value="Continue" onclick="
-    let myPassword01 = parseFloat(document.getElementById('myPass01').value);
 
-    if (myPassword01 == 2432) {
-        document.getElementById('myDiv02').innerHTML = 'Access granted';
-        document.getElementById('I01').style.backgroundColor = '#004A00';
-        document.getElementById('I01').style.color = '#2EFF2E';
-        document.getElementById('I01').style.boxShadow = '2px 2px 2px #001A00';
-    }
-    else {
-        document.getElementById('myDiv02').innerHTML = 'Wrong Password';
-    }
-">
+<div id="box01">
+    <h3>Square a Number</h3>
+
+    <b>Enter Number:</b><br><br>
+    <input id="myNum01" type="number" value="4"><br><br>
+
+    <input type="button" value="myEvent Square" onclick="{
+        let myIn01 = parseFloat(document.getElementById('myNum01').value);
+        let myAnswer = myIn01 * myIn01;
+
+        document.getElementById('myDiv01').innerHTML =
+            myIn01 + ' squared = ' + myAnswer;
+    }">
+
+    <div id="myDiv01">...</div>
+</div>
 
 <br>
-<div id="myDiv02">Enter Password</div>
 
-<br><br><br>
-<i id="I01">Password is 2432</i>
+<div id="box02">
+    <h3>Password Check</h3>
+
+    <b>Password:</b><br><br>
+
+    <input id="myPass01" type="password" placeholder="Enter password"><br><br>
+
+    <input type="button" value="Continue" onclick="{
+        let myPassword01 = document.getElementById('myPass01').value;
+
+        if (myPassword01 == '2432') {
+            document.getElementById('myDiv02').innerHTML =
+                '✓ Access Granted';
+
+            document.getElementById('myDiv02').style.backgroundColor = '#DCFCE7';
+            document.getElementById('myDiv02').style.color = '#166534';
+            document.getElementById('myDiv02').style.border = '2px solid #22C55E';
+        }
+        else {
+            document.getElementById('myDiv02').innerHTML =
+                '✗ Wrong Password';
+
+            document.getElementById('myDiv02').style.backgroundColor = '#FEE2E2';
+            document.getElementById('myDiv02').style.color = '#991B1B';
+            document.getElementById('myDiv02').style.border = '2px solid #EF4444';
+        }
+    }">
+
+    <div id="myDiv02">Enter your password</div>
+
+    <br>
+    <i>Password is 2432</i>
+    <br>
+
+</div>
+
+<br>
+
+<div id="box03">
+    <h3>Say Hello</h3>
+
+    <b>Your Name:</b><br><br>
+    <input id="name01" type="text" value="Philipp"><br><br>
+
+    <input type="button" value="Say Hello" onclick="{
+        let name = document.getElementById('name01').value;
+        document.getElementById('result01').innerHTML =
+            'Hello ' + name + '!';
+    }">
+
+    <div id="result01">Hello!</div>
+</div>
+
+<br>
+
+<div id="box04">
+    <h3>Double the Number</h3>
+
+    <b>Enter Number:</b><br><br>
+    <input id="num01" type="number" value="5"><br><br>
+
+    <input type="button" value="Double!" onclick="{
+        let num = parseFloat(document.getElementById('num01').value);
+        document.getElementById('result02').innerHTML = num * 2;
+    }">
+
+    <div id="result02">Result here</div>
+</div>
+
+<br>
+
+<div id="box05">
+    <h3>Example Input Output Code</h3>
+
+    <pre>
+myIn01 = document.getElementById('Num01').value;
+document.getElementById('myDiv01').innerHTML = 'Hi';
+    </pre>
+
+    <a href="https://www.w3schools.com/jsref/prop_html_innerhtml.asp">
+        JavaScript innerHTML Reference
+    </a>
+</div>
 
 <style>
     body {
-        font-family: Arial;
+        font-family: Arial, sans-serif;
+        background-color: #F3E8FF;
+        color: #4C1D75;
+        padding: 20px;
     }
 
-    #I01 {
-        background-color: #910606;
-        color: #FCBABA;
-        padding: 14px;
-        font-family: Arial;
-        border-radius: 9px;
-        font-size: 15px;
-        font-weight: bold;
-        box-shadow: 2px 2px 2px #450303;
+    #myTitle01 {
+        font-size: 35px;
+        color: #7E22CE;
+        text-align: center;
     }
+
+    #box01,
+    #box02,
+    #box03,
+    #box04,
+    #box05 {
+        background-color: white;
+        padding: 20px;
+        max-width: 600px;
+        margin:auto ;
+        border-radius: 12px;
+        box-shadow: 1px 2px 8px #D8B4FE;
+    }
+
+    h3 {
+        color: #7E22CE;
+    }
+
+    input {
+        padding: 10px;
+        border: 1px solid #C084FC;
+        border-radius: 6px;
+    }
+
+    input[type="button"] {
+        background-color: #9333EA;
+        color: white;
+        border: none;
+        padding: 11px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    input[type="button"]:hover {
+        background-color: #6B21A8;
+    }
+
+    #myDiv01,
+    #myDiv02,
+    #result01,
+    #result02 {
+        background-color: #F3E8FF;
+        color: #581C87;
+        padding: 12px;
+        margin-top: 12px;
+        border-radius: 7px;
+    }
+
+    #myDiv02 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 16px;
+        border: 2px solid #C084FC;
+        transition: 0.3s;
+    }
+
+    pre {
+        background-color: #F3E8FF;
+        color: #581C87;
+        padding: 10px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+
+    a {
+        color: #7E22CE;
+    }
+    
+   input[type="button"]:active {
+    transform: scale(0.9);
+    transition:0.1s;
+}
 </style>

@@ -52,3 +52,42 @@
 <table border=1>
 <tr><td>A1</td><td>A2</td></tr>
 </table>
+
+
+
+
+
+
+
+<pre>
+<div id="healthBar" style="background-color: #E30000; width: 200px; height: 20px;">
+    <div id="health" style="background-color: #005C07; width: 80%; height: 20px;"></div>
+</div>
+
+<p id="myDiv01">Health: 100 / 100</p>
+
+<script>
+let player = {
+    health: 100
+};
+
+function updateHealth() {
+    document.getElementById('health').style.width =
+        player.health + '%';
+
+    document.getElementById('myDiv01').innerHTML =
+        'Health: ' + player.health + ' / 100';
+}
+
+updateHealth();
+</script>
+
+<style>
+    
+    #myDiv01 {
+        background-color:#5E5E5E;
+        color:#C2C2C2;
+        padding:20px;
+        border-radius: 13px;
+    }
+</style></pre>

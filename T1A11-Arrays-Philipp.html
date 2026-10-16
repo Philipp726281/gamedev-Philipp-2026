@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html>
+<h2 align=center>T1A011-Arrays-Philipp.htm1</h2>
+<body>
+
+    <h2>JavaScript Arrays</h2>
+
+    <a href="https://www.w3schools.com/js/js_arrays.asp">
+        Good Reference for JavaScript Arrays
+    </a>
+
+    <h4>Example: Working Array Code</h4>
+
+    Max Array Entry:
+    <input type="number" id="myText01" value="3" min="0" max="3">
+    <br><br>
+
+    <input type="button" value="Example" onclick="myExample()">
+
+    <div id="myDiv01">...</div>
+
+    <script>
+    function myExample() {
+        let myTemp = Number(document.getElementById('myText01').value);
+        let mySum = "";
+
+        let myArray = new Array();
+        myArray[0] = 'Fred';
+        myArray[1] = 'Mary';
+        myArray[2] = 'Lizzy';
+
+        for (let myLoop = 0; myLoop < myTemp; myLoop++) {
+            mySum += 'Loop #: ' + myLoop
+                + ', Array Entry: ' + myArray[myLoop] + '<br>';
+        }
+
+        document.getElementById('myDiv01').innerHTML = mySum;
+    }
+    </script>
+
+</body>
+</html>
 

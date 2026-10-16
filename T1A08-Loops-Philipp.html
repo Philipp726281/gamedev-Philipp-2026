@@ -1,35 +1,204 @@
-<h2 align=center>T1A08-Loops by Philipp</h2> <a href="">Good reference to Javascript loops</a><br> <h4>Example of working code</h4>
+<!DOCTYPE html>
+<html lang="en">
 
-Max loops: <input id="myNum01" type=number value="4"><br>
-weird number: <input id="myWeird01" type=number value="2"><br>
+<head>
+    <title>T1A08-Loops-by-Philipp</title>
+</head>
 
-<input type=button value="Basic for loops with decisions" onclick="{
-document.getElementById('myDiv01').innerHTML=''
-let myTemp = ''
-let myMax = parseInt(document.getElementById('myNum01').value)
+<body>
 
-for (let myLoop = 0; myLoop < myMax; myLoop++){
-if (myLoop * 2 > myMax){
-myTemp += 'cool'
+    <h2>T1A08 - JavaScript Loops</h2>
+    <p class="subtitle">Learn how JavaScript loops work!</p>
+
+    <a href="https://www.w3schools.com/js/js_loop_for.asp">
+        JavaScript Loops Reference
+    </a>
+
+    <div class="card">
+        <h3>Example 1: Basic For Loop</h3>
+
+        Max loops:
+        <input id="myNum01" type="number" value="4">
+
+        <br><br>
+
+        Weird number:
+        <input id="myWeird01" type="number" value="2">
+
+        <br><br>
+
+        <input type="button" value="Start Loop" onclick="{
+            document.getElementById('myDiv01').innerHTML = '';
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myLoop * 2 > myMax) {
+                    myTemp += 'Cool! ';
+                }
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }">
+
+        <div id="myDiv01" class="output">Your output appears here...</div>
+    </div>
+
+    <div class="card">
+        <h3>Example 2: Even Numbers</h3>
+
+        <p>Find the even numbers in your loop.</p>
+
+        <input type="button" value="Find Even Numbers" onclick="{
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myLoop % 2 == 0) {
+                    myTemp += myLoop + ' is an even number<br>';
+                }
+            }
+
+            document.getElementById('myDiv02').innerHTML = myTemp;
+        }">
+
+        <div id="myDiv02" class="output">Even numbers appear here...</div>
+    </div>
+
+    <div class="card">
+        <h3>Example 3: Multiplication</h3>
+
+        <p>Multiply your weird number by 1 to 10.</p>
+
+        <input type="button" value="Multiply Number" onclick="{
+            let myTemp = '';
+            let myWeird = parseInt(document.getElementById('myWeird01').value);
+
+            for (let i = 1; i <= 10; i++) {
+                myTemp += myWeird + ' x ' + i + ' = ' + (myWeird * i) + '<br>';
+            }
+
+            document.getElementById('myDiv03').innerHTML = myTemp;
+        }">
+
+        <div id="myDiv03" class="output">Multiplication appears here...</div>
+    </div>
+
+
+<div class="card">
+    <h3>Example 4: Countdown Loop</h3>
+
+    <p>Count down from your maximum number to zero!</p>
+
+    <input type="button" value="Start Countdown" onclick="{
+        let myTemp = '';
+        let myMax = parseInt(document.getElementById('myNum01').value);
+
+        for (let i = myMax; i >= 0; i--) {
+            myTemp += i + '<br>';
+        }
+
+        document.getElementById('myDiv04').innerHTML = myTemp;
+    }">
+
+    <div id="myDiv04" class="output">
+        Countdown appears here...
+    </div>
+</div>
+
+
+
+    <div class="card">
+        <h3>Example Code</h3>
+
+        <p>This is part of the original loop code:</p>
+
+        <pre>
+for (let myLoop = 0; myLoop < myMax; myLoop++) {
+    if (myLoop * 2 > myMax) {
+        myTemp += 'Cool!';
+    }
+
+    myTemp += 'Loop number: ' + myLoop + '<br>';
 }
-myTemp += 'Loop number: ' + myLoop + '<br>'
-}
-document.getElementById('myDiv01').innerHTML = myTemp
-}">
+        </pre>
+    </div>
 
-<input type=button value="Even Number identifier" onclick="{
-document.getElementById('myDiv01').innerHTML= ''
-let myTemp = ''
 
-let myMax = parseInt(document.getElementById('myNum01').value)
 
-for (let myLoop = 0; myLoop < myMax; myLoop++ ){
-if (myLoop % 2 == 0){
-myTemp += 'Even Number, '
-}
-myTemp += 'loop number: ' + myLoop + '<br>'
-}
-document.getElementById('myDiv01').innerHTML = myTemp
-}">
+    <style>
+        body {
+            background-color: #fff3e8;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 25px;
+            color: #493326;
+        }
 
-<div id="myDiv01"><font color=red>....</font></div>
+        h2 {
+            color: #c6531b;
+            font-size: 30px;
+        }
+
+        h3 {
+            color: #d5672e;
+        }
+
+        .subtitle {
+            font-size: 18px;
+        }
+
+        a {
+            color: #c6531b;
+        }
+
+        .card {
+            background-color: white;
+            max-width: 550px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 14px #ead0bd;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 9px;
+            border: 1px solid #e0b89e;
+            border-radius: 6px;
+        }
+
+        input[type="button"] {
+            background-color: #e87532;
+            color: white;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #b94d20;
+        }
+
+        .output {
+            background-color: #fff3e8;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            background-color: #fff3e8;
+            padding: 18px;
+            border-radius: 8px;
+            text-align: left;
+            overflow-x: auto;
+        }
+    </style>
+
+</body>
+</html>

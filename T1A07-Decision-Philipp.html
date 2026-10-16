@@ -1,73 +1,203 @@
-Version 0.0.1
+<!DOCTYPE html>
+<html lang="en">
 
-<h2 align=center>t1a07-decision-by-Fred.html</h2>
+<head>
+    <title>T1A07-decision-by-Philipp.html</title>
+</head>
 
-<a href="https://www.w3schools.com/js/js_if_else.asp">Good reference to Decisions if
-else statements
-Javascript innerHTML value by Fred</a><br>
+<body>
 
-Note: != Not, && = AND || = OR
+    <h2 align="center">T1A07-Decision-by-Philipp.html</h2>
 
-<h4> Example input output code</h4>
+    <p class="version">Version 0.0.1</p>
 
-<pre>
+    <p>
+        <a href="https://www.w3schools.com/js/js_if_else.asp">
+            JavaScript If...Else Reference
+        </a>
+    </p>
 
-let myHour = 20
+    <p><b> != means NOT, && means AND, || means OR</b></p>
 
-if (myHour < 18 ) {
+    <div class="card">
+        <h3>Example 1: Simple If Statement</h3>
 
-let myGreeting = 'Good day';
+        <p>Enter a number:</p>
+        <input id="myNum01" type="number" value="4">
 
-}
+        <button onclick="
+    let myIn01 = parseFloat(document.getElementById('myNum01').value);
 
-</pre>
+    if (myIn01 >= 3) {
+        document.getElementById('myDiv01').innerHTML =
+        myIn01 + ' is greater than or equal to 3';
+    } else {
+        document.getElementById('myDiv01').innerHTML =
+        myIn01 + ' is less than 3';
+    }
+">Check Number</button>
 
-<h4> Example working code</h4>
+        <div id="myDiv01" class="result">Your result appears here...</div>
+    </div>
 
-<input id="myNum01" type="number" value="4"><br>
+    <div class="card">
+        <h3>Example 2: If...Else</h3>
 
-<input type="button" value="Simple if Statement for Decision Making" onclick="{
+        <p>Enter a number to check if it is positive or negative.</p>
+        <input id="myNum02" type="number" value="5">
 
-let myIn01 = parseFloat(document.getElementById('myNum01').value)
+        <button onclick="
+            let myIn02 = parseFloat(document.getElementById('myNum02').value);
 
-if (myIn01 >= 3 ){
+            if (myIn02 > 0) {
+                document.getElementById('myDiv02').innerHTML =
+                myIn02 + ' is positive';
+            } else if (myIn02 < 0) {
+                document.getElementById('myDiv02').innerHTML =
+                myIn02 + ' is negative';
+            } else {
+                document.getElementById('myDiv02').innerHTML =
+                'The number is zero';
+            }
+        ">Check Positive or Negative</button>
 
-document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
+        <div id="myDiv02" class="result">Your result appears here...</div>
+    </div>
 
-}
+    <div class="card">
+        <h3>Example 3: Even or Odd</h3>
 
-}">
+        <p>Enter a whole number:</p>
+        <input id="myNum03" type="number" value="8">
 
-<input type="button" value="if...else" onclick="{
+        <button onclick="
+            let myIn03 = parseInt(document.getElementById('myNum03').value);
 
-let myIn01 = parseFloat(document.getElementById('myNum01').value)
+            if (myIn03 % 2 == 0) {
+                document.getElementById('myDiv03').innerHTML =
+                myIn03 + ' is an even number';
+            } else {
+                document.getElementById('myDiv03').innerHTML =
+                myIn03 + ' is an odd number';
+            }
+        ">Check Even or Odd</button>
 
-if (myIn01 >= 3 ){
+        <div id="myDiv03" class="result">Your result appears here...</div>
+    </div>
 
-document.getElementById('myDiv01').innerHTML = myIn01 + ' is greater than 3'
+    <div class="card">
+        <h3>Example 4: Complex If Statement</h3>
 
+        <p>Check if a number is between -3 and 100.</p>
+        <input id="myNum04" type="number" value="20">
+
+        <button onclick="
+            let myIn04 = parseFloat(document.getElementById('myNum04').value);
+
+            if (myIn04 > -3 && myIn04 <= 100) {
+                document.getElementById('myDiv04').innerHTML =
+                myIn04 + ' is in the range';
+            } else {
+                document.getElementById('myDiv04').innerHTML =
+                myIn04 + ' is outside the range';
+            }
+        ">Check Range</button>
+
+        <div id="myDiv04" class="result">Your result appears here...</div>
+    </div>
+
+    <div class="card">
+        <h3>Example Code</h3>
+
+        <p>This is how an if...else statement works:</p>
+
+        <pre>
+let myHour = 20;
+
+if (myHour < 18) {
+    let myGreeting = 'Good day';
 } else {
-
-document.getElementById('myDiv01').innerHTML = myIn01 + ' is less than 3'
-
+    let myGreeting = 'Good evening';
 }
+        </pre>
+    </div>
 
-}">
+    <style>
+        body {
+            background-color: #f3e8ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 25px;
+            color: #35234d;
+        }
 
-<input type="button" value="Complex if" onclick="{
+        h2 {
+            color: #7138a5;
+            font-size: 30px;
+        }
 
-let myIn01 = parseFloat(document.getElementById('myNum01').value)
+        h3 {
+            color: #8547b5;
+        }
 
-if ((myIn01 != 3 || myIn01 > -3) && myIn01 <= 100 ){
+        .version {
+            color: #777;
+            font-size: 14px;
+        }
 
-document.getElementById('myDiv01').innerHTML = myIn01 + ' is complex'
+        a {
+            color: #8547b5;
+        }
 
-} else {
+        .card {
+            background-color: white;
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px #d6c3e8;
+        }
 
-document.getElementById('myDiv01').innerHTML = myIn01 + ' is not complex'
+        input {
+            padding: 10px;
+            border: 1px solid #c7b2dd;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100px;
+        }
 
-}
+        button {
+            background-color: #8547b5;
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin: 8px;
+        }
 
-}">
+        button:hover {
+            background-color: #632d8c;
+        }
 
-<div id="myDiv01">...</div>
+        .result {
+            background-color: #f3e8ff;
+            color: #54247a;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        pre {
+            background-color: #f7f2fc;
+            text-align: left;
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #45245e;
+        }
+    </style>
+
+</body>
+</html>

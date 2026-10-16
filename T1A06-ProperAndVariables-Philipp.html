@@ -1,26 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>T1A06-proper-and-variables-Philipp.html</title>
-        <style>
-            b {color:blue; }
-        </style>
-        <script>
-            function sayHello() {
-                myNum = 3;
-                myString = ' Hello ';
-                myFloat = 17.5;
-                myBool = true;
-                myOut = document.getElementById('myDiv01')
-                myOut.innerHTML = myNum + myString + myFloat + ',' + myBool;
-                if(myBool) {myOut.innerHTML += ', WOW';}
+
+<head>
+    <title>T1A06 - Proper and Variables</title>
+
+    <script>
+        let myBool = true;
+
+        function sayHello() {
+            let myNum = 3;
+            let myString = ' Hello ';
+            let myFloat = 17.5;
+
+            let myOut = document.getElementById('myDiv01');
+
+            myOut.innerHTML = myNum + myString + myFloat + ',' + myBool;
+
+            if (myBool) {
+                myOut.innerHTML += ', WOW!';
             }
-        </script>
-    </head>
-    <body>
-        <p>This is <b>Bold</b></p> text.</p>
-        <button onclick="sayHello()">Click Me</button>
-        <div id="myDiv01">...</div>
-    </body>
+        }
+
+        function continueButton() {
+            myBool = false;
+            sayHello();
+        }
+
+        function showName() {
+            let myName = document.getElementById('myName').value;
+
+            document.getElementById('myDiv02').innerHTML =
+                'Hello ' + myName + '!';
+
+            document.getElementById('myVariables').innerHTML =
+                "myName = '" + myName + "' (String)";
+        }
+    </script>
+</head>
+
+<body>
+
+    <h1>T1A06: Proper and Variables</h1>
+
+
+    <div class="card">
+        <h2>Feature 1: My Variables</h2>
+        <p>Click the button to see my variables.</p>
+
+        <button onclick="sayHello()">Click Me!</button>
+        <input type="button" value="Don't say WOW"
+            onclick="continueButton()">
+
+        <div id="myDiv01">Your answer will appear here...</div>
+    </div>
+
+    <div class="card">
+        <h2>Feature 2: Your Own Variable</h2>
+        <p>Enter your name and see how a variable works!</p>
+
+        <input type="text" id="myName" placeholder="Enter your name">
+        <button onclick="showName()">Show My Name</button>
+
+        <div id="myDiv02">Your message will appear here.</div>
+        <div id="myVariables"></div>
+    </div>
+
+    <div class="card">
+        <h2>What is a Variable?</h2>
+        <p>A variable stores information, like a name or a number.</p>
+
+        <pre>
+let myName = "Alex";
+let myNum = 3;
+let myBool = true;
+        </pre>
+
+        <p><b>String:</b> Stores text.</p>
+        <p><b>Number:</b> Stores a number.</p>
+        <p><b>Boolean:</b> Stores true or false.</p>
+    </div>
+
+    <style>
+        body {
+            background: #eaf1ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px;
+            color: #263653;
+        }
+
+        h1 {
+            color: #234b8b;
+            font-size: 34px;
+        }
+
+        h2 {
+            color: #3366cc;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #c5d3eb;
+        }
+
+        p {
+            line-height: 1.5;
+        }
+
+        button, input[type="button"] {
+            background: #3366cc;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover, input[type="button"]:hover {
+            background: #234b8b;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #b8c9e6;
+            border-radius: 8px;
+            font-size: 15px;
+            margin: 5px;
+        }
+
+        #myDiv01, #myDiv02, #myVariables {
+            background: #edf4ff;
+            margin: 20px auto 0;
+            padding: 15px;
+            border-radius: 8px;
+            color: #234b8b;
+            overflow-wrap: anywhere;
+        }
+
+        #myVariables {
+            font-family: monospace;
+            text-align: left;
+        }
+
+        pre {
+            background: #f0f4fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            overflow-x: auto;
+        }
+    </style>
+
+</body>
 </html>
+
+

@@ -1,27 +1,246 @@
-<h2 align=center>t1a10-Events-by-Fred.html</h2>
 
-<a href="https://way2tutorial.com/html/html5_events_handler_list.php">
+<!DOCTYPE html>
+<html lang="en">
 
-Good reference to HTML Events</a> <br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1A10 Events by Philipp</title>
 
-Events are HTML code that activates Javascript code
+</head>
 
-<input type=text id="myText01" value="3"><br>
+<body>
 
-<input type=button value="Example onClick" onClick="{ document.getElementById('myDiv01').innerHTML = document.getElementById('myText01').value }">
+    <h2>T1A10 - JavaScript Events</h2>
 
-<div id="myDiv01">...</div>
 
-<b id="myB02" onMouseOut="{
+    <a href="https://way2tutorial.com/html/html5_events_handler_list.php">
+        JavaScript Events Reference
+    </a>
 
-document.getElementById('myB02').innerHTML = 'This is nice.' }"
+    <div class="example">
+        <h3>Example 1: onClick</h3>
 
-onMouseOver="{
+        <input type="text" id="myText01" value="3">
 
-document.getElementById('myB02').innerHTML = 'This is cool.'
+        <input type="button" value="Click Me" onclick="
+            document.getElementById('myDiv01').innerHTML =
+            document.getElementById('myText01').value;
+        ">
 
-}"> This is bold</b> <br><br>
+        <div class="result" id="myDiv01">
+            Your result appears here...
+        </div>
+    </div>
 
-You do at least 8 other events:<br>
+    <div class="example">
+        <h3>Example 2: onMouseOver and onMouseOut</h3>
 
-onClick, onDBClick, onChange, onBlur, onFocus, onMouseMove, onTouch, onkeyDown, onkeyPress, onDragStart, onTouchStart, onTouchEnd, onTouchMove
+        <b class="hover-text"
+           onmouseover="this.innerHTML='This is cool!'"
+           onmouseout="this.innerHTML='Move your mouse over me!'">
+           Move your mouse over me!
+        </b>
+    </div>
+
+    <div class="example">
+        <h3>Example 3: onDblClick</h3>
+
+        <p class="hover-text"
+           ondblclick="this.innerHTML='You double-clicked me!'">
+            Double-click this text.
+        </p>
+    </div>
+
+    <div class="example">
+        <h3>Example 4: onChange</h3>
+
+        <select onchange="
+            document.getElementById('myDiv04').innerHTML =
+            'You selected ' + this.value;
+        ">
+            <option value="">Choose a color</option>
+            <option>Red</option>
+            <option>Blue</option>
+            <option>Green</option>
+        </select>
+
+        <div class="result" id="myDiv04">
+            Choose a color.
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>Example 5: onFocus and onBlur</h3>
+
+        <input type="text" placeholder="Click here"
+            onfocus="this.style.backgroundColor='#b2f5ea'"
+            onblur="this.style.backgroundColor='white'">
+
+        <p>Click inside the box and then outside.</p>
+    </div>
+
+    <div class="example">
+        <h3>Example 6: onMouseMove</h3>
+
+        <p onmousemove="
+            document.getElementById('myDiv06').innerHTML =
+            'Mouse is moving!';
+        ">
+            Move your mouse over this text.
+        </p>
+
+        <div class="result" id="myDiv06">
+            Move your mouse...
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>Example 7: onKeyDown</h3>
+
+        <input type="text" placeholder="Press a key"
+            onkeydown="
+                document.getElementById('myDiv07').innerHTML =
+                'You pressed a key!';
+            ">
+
+        <div class="result" id="myDiv07">
+            Press any key...
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>Example 8: onTouch</h3>
+
+        <button ontouchstart="
+            document.getElementById('myDiv08').innerHTML =
+            'You touched the button!';
+        " onclick="
+            document.getElementById('myDiv08').innerHTML =
+            'Button clicked!';
+        ">Touch Me</button>
+
+        <div class="result" id="myDiv08">
+            Touch or click the button.
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>Example 9: onInput</h3>
+
+        <input type="text" placeholder="Type something"
+            oninput="
+                document.getElementById('myDiv09').innerHTML =
+                this.value || 'Your text appears here...';
+            ">
+
+        <div class="result" id="myDiv09">
+            Your text appears here...
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>Example Code</h3>
+
+        <pre><code>&lt;button onclick="sayHello()"&gt;
+    Click Me
+&lt;/button&gt;
+
+&lt;script&gt;
+function sayHello() {
+    alert('Hello!');
+}
+&lt;/script&gt;</code></pre>
+    </div>
+
+</body>
+</html>
+<style>
+        body {
+            background-color: #e8f7f8;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 25px;
+            color: #263f4a;
+        }
+
+        h2 {
+            color: #087e8b;
+            font-size: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #c5e1e3;
+        }
+
+        h3 {
+            color: #087e8b;
+            font-size: 20px;
+            margin: 0 0 15px 0;
+        }
+
+        a {
+            color: #087e8b;
+        }
+
+        /* Box für jedes Beispiel */
+        .example {
+            background-color: #ffffff;
+            margin: 25px auto;
+            padding: 25px;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #c5e1e3;
+            border-left: 6px solid #22a6b3;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #b5d9dc;
+            border-radius: 7px;
+            margin: 5px;
+            font-size: 14px;
+            max-width: 90%;
+        }
+
+        input[type="button"], button {
+            background-color: #087e8b;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover, button:hover {
+            background-color: #075b63;
+        }
+
+        .result {
+            background-color: #e8f7f8;
+            margin: 15px auto 0;
+            padding: 15px;
+            max-width: 450px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+            min-height: 20px;
+        }
+
+        .hover-text {
+            display: inline-block;
+            padding: 12px;
+            background-color: #d9f3f3;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        pre {
+            background-color: #f0fafa;
+            padding: 20px;
+            text-align: left;
+            max-width: 450px;
+            margin: 15px auto 0;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>

@@ -1,9 +1,104 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>T1A12-Objects-Philipp.html</title>
 
-    <style>
+    
+
+    <script>
+        // Global object declaration
+        let myPerson = {
+            firstName: 'John',
+            lastName: 'Doe',
+            age: 50,
+            eyeColor: 'blue'
+        };
+
+        // Function to show one property
+        function showObjectProperty() {
+            let property = document.getElementById('myText01').value;
+            let result = document.getElementById('myDiv01');
+
+            if (Object.prototype.hasOwnProperty.call(myPerson, property)) {
+                result.innerHTML =
+                    '<strong>Property found!</strong><br>' +
+                    'Property: ' + property + '<br>' +
+                    'Value: ' + myPerson[property];
+            } else {
+                result.innerHTML =
+                    '<strong>Property not found!</strong><br>' +
+                    'Please enter: firstName, lastName, age or eyeColor.';
+            }
+        }
+
+        // Function to show all properties
+        function showAllProperties() {
+            document.getElementById('myDiv01').innerHTML =
+                '<strong>myPerson Object</strong><br>' +
+                'First Name: ' + myPerson.firstName + '<br>' +
+                'Last Name: ' + myPerson.lastName + '<br>' +
+                'Age: ' + myPerson.age + '<br>' +
+                'Eye Color: ' + myPerson.eyeColor;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2 id="myTitle01">T1A12 - JavaScript Objects</h2>
+
+        <p>
+            <a href="https://www.w3schools.com/js/js_objects.asp" target="_blank">
+                Learn more about JavaScript Objects
+            </a>
+        </p>
+
+        <hr>
+
+        <p>
+            JavaScript objects store information using
+            <b>properties</b> and their corresponding values.
+        </p>
+
+        <h4>Example: Working with Objects</h4>
+
+        <p>Enter a property name:</p>
+
+        <input type="text" id="myText01" placeholder="e.g. firstName" onkeydown="if(event.key === 'Enter') showObjectProperty();">
+
+        <p class="hint">
+            Try: firstName, lastName, age or eyeColor
+        </p>
+
+        <br>
+
+        <input type="button" value="Show Property" onclick="showObjectProperty();">
+
+        <input type="button" value="Show All Properties" onclick="showAllProperties();">
+
+        <div id="myDiv01">
+            Enter a property name and click "Show Property".
+        </div>
+
+        <hr>
+
+        <h4>Think About It</h4>
+
+        <div class="question">
+            <b>Let's talk about local and global variables.</b>
+            <p>
+                Why might it be best to declare the object
+                inside the script tag?
+            </p>
+        </div>
+
+    </div>
+
+</body>
+<style>
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #e8eaf6);
@@ -115,104 +210,4 @@
             margin: 25px 0;
         }
     </style>
-
-    <script>
-        // Global object declaration
-        let myPerson = {
-            firstName: 'John',
-            lastName: 'Doe',
-            age: 50,
-            eyeColor: 'blue'
-        };
-
-        // Function to show one property
-        function showObjectProperty() {
-            let property = document.getElementById('myText01').value;
-            let result = document.getElementById('myDiv01');
-
-            if (Object.prototype.hasOwnProperty.call(myPerson, property)) {
-                result.innerHTML =
-                    '<strong>Property found!</strong><br>' +
-                    'Property: ' + property + '<br>' +
-                    'Value: ' + myPerson[property];
-            } else {
-                result.innerHTML =
-                    '<strong>Property not found!</strong><br>' +
-                    'Please enter: firstName, lastName, age or eyeColor.';
-            }
-        }
-
-        // Function to show all properties
-        function showAllProperties() {
-            document.getElementById('myDiv01').innerHTML =
-                '<strong>myPerson Object</strong><br>' +
-                'First Name: ' + myPerson.firstName + '<br>' +
-                'Last Name: ' + myPerson.lastName + '<br>' +
-                'Age: ' + myPerson.age + '<br>' +
-                'Eye Color: ' + myPerson.eyeColor;
-        }
-    </script>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h2 id="myTitle01">T1A12 - JavaScript Objects</h2>
-
-    <p>
-        <a href="https://www.w3schools.com/js/js_objects.asp"
-           target="_blank">
-            Learn more about JavaScript Objects
-        </a>
-    </p>
-
-    <hr>
-
-    <p>
-        JavaScript objects store information using
-        <b>properties</b> and their corresponding values.
-    </p>
-
-    <h4>Example: Working with Objects</h4>
-
-    <p>Enter a property name:</p>
-
-    <input type="text" id="myText01"
-           placeholder="e.g. firstName"
-           onkeydown="if(event.key === 'Enter') showObjectProperty();">
-
-    <p class="hint">
-        Try: firstName, lastName, age or eyeColor
-    </p>
-
-    <br>
-
-    <input type="button"
-           value="Show Property"
-           onclick="showObjectProperty();">
-
-    <input type="button"
-           value="Show All Properties"
-           onclick="showAllProperties();">
-
-    <div id="myDiv01">
-        Enter a property name and click "Show Property".
-    </div>
-
-    <hr>
-
-    <h4>Think About It</h4>
-
-    <div class="question">
-        <b>Let's talk about local and global variables.</b>
-        <p>
-            Why might it be best to declare the object
-            inside the script tag?
-        </p>
-    </div>
-
-</div>
-
-</body>
 </html>

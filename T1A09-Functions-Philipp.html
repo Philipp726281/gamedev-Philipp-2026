@@ -1,28 +1,492 @@
-<script>
-function myExampleFunction(){
-    let myIn01 = parseInt(document.getElementById('myText01').value);
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T1A09 - JavaScript Functions</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px 18px;
+            font-family: Arial, sans-serif;
+            background: #fff7fa;
+            color: #593747;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #c04478;
+            font-size: 32px;
+        }
+
+        h3 {
+            color: #c04478;
+            border-bottom: 1px solid #f3c7d7;
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            color: #c04478;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #795567;
+        }
+
+        a {
+            color: #c04478;
+        }
+
+        .section {
+            background: #ffffff;
+            border: 1px solid #f0c3d4;
+            border-radius: 14px;
+            padding: 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(220, 100, 150, 0.07);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            box-sizing: border-box;
+            background: #fffafd;
+            color: #593747;
+            border: 1px solid #e8a6c0;
+            border-radius: 7px;
+            padding: 11px;
+            margin: 5px;
+            font-size: 15px;
+            max-width: 100%;
+        }
+
+        input[type="button"] {
+            background: #e879a5;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 15px;
+            margin: 5px 3px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        input[type="button"]:hover {
+            background: #ce5688;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            background: #fff5f8;
+            color: #c04478;
+            border: 1px solid #f0c3d4;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 22px;
+            overflow-wrap: anywhere;
+        }
+
+        .example-box {
+            background: #fff5f8;
+            border: 2px solid #f3b6cc;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 25px auto;
+            box-shadow: 0 4px 14px rgba(220, 100, 150, 0.12);
+        }
+
+        .example-box h3 {
+            text-align: center;
+        }
+
+        .example-box input[type="text"] {
+            display: block;
+            width: 100%;
+            margin: 15px 0;
+            padding: 12px;
+        }
+
+        .example-box input[type="button"] {
+            display: block;
+            margin: 12px auto;
+            padding: 12px 22px;
+            font-weight: bold;
+        }
+
+        .example-result {
+            margin-top: 18px;
+            padding: 15px;
+            background: white;
+            border: 1px solid #f0c3d4;
+            border-radius: 8px;
+            color: #c04478;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            overflow-x: auto;
+            padding: 18px;
+            background: #fffafd;
+            border: 1px solid #f0c3d4;
+            border-radius: 10px;
+            color: #a33769;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        .footer {
+            text-align: center;
+            color: #b58a9d;
+            margin-top: 35px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #f0c3d4;
+            margin: 30px 0;
+        }
+    </style>
+
+    <script>
+    function myGreetingFunction() {
+        let name = document.getElementById('myText01').value;
+        return 'Hello ' + name + '! Welcome to my website!';
+    }
+
+    function myReverseFunction() {
+        let text = document.getElementById('myText01').value;
+        return text.split('').reverse().join('');
+    }
+
+    function myCountFunction() {
+        let text = document.getElementById('myText01').value;
+        return 'Your text has ' + text.length + ' characters.';
+    }
+
+    function myUpperFunction() {
+        return document.getElementById('myText01').value.toUpperCase();
+    }
+
+    function myLowerFunction() {
+        return document.getElementById('myText01').value.toLowerCase();
+    }
+
+    function myRandomFunction() {
+        return 'Random number: ' + (Math.floor(Math.random() * 100) + 1);
+    }
+
+    function myPasswordFunction() {
+        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$';
+        let password = '';
+
+        for (let i = 0; i < 10; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        return 'Random password: ' + password;
+    }
+
+    function myDateFunction() {
+        return 'Today is ' + new Date().toLocaleDateString();
+    }
+
+    function myTimeFunction() {
+        return 'Current time: ' + new Date().toLocaleTimeString();
+    }
+
+    function myVowelFunction() {
+        let text = document.getElementById('myText01').value;
+        let matches = text.match(/[aeiou]/gi);
+        let count = matches ? matches.length : 0;
+        return 'Number of vowels: ' + count;
+    }
+
+    function myReplaceFunction() {
+        let text = document.getElementById('myText01').value;
+        return text.replaceAll('a', '@');
+    }
+
+    function myPalindromeFunction() {
+        let text = document.getElementById('myText01').value;
+        let cleaned = text.toLowerCase().replace(/[^a-z0-9]/g, '');
+        let reversed = cleaned.split('').reverse().join('');
+
+        if (cleaned === reversed && cleaned.length > 0) {
+            return 'This is a palindrome!';
+        } else {
+            return 'This is not a palindrome.';
+        }
+    }
+
+    function myRandomColorFunction() {
+        let color = '#' + Math.floor(Math.random() * 16777215)
+            .toString(16).padStart(6, '0');
+
+        document.body.style.backgroundColor = color;
+        return 'Background color: ' + color;
+    }
+
+    function myClearFunction() {
+        document.getElementById('myText01').value = '';
+        return 'Text box cleared!';
+    }
+
+    function myAddFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+        let b = parseFloat(document.getElementById('myNum02').value);
+
+        if (isNaN(a) || isNaN(b)) return 'Enter two valid numbers.';
+        return a + ' + ' + b + ' = ' + (a + b);
+    }
+
+    function mySubtractFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+        let b = parseFloat(document.getElementById('myNum02').value);
+
+        if (isNaN(a) || isNaN(b)) return 'Enter two valid numbers.';
+        return a + ' - ' + b + ' = ' + (a - b);
+    }
+
+    function myMultiplyFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+        let b = parseFloat(document.getElementById('myNum02').value);
+
+        if (isNaN(a) || isNaN(b)) return 'Enter two valid numbers.';
+        return a + ' * ' + b + ' = ' + (a * b);
+    }
+
+    function myDivideFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+        let b = parseFloat(document.getElementById('myNum02').value);
+
+        if (isNaN(a) || isNaN(b)) return 'Enter two valid numbers.';
+        if (b === 0) return 'Cannot divide by zero!';
+
+        return a + ' / ' + b + ' = ' + (a / b);
+    }
+
+    function mySquareFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+
+        if (isNaN(a)) return 'Enter a valid number.';
+        return a + ' squared = ' + (a * a);
+    }
+
+    function myDoubleFunction() {
+        let a = parseFloat(document.getElementById('myNum01').value);
+
+        if (isNaN(a)) return 'Enter a valid number.';
+        return 'Double of ' + a + ' = ' + (a * 2);
+    }
+
+    function myEvenOddFunction() {
+        let value = document.getElementById('myNum01').value;
+        let a = Number(value);
+
+        if (value.trim() === '' || !Number.isInteger(a)) {
+            return 'Enter a valid whole number.';
+        }
+
+        if (a % 2 === 0) return a + ' is an even number.';
+        return a + ' is an odd number.';
+    }
+
+    function myShowResult(result) {
+        document.getElementById('myDiv01').textContent = result;
+    }
+
+    // Original working example
+    function myExampleFunction() {
+        let myIn01 = parseInt(
+            document.getElementById('myText02').value
+        );
+
+        if (isNaN(myIn01)) {
+            return 'Please enter a valid number.';
+        }
+
+        let mySum = myIn01 + myIn01;
+
+        let myReply =
+            myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+
+        return myReply;
+    }
+
+    function myShowExample() {
+        document.getElementById('myDiv02').textContent =
+            myExampleFunction();
+    }
+    </script>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>T1A09 - Functions by Philipp</h2>
+
+    <p style="text-align:center">
+        <a href="https://www.w3schools.com/js/js_functions.asp">
+            Good reference to JavaScript functions
+        </a>
+    </p>
+
+    <div class="section">
+        <p>
+            Functions organize code and allow us to reuse it.
+            They can calculate numbers, change text, and interact
+            with a webpage.
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>Text Functions</h3>
+
+        <p>Enter text or your name:</p>
+
+        <input type="text" id="myText01" value="Hello Philipp">
+
+        <br><br>
+
+        <input type="button" value="Greeting"
+        onclick="myShowResult(myGreetingFunction())">
+
+        <input type="button" value="Reverse Text"
+        onclick="myShowResult(myReverseFunction())">
+
+        <input type="button" value="Count Characters"
+        onclick="myShowResult(myCountFunction())">
+
+        <input type="button" value="UPPERCASE"
+        onclick="myShowResult(myUpperFunction())">
+
+        <input type="button" value="lowercase"
+        onclick="myShowResult(myLowerFunction())">
+
+        <input type="button" value="Count Vowels"
+        onclick="myShowResult(myVowelFunction())">
+
+        <input type="button" value="Replace a with @"
+        onclick="myShowResult(myReplaceFunction())">
+
+        <input type="button" value="Check Palindrome"
+        onclick="myShowResult(myPalindromeFunction())">
+
+        <input type="button" value="Clear Text Box"
+        onclick="myShowResult(myClearFunction())">
+    </div>
+
+    <div class="section">
+        <h3>Random and Time Functions</h3>
+
+        <input type="button" value="Random Number"
+        onclick="myShowResult(myRandomFunction())">
+
+        <input type="button" value="Generate Password"
+        onclick="myShowResult(myPasswordFunction())">
+
+        <input type="button" value="Show Date"
+        onclick="myShowResult(myDateFunction())">
+
+        <input type="button" value="Show Time"
+        onclick="myShowResult(myTimeFunction())">
+
+        <input type="button" value="Random Background Color"
+        onclick="myShowResult(myRandomColorFunction())">
+    </div>
+
+    <div class="section">
+        <h3>Math Functions</h3>
+
+        <p>Enter two numbers:</p>
+
+        <input type="number" id="myNum01" value="6">
+        <input type="number" id="myNum02" value="3">
+
+        <br><br>
+
+        <input type="button" value="Add"
+        onclick="myShowResult(myAddFunction())">
+
+        <input type="button" value="Subtract"
+        onclick="myShowResult(mySubtractFunction())">
+
+        <input type="button" value="Multiply"
+        onclick="myShowResult(myMultiplyFunction())">
+
+        <input type="button" value="Divide"
+        onclick="myShowResult(myDivideFunction())">
+
+        <input type="button" value="Square First Number"
+        onclick="myShowResult(mySquareFunction())">
+
+        <input type="button" value="Double First Number"
+        onclick="myShowResult(myDoubleFunction())">
+
+        <input type="button" value="Even or Odd"
+        onclick="myShowResult(myEvenOddFunction())">
+    </div>
+
+    <div class="section">
+        <h3>Result</h3>
+
+        <div class="result" id="myDiv01">
+            Your result will appear here.
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="example-box">
+        <h3>Example of Working Code</h3>
+
+        <p>
+            Enter a number and click the button to see the function work!
+        </p>
+
+        <input type="text" id="myText02" value="3">
+
+        <input type="button"
+        value="Run Function Example"
+        onclick="myShowExample()">
+
+        <div class="example-result" id="myDiv02">
+            Your result will appear here.
+        </div>
+
+        <h4>The Original JavaScript Function</h4>
+
+        <pre><code>function myExampleFunction() {
+    let myIn01 =
+        parseInt(document.getElementById('myText02').value);
+
     let mySum = myIn01 + myIn01;
-    let myReply = myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+
+    let myReply =
+        myIn01 + ' + ' + myIn01 + ' = ' + mySum;
+
     return myReply;
-}
-</script>
+}</code></pre>
+    </div>
 
-<h2 align="center">T1A09-Functions-by-Philipp</h2>
+    <p class="footer">
+        T1A09 - JavaScript Functions by Philipp
+    </p>
 
-<a href="https://www.w3schools.com/js/js_functions.asp">
-    Good reference to Javascript functions
-</a><br>
-
-<p>
-Functions are used to sensibly organize code. Then they are "called" elsewhere.
-Information can also be passed to functions.
-</p>
-
-<h4>Example of working code</h4>
-
-<input type="text" id="myText01" value="3"><br>
-
-<input type="button" value="Function Example"
-    onclick="document.getElementById('MyDiv01').innerHTML = myExampleFunction()">
-
-<div id="MyDiv01">...</div>
+</div>
+</body>
+</html>

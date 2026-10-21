@@ -1,25 +1,53 @@
-<div id="healthBar" style="background-color: #E30000; width: 200px; height: 20px;">
-    <div id="health" style="background-color: #005C07; width: 100%; height: 20px;"></div>
+
+<div id="healthBar" style="background-color: #FF0000; width: 200px; height: 20px; border-radius: 10px; overflow: hidden;">
+  <div id="health" style="background-color: #005C07; width: 100%; height: 20px; border-radius: 10px;"></div>
 </div>
 
-<p id="myDiv01">Health: 100 / 100</p>
+<div id="manaBar" style="background-color: #1B204A; width: 200px; height: 20px; border-radius: 10px; margin-top: 5px; overflow: hidden;">
+  <div id="mana" style="background-color: #7D7DB8; width: 100%; height: 20px; border-radius: 10px;"></div>
+</div>
+
+<p id="myDiv01" align="center">Health: 100 / 100</p>
+<p id="myDiv02" align="center"> Mana: 100 / 100</p>
 
 <style>
-    #myDiv01 {
-        background-color: #5E5E5E;
-        color: #C2C2C2;
-        padding: 20px;
-        border-radius: 13px;
+    #myDiv01, #myDiv02 {
+        background-color: #4A2D1B;
+        color: #FFFFFF;
+        padding: 12px;
+        border: 2px solid #383838;
+        border-radius: 10px;
+        width: 200px;
+        box-sizing: border-box;
+        font-family: Arial;
+        font-weight: bold;
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
+
+    input[type="button"] {
+    border-radius: 10px;
+    background-color: #A68787;
+    color: #fffff;
+    border: none;
+    padding: 14px;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+  
+  }
 </style>
 
 <script>
     let player = {
-        health: 100
+        health: 100,
+        mana: 100
     };
 
     function updateHealth() {
-
         if (player.health < 0) {
             player.health = 0;
         }
@@ -32,9 +60,7 @@
             alert('YOU ARE DEAD 💀');
         }
 
-
-        document.getElementById('health').style.width =
-            player.health + '%';
+        document.getElementById('health').style.width = player.health + '%';
 
         document.getElementById('myDiv01').innerHTML =
             'Health: ' + player.health + ' / 100';
@@ -44,11 +70,30 @@
         } else {
             document.getElementById('health').style.backgroundColor = '#005C07';
         }
-
-
     }
 
+    function updateMana() {
+        if (player.mana < 0) {
+            player.mana = 0;
+        }
+
+        if (player.mana > 100) {
+            player.mana = 100;
+        }
+
+        document.getElementById('mana').style.width = player.mana + '%';
+
+        document.getElementById('myDiv02').innerHTML =
+            'Mana: ' + player.mana + ' / 100';
+    }
+
+    setInterval(function() {
+        player.mana += 1;
+        updateMana();
+    }, 250);
+
     updateHealth();
+    updateMana();
 </script>
 
 <input type="button" value="Damage 10" onclick="{
@@ -56,7 +101,13 @@
     updateHealth();
 }">
 
-<input type="button" value="Heal Potion (+10)" onclick="{
-    player.health += 10;
-    updateHealth();
+<input type="button" value="Heal Spell (+10)" onclick="{
+    if (player.mana >= 10 && player.health < 100) {
+        player.health += 10;
+        player.mana -= 10;
+        updateHealth();
+        updateMana();
+    } else if (player.mana < 10) {
+        alert('Not enough mana! 💧');
+    }
 }">

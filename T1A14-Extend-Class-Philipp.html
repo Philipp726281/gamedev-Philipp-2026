@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1a14 Extend Class</title>
+
+    <style>
+        /* WHITE & SOFT YELLOW THEME */
+        :root {
+            --primary: #d4a900;
+            --primary-hover: #b89100;
+            --yellow-light: #fff8d9;
+            --page-background: #ffffff;
+            --card-background: #ffffff;
+            --text-color: #292929;
+            --muted-color: #707070;
+            --border-color: #eeeee5;
+            --result-background: #fffdf3;
+            --code-background: #faf9f4;
+            --code-text: #343434;
+
+            --font-family: Arial, Helvetica, sans-serif;
+            --radius: 10px;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            --transition: 160ms ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 16px;
+            background: var(--page-background);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .page-container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            margin-bottom: 24px;
+            padding: 24px 20px;
+            background: var(--yellow-light);
+            border: 1px solid #f3e7b1;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .page-label {
+            margin-bottom: 8px;
+            color: #806700;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(21px, 4vw, 28px);
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .page-subtitle {
+            margin: 8px 0 0;
+            color: var(--muted-color);
+            font-size: 14px;
+        }
+
+        /* Content sections */
+        .content-card {
+            margin-bottom: 18px;
+            padding: 22px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            margin: 0 0 8px;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .section-description {
+            margin: 0 0 18px;
+            color: var(--muted-color);
+            font-size: 14px;
+        }
+
+        /* Input */
+        .field-label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            display: block;
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 12px;
+            color: var(--text-color);
+            background: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 7px;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            outline: 2px solid #f8edbd;
+            outline-offset: 1px;
+        }
+
+        /* Buttons */
+        input[type="button"] {
+            display: inline-block;
+            max-width: 100%;
+            min-height: 42px;
+            padding: 10px 16px;
+            color: #292929;
+            background: #ffe995;
+            border: 1px solid #f0d66e;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.5;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            cursor: pointer;
+            transition:
+                background var(--transition),
+                border-color var(--transition);
+        }
+
+        input[type="button"]:hover {
+            background: #ffdf66;
+            border-color: var(--primary);
+        }
+
+        input[type="button"]:focus-visible {
+            outline: 2px solid var(--primary-hover);
+            outline-offset: 3px;
+        }
+
+        /* Output */
+        .result-card {
+            margin-top: 22px;
+            padding: 20px 22px;
+            background: var(--result-background);
+            border: 1px solid #f0e5b7;
+            border-radius: var(--radius);
+        }
+
+        .result-heading {
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        #myDiv01 {
+            min-height: 28px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        /* Core code example */
+        .code-card {
+            margin-top: 18px;
+            padding: 22px;
+            background: varcard-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+
+        .code-card pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+            background: var(--yellow-light);
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            color: var(--code-text);
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            tab-size: 4;
+        }
+
+        .code-card code {
+            font-family: inherit;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 20px;
+            color: var(--muted-color);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Mobile */
+        @media (max-width: 520px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .page-header {
+                padding: 20px 14px;
+            }
+
+            .content-card,
+            .result-card,
+            .code-card {
+                padding: 18px 14px;
+            }
+
+            input[type="button"] {
+                width: 100%;
+            }
+
+            .code-card pre {
+                padding: 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+    // Pre-existing parent class
+    class myAnimal {
+        constructor(passName, passAge) {
+            this.myName = passName;
+            this.myAge = passAge;
+        }
+
+        myShow() {
+            document.getElementById('myDiv01').innerHTML =
+                'Hello ' + this.myName + '<br>';
+        }
+    }
+</script>
+
+<main class="page-container">
+
+    <header class="page-header">
+        <div class="page-label">JavaScript</div>
+
+        <h2>T1a14-extend-class-by-Philipp.html</h2>
+
+    </header>
+
+    <section class="content-card">
+        <h3 class="section-heading">
+            Extending a pre-existing Class
+        </h3>
+
+        <p class="section-description">
+            Explore classes, objects, and inheritance with these examples.
+        </p>
+    </section>
+
+    <section class="content-card">
+        <h3 class="section-heading">
+            Example working classes code
+        </h3>
+
+        <p class="section-description">
+            Create an animal object and display its greeting.
+        </p>
+
+        <input
+            type="button"
+            value="Example Class Set and Show ClassAnimal"
+            onclick="
+                let myDog = new myAnimal('Snickers', 5);
+                myDog.myShow();
+            "
+        >
+    </section>
+
+    <section class="content-card">
+        <h3 class="section-heading">
+            Example extending class code
+        </h3>
+
+        <p class="section-description">
+            Extend the existing animal class to create a cat with its own display method.
+        </p>
+
+        <label class="field-label" for="myText01">
+            Nothing:
+        </label>
+
+        <input
+            type="text"
+            id="myText01"
+            value="useless at the moment"
+        >
+
+        <div style="height: 16px;"></div>
+
+        <input
+            type="button"
+            value="Example Extend Class Animal"
+            onclick="
+                class myCat extends myAnimal {
+                    myShow() {
+                        document.getElementById('myDiv01').innerHTML =
+                            this.myName + ' is a great cat<br>' +
+                            'Age: ' + this.myAge;
+                    }
+                }
+
+                let myPet = new myCat('Fluffy', 14);
+                myPet.myShow();
+            "
+        >
+    </section>
+
+    <section class="content-card">
+        <h3 class="section-heading">
+            Example: Adding a method to a child class
+        </h3>
+
+        <p class="section-description">
+            A child class can use the parent's constructor and add its own method.
+        </p>
+
+        <input
+            type="button"
+            value="Show Dog Sound"
+            onclick="
+                class myDogClass extends myAnimal {
+                    mySound() {
+                        return this.myName + ' says Woof!';
+                    }
+                }
+
+                let myDogExample = new myDogClass('Buddy', 3);
+
+                document.getElementById('myDiv01').innerHTML =
+                    myDogExample.mySound() + '<br>' +
+                    'Age: ' + myDogExample.myAge;
+            "
+        >
+    </section>
+
+    <section class="result-card" aria-live="polite">
+        <h3 class="result-heading">Output / Result</h3>
+        <div id="myDiv01">...</div>
+    </section>
+
+    <!-- Simple code summary -->
+    <section class="code-card">
+        <h3 class="section-heading">Core Code Example</h3>
+
+        <p class="section-description">
+            The basic idea of extending a class: reuse existing properties
+            and add a new method.
+        </p>
+
+        <pre><code>class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        return this.name + ' says Woof!';
+    }
+}
+
+let myDog = new Dog('Buddy');
+myDog.speak();</code></pre>
+    </section>
+
+    <footer class="page-footer">
+        JavaScript Classes &amp; Inheritance · Learning Example
+    </footer>
+
+</main>
+
+</body>
+</html>

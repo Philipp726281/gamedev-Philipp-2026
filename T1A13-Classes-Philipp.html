@@ -1,26 +1,483 @@
-<h2 align=center>t1a13-Classes-by-Fred.html</h2>
 
-<a href="https://www.w3schools.com/Js/js_classes.asp"> good reference to Javascript Classes</a><br>
-Classes are both Objects that store variables (Called Properties) and Functions that work on the variables (called Methods)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Classes</title>
 
-<h4> Example working Classes code</h4>
-Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
-<input type=button value="Example Class Set and Show Class Animal" onClick="{
+  <style>
+    :root {
+      --orange: #c96b32;
+      --orange-hover: #a95020;
+      --brown: #65412f;
+      --light-orange: #fff0e2;
+      --page: #fffaf5;
+      --white: #ffffff;
+      --text: #382c25;
+      --muted: #77685f;
+      --border: #eaded3;
+      --code-bg: #2e2926;
+      --code-text: #fff0df;
+      --radius: 10px;
+      --shadow: 0 3px 12px rgba(70, 43, 25, 0.05);
+    }
 
-class myAnimal {
-constructor(passName, passAge) {
-this.myName = passName;
-this.myAge = passAge;
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px 16px;
+      background: var(--page);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: var(--brown);
+      font-size: clamp(28px, 5vw, 36px);
+      line-height: 1.2;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      color: var(--brown);
+      font-size: 21px;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .subtitle,
+    .muted {
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--orange-hover);
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: var(--brown);
+    }
+
+    .section {
+      margin-bottom: 20px;
+      padding: 23px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .field-label {
+      display: block;
+      margin: 14px 0 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--page);
+      color: var(--text);
+      font: inherit;
+    }
+
+    input:focus {
+      outline: 2px solid var(--orange);
+      outline-offset: 2px;
+    }
+
+    button,
+    input[type="button"] {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 7px;
+      background: var(--orange);
+      color: white;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover,
+    input[type="button"]:hover {
+      background: var(--orange-hover);
+    }
+
+    button:focus-visible,
+    input[type="button"]:focus-visible {
+      outline: 3px solid var(--brown);
+      outline-offset: 3px;
+    }
+
+    button.secondary {
+      background: var(--light-orange);
+      color: var(--brown);
+      border: 1px solid var(--border);
+    }
+
+    button.secondary:hover {
+      background: #f6dfca;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 15px;
+    }
+
+    .result {
+      min-height: 45px;
+      margin-top: 15px;
+      padding: 12px;
+      background: var(--light-orange);
+      border-left: 3px solid var(--orange);
+      border-radius: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .result:empty {
+      display: none;
+    }
+
+    .code-section {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 22px;
+    }
+
+    .code-header h2 {
+      margin: 0;
+    }
+
+    .code-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .copy-button {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 22px;
+      overflow-x: auto;
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: Consolas, Monaco, monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      tab-size: 2;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .code-explanation {
+      padding: 16px 22px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 10px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 18px 12px;
+      }
+
+      .section {
+        padding: 18px;
+      }
+
+      .code-header {
+        padding: 17px;
+      }
+
+      pre {
+        padding: 17px;
+        font-size: 12px;
+      }
+
+      .code-explanation {
+        padding: 14px 17px;
+      }
+
+      .button-row button,
+      .button-row input[type="button"] {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>JavaScript Classes Philipp</h1>
+      <a href="https://www.w3schools.com/Js/js_classes.asp"
+         target="_blank"
+         rel="noopener noreferrer">
+        JavaScript Classes Reference
+      </a>
+    </header>
+
+    <section class="section">
+      <h2>What is a class?</h2>
+      <p>
+        A class is a template for creating objects. Objects contain
+        properties (information) and methods (functions).
+      </p>
+      <p><strong>Properties:</strong> Store values, such as a name or age.</p>
+      <p><strong>Methods:</strong> Perform actions using those values.</p>
+    </section>
+
+    <section class="section">
+      <h2>Example 1: Animal</h2>
+      <p class="muted">Enter a name and age, then create an animal.</p>
+
+      <label class="field-label" for="myText01">Animal name</label>
+      <input type="text" id="myText01" value="Snickers">
+
+      <label class="field-label" for="animalAge">Animal age</label>
+      <input type="number" id="animalAge" value="4" min="0" max="150">
+
+      <div class="button-row">
+        <input type="button" value="Show Animal" onclick="{
+          class myAnimal {
+            constructor(passName, passAge) {
+              this.myName = passName;
+              this.myAge = passAge;
+            }
+
+            myShow() {
+              return 'Hello ' + this.myName +
+                '. You are ' + this.myAge + ' years old.';
+            }
+          }
+
+          const animalName = document.getElementById('myText01').value.trim();
+          const ageText = document.getElementById('animalAge').value;
+          const age = Number(ageText);
+          const result = document.getElementById('myDiv01');
+
+          if (!animalName || ageText === '' ||
+              !Number.isFinite(age) || age < 0 || age > 150) {
+            result.textContent = 'Enter a name and a valid age (0–150).';
+          } else {
+            const myDog = new myAnimal(animalName, age);
+            result.textContent = myDog.myShow();
+          }
+        }">
+      </div>
+
+      <div id="myDiv01" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="section">
+      <h2>Example 2: Rectangle</h2>
+      <p class="muted">Use a class method to calculate the area.</p>
+
+      <label class="field-label" for="rectWidth">Width</label>
+      <input type="number" id="rectWidth" value="5" min="0">
+
+      <label class="field-label" for="rectHeight">Height</label>
+      <input type="number" id="rectHeight" value="3" min="0">
+
+      <div class="button-row">
+        <button type="button" onclick="{
+          class Rectangle {
+            constructor(width, height) {
+              this.width = width;
+              this.height = height;
+            }
+
+            getArea() {
+              return this.width * this.height;
+            }
+          }
+
+          const wText = document.getElementById('rectWidth').value;
+          const hText = document.getElementById('rectHeight').value;
+          const w = Number(wText);
+          const h = Number(hText);
+          const output = document.getElementById('rectResult');
+
+          if (wText === '' || hText === '' ||
+              !Number.isFinite(w) || !Number.isFinite(h) ||
+              w < 0 || h < 0) {
+            output.textContent = 'Enter valid, non-negative dimensions.';
+          } else {
+            const rectangle = new Rectangle(w, h);
+            output.textContent = 'Area: ' + rectangle.getArea() +
+              ' square units.';
+          }
+        }">Calculate Area</button>
+      </div>
+
+      <div id="rectResult" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="section">
+      <h2>Example 3: Counter</h2>
+      <p class="muted">Use methods to increase or reset an object's value.</p>
+
+      <div id="counterResult" class="result" aria-live="polite">
+        Counter: 0
+      </div>
+
+      <div class="button-row">
+        <button type="button" onclick="
+          counter.increase();
+          document.getElementById('counterResult').textContent =
+            'Counter: ' + counter.count;
+        ">Increase</button>
+
+        <button type="button" class="secondary" onclick="
+          counter.reset();
+          document.getElementById('counterResult').textContent =
+            'Counter: ' + counter.count;
+        ">Reset</button>
+      </div>
+    </section>
+
+    <section class="section code-section">
+      <div class="code-header">
+        <div>
+          <h2>Example Code</h2>
+          <span class="code-label">JavaScript · Animal class</span>
+        </div>
+        <button type="button" class="copy-button" onclick="
+          const code = document.getElementById('exampleCode').textContent;
+          const button = this;
+
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code).then(() => {
+              button.textContent = 'Copied!';
+              setTimeout(() => button.textContent = 'Copy code', 1500);
+            }).catch(() => {
+              button.textContent = 'Copy failed';
+            });
+          } else {
+            const area = document.createElement('textarea');
+            area.value = code;
+            area.style.position = 'fixed';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+
+            try {
+              const copied = document.execCommand('copy');
+              button.textContent = copied ? 'Copied!' : 'Copy failed';
+            } catch (error) {
+              button.textContent = 'Copy failed';
+            }
+
+            area.remove();
+            setTimeout(() => button.textContent = 'Copy code', 1500);
+          }
+        ">Copy code</button>
+      </div>
+
+      <pre><code id="exampleCode">class Animal {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  showInfo() {
+    return `Hello ${this.name}, you are ${this.age} years old.`;
+  }
 }
-myShow(){
-document.getElementById('myDiv01').innerHTML = 'Hello '+ this.myName + '. You are ' + this.myAge + ' years old<br>'
-}
-} // end class myAnimal
 
+const myDog = new Animal("Snickers", 4);
 
-myDog = new myAnimal('Snickers', 4)
-myDog.myShow()
-myDog.myShow()
-}">
+console.log(myDog.showInfo());</code></pre>
 
-<div id="myDiv01">...</div>
+      <p class="code-explanation">
+        <strong>Constructor:</strong> Sets the properties.
+        <strong>Method:</strong> Uses the properties.
+        <strong>new:</strong> Creates an object from the class.
+      </p>
+    </section>
+
+    <footer>JavaScript Classes · Practice and learn</footer>
+  </main>
+
+  <script>
+    class Counter {
+      constructor() {
+        this.count = 0;
+      }
+
+      increase() {
+        this.count++;
+      }
+
+      reset() {
+        this.count = 0;
+      }
+    }
+
+    const counter = new Counter();
+  </script>
+</body>
+</html>

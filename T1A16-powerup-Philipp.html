@@ -1,1 +1,28 @@
+<script>
+let myHero = {
+  name: "Captain Code",
+  power: 100,
+}
 
+function trainHero() {
+  myHero.power -= 10
+
+  if (myHero.power >= 70) {
+    myHero.comment = "High power!"
+  } else if (myHero.power >= 40) {
+    myHero.comment = "Medium power!"
+  } else if (myHero.power > 0) {
+    myHero.comment = "Low power!"
+  } else {
+    alert("Power reset!")
+    myHero.power = 100
+  }
+
+  document.getElementById("myDiv01").innerHTML =
+    myHero.power + "<br>" +
+    myHero.comment
+}
+</script>
+
+<button onclick="trainHero()">Train Hero</button>
+<div id="myDiv01"></div>

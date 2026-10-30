@@ -1,0 +1,1244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AOI AI — Academy Takeover</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+ --bg:#080910;
+ --panel:#10121d;
+ --panel2:#161927;
+ --line:#282d40;
+ --muted:#858ba5;
+ --white:#f3f3ff;
+ --purple:#a17aff;
+ --cyan:#50d8ff;
+ --green:#50e3aa;
+ --red:#ff617c;
+ --gold:#ffd477;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--white);
+ font-family:Inter,Arial,sans-serif;font-size:13px;
+}
+button{font-family:inherit}
+button:disabled{opacity:.35;cursor:not-allowed!important}
+.background{
+ position:fixed;inset:0;pointer-events:none;z-index:-1;
+ background:
+ radial-gradient(ellipse at 10% 0%,#7244ff17,transparent 38%),
+ radial-gradient(ellipse at 90% 80%,#00cfff13,transparent 40%);
+}
+header{
+ height:68px;position:sticky;top:0;z-index:20;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 27px;background:#0b0d17ee;
+ border-bottom:1px solid var(--line);backdrop-filter:blur(20px);
+}
+.brand{font-size:22px;font-weight:900;letter-spacing:3px}
+.brand span{color:var(--purple)}
+.brand small{font-size:9px;color:var(--muted);letter-spacing:2px;margin-left:7px}
+.headerstats{display:flex;gap:22px;align-items:center;color:#b5bad0}
+.headerstats b{color:white}
+.online{color:var(--green);font-size:10px}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100vh - 68px)}
+aside{
+ background:#0c0e18d9;border-right:1px solid var(--line);
+ padding:19px 13px;display:flex;flex-direction:column;
+}
+.profile{
+ background:linear-gradient(135deg,#2c214e,#17263c);
+ border:1px solid #55427d;border-radius:13px;padding:17px;margin-bottom:22px;
+}
+.avatar{
+ width:43px;height:43px;border-radius:13px;
+ display:grid;place-items:center;font-size:24px;
+ background:linear-gradient(135deg,#a17aff,#3cbaff);
+ margin-bottom:12px;
+}
+.profile b{font-size:14px}
+.profile p{font-size:10px;color:#a8a9c2;margin:5px 0 0}
+.navtitle{font-size:9px;letter-spacing:2px;color:#646c87;margin:18px 9px 9px}
+.nav{
+ background:transparent;border:0;color:#969db7;
+ width:100%;padding:12px 11px;text-align:left;border-radius:9px;
+ cursor:pointer;margin:2px 0;font-size:12px;transition:.2s;
+}
+.nav:hover,.nav.active{background:#29223f;color:white}
+.nav.active{border-left:3px solid var(--purple)}
+.sidebarbottom{margin-top:auto;padding:13px;color:#606984;font-size:10px;line-height:1.8}
+main{padding:27px;max-width:1600px;width:100%;margin:auto}
+.page{display:none;animation:appear .25s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+h1{font-size:25px;margin:0;font-weight:800;letter-spacing:-1px}
+.subtitle{font-size:11px;color:var(--muted);margin-top:7px}
+.pill{font-size:9px;letter-spacing:1px;padding:8px 11px;border:1px solid #42365e;border-radius:20px;color:#c5aaff;background:#241d39}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}
+.card,.section{
+ background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px;
+}
+.card small{color:var(--muted);font-size:10px;letter-spacing:1px}
+.value{font-size:26px;font-weight:800;margin-top:11px}
+.purple{color:var(--purple)}.cyan{color:var(--cyan)}
+.green{color:var(--green)}.gold{color:var(--gold)}
+.section{margin-bottom:15px}
+.section h2{font-size:15px;margin:0 0 15px}
+.muted{color:var(--muted)}
+.small{font-size:10px}
+.flex{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.progress{height:7px;background:#272c40;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .3s}
+.btn{
+ background:linear-gradient(110deg,#885bfa,#4c9cff);
+ color:white;border:0;padding:11px 16px;border-radius:8px;
+ font-size:11px;font-weight:700;cursor:pointer;transition:.2s;
+}
+.btn:hover{filter:brightness(1.2);transform:translateY(-2px)}
+.btn.secondary{background:#232a40;border:1px solid #3a4562}
+.btn.danger{background:#612d43}
+.btn.goldbtn{background:linear-gradient(100deg,#b78135,#edc36a);color:#17120b}
+.btn.full{width:100%;margin-top:12px}
+.btn:active{transform:scale(.98)}
+.hero{
+ background:linear-gradient(120deg,#211b39,#131d31 65%,#102a35);
+ border:1px solid #514174;border-radius:15px;padding:24px;
+ margin-bottom:16px;position:relative;overflow:hidden;
+}
+.hero:after{content:"AOI";position:absolute;right:30px;top:5px;font-size:110px;font-weight:900;color:#ffffff08}
+.hero h2{font-size:23px;margin:0}
+.hero p{color:#aaaac6;max-width:560px;line-height:1.7;font-size:11px}
+.hero .btn{margin-top:8px}
+.two{display:grid;grid-template-columns:1.35fr 1fr;gap:15px}
+.log{
+ background:#090c15;border:1px solid #252b40;border-radius:9px;
+ padding:13px;height:190px;overflow-y:auto;font-family:monospace;
+ font-size:10px;line-height:1.9;
+}
+.log div{color:#9ea9c5}
+.log .ok{color:var(--green)}.log .warn{color:var(--gold)}.log .bad{color:var(--red)}.log .sys{color:var(--cyan)}
+.item{
+ background:var(--panel2);border:1px solid #30364d;border-radius:10px;
+ padding:15px;margin-bottom:10px;
+}
+.item h3{font-size:13px;margin:0 0 7px}
+.item p{color:#929ab4;font-size:10px;line-height:1.7;margin:0 0 12px}
+.itemtop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.agentgrid,.shopgrid,.minigrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agent{background:var(--panel2);border:1px solid var(--line);padding:16px;border-radius:12px}
+.agent .icon{font-size:28px;margin-bottom:12px}
+.agent h3{font-size:13px;margin:0 0 7px}
+.agent p{font-size:10px;color:var(--muted);line-height:1.6}
+.agent .status{color:var(--green);font-size:9px;margin-top:12px}
+.biggrade{font-size:70px;font-weight:900;letter-spacing:-5px;background:linear-gradient(90deg,#a17aff,#54dfff);background-clip:text;color:transparent}
+table{width:100%;border-collapse:collapse;font-size:11px}
+td,th{text-align:left;padding:12px 7px;border-bottom:1px solid var(--line)}
+th{color:var(--muted)}
+input,textarea,select{
+ background:#1b2133;color:white;border:1px solid #39415c;
+ border-radius:8px;padding:12px;width:100%;font:inherit;margin:7px 0 15px;
+}
+textarea{resize:vertical;min-height:100px}
+.scoreline{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:11px}
+.scoreline b{color:var(--green)}
+.historyrow{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;margin:8px 0}
+.gamearea{
+ background:#0a0d18;border:1px solid #313b57;border-radius:12px;padding:20px;
+ min-height:250px;margin-top:15px;
+}
+.gamearea h3{margin-top:0}
+.choice{
+ display:block;width:100%;text-align:left;padding:13px;margin:8px 0;
+ background:#1c2438;color:white;border:1px solid #37435e;border-radius:8px;cursor:pointer;
+}
+.choice:hover{border-color:var(--purple);background:#2a2644}
+.choice.correct{border-color:var(--green);background:#173b35}
+.choice.wrong{border-color:var(--red);background:#49232f}
+.event{
+ border:1px solid #7651a0;background:linear-gradient(110deg,#302045,#192c43);
+ padding:16px;border-radius:11px;margin-bottom:14px;
+}
+.event h3{margin:0 0 7px;font-size:13px}
+.event p{color:#c2bddb;font-size:10px;line-height:1.7}
+.toast{
+ position:fixed;bottom:23px;right:23px;background:#252c44;
+ border:1px solid #59648a;border-radius:10px;padding:14px 18px;
+ z-index:50;display:none;box-shadow:0 10px 40px #0009;
+}
+.modal{
+ position:fixed;inset:0;background:#000b;z-index:40;
+ display:none;align-items:center;justify-content:center;padding:15px;
+}
+.modalbox{
+ width:min(600px,100%);background:#111626;border:1px solid #514174;
+ border-radius:16px;padding:25px;max-height:90vh;overflow:auto;
+}
+.modalbox h2{margin-top:0}
+#gameResult{font-size:14px;line-height:1.8}
+@media(max-width:950px){
+ .layout{grid-template-columns:1fr}
+ aside{display:flex;flex-direction:row;overflow-x:auto;padding:7px;position:sticky;top:68px;z-index:15}
+ .profile,.navtitle,.sidebarbottom{display:none}
+ .nav{min-width:115px;text-align:center}
+ main{padding:15px}
+ .agentgrid,.shopgrid,.minigrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .two{grid-template-columns:1fr}
+ .agentgrid,.shopgrid,.minigrid{grid-template-columns:1fr}
+ header{padding:0 13px}
+ .headerstats{gap:9px;font-size:10px}
+ .brand small{display:none}
+ .topline{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="background"></div>
+
+<header>
+ <div class="brand">AOI<span>.AI</span><small>ACADEMY TAKEOVER</small></div>
+ <div class="headerstats">
+  <span>💰 $<b id="money">500</b></span>
+  <span>⚡ LVL <b id="level">1</b></span>
+  <span>⭐ <b id="stars">0</b></span>
+  <span class="online">● ONLINE</span>
+ </div>
+</header>
+
+<div class="layout">
+<aside>
+ <div class="profile">
+  <div class="avatar">🤖</div>
+  <b>AOI</b>
+  <p>Chief AI Operations Officer</p>
+ </div>
+ <div class="navtitle">COMMAND</div>
+ <button class="nav active" onclick="page('dashboard',this)">◈ Dashboard</button>
+ <button class="nav" onclick="page('missions',this)">▣ Missions</button>
+ <button class="nav" onclick="page('minigames',this)">🎮 Mini Games</button>
+ <button class="nav" onclick="page('agents',this)">◉ AI Agents</button>
+ <div class="navtitle">DEVELOPMENT</div>
+ <button class="nav" onclick="page('lab',this)">⌘ Prompt Lab</button>
+ <button class="nav" onclick="page('research',this)">⌬ Research Tree</button>
+ <button class="nav" onclick="page('shop',this)">⚡ Upgrades</button>
+ <div class="navtitle">ACADEMY</div>
+ <button class="nav" onclick="page('audit',this)">♜ Teacher AI</button>
+ <button class="nav" onclick="page('achievements',this)">🏆 Achievements</button>
+ <button class="nav" onclick="page('settings',this)">⚙ System</button>
+ <div class="sidebarbottom">AOI AI v2.0.0<br>Autonomous Learning System<br>All systems operational.</div>
+</aside>
+
+<main>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+ <div class="topline">
+  <div><h1>Command Center</h1><p class="subtitle">Your AI empire. Your rules. Almost no work.</p></div>
+  <div class="pill">SYSTEM ONLINE</div>
+ </div>
+
+ <div class="hero">
+  <div class="small" style="color:#bda4ff;letter-spacing:2px">WELCOME BACK, CEO</div>
+  <h2>The Academy is not ready for you.</h2>
+  <p>AOI is now connected to an autonomous AI network. Complete assignments, build your empire, defeat the Teacher AI and become the ultimate GameDev mastermind.</p>
+  <button class="btn" onclick="page('missions',document.querySelectorAll('.nav')[1])">OPEN MISSION CONTROL →</button>
+ </div>
+
+ <div class="grid">
+  <div class="card"><small>CAPITAL</small><div class="value green">$<span id="dMoney">500</span></div></div>
+  <div class="card"><small>EXPERIENCE</small><div class="value purple" id="dXP">0</div></div>
+  <div class="card"><small>PROJECTS</small><div class="value cyan" id="dProjects">0</div></div>
+  <div class="card"><small>ACADEMIC GRADE</small><div class="value gold" id="dGrade">F</div></div>
+ </div>
+
+ <div class="two">
+  <div>
+   <div class="section">
+    <div class="flex"><h2>⚡ Autonomous Production</h2><span class="pill" id="prodStatus">IDLE</span></div>
+    <p class="muted small">Let your AI network handle the next available assignment.</p>
+    <div class="progress"><div id="prodBar"></div></div>
+    <p class="small muted" id="prodText">Waiting for a mission...</p>
+    <button class="btn full" onclick="autoMission()">START AI PRODUCTION</button>
+   </div>
+   <div class="section">
+    <h2>📡 Live System Log</h2>
+    <div class="log" id="log"></div>
+   </div>
+  </div>
+  <div>
+   <div class="section">
+    <h2>🏫 Academy Status</h2>
+    <div class="flex"><span class="muted">Current semester</span><b id="semester">1</b></div>
+    <div class="progress"><div id="semesterBar"></div></div>
+    <div class="flex"><span class="muted">Teacher suspicion</span><b id="suspicion">0%</b></div>
+    <div class="progress"><div id="suspicionBar" style="background:var(--red)"></div></div>
+    <p class="small muted" id="academyText">The teacher has not noticed anything unusual yet.</p>
+   </div>
+   <div class="section">
+    <h2>🧠 AI Network</h2>
+    <div id="networkSummary" class="small muted"></div>
+   </div>
+   <div class="event">
+    <h3>📢 DAILY INTELLIGENCE</h3>
+    <p id="dailyEvent">The AI department is waiting for its first assignment.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- MISSIONS -->
+<section class="page" id="missions">
+ <div class="topline"><div><h1>Mission Control</h1><p class="subtitle">Infinite assignments. Increasing difficulty. Bigger rewards.</p></div><span class="pill">ENDLESS MODE</span></div>
+ <div class="grid">
+  <div class="card"><small>AVAILABLE</small><div class="value cyan" id="available">0</div></div>
+  <div class="card"><small>COMPLETED</small><div class="value green" id="mCompleted">0</div></div>
+  <div class="card"><small>DIFFICULTY</small><div class="value purple" id="difficulty">1</div></div>
+  <div class="card"><small>NEXT REWARD</small><div class="value gold" id="nextReward">$0</div></div>
+ </div>
+ <div class="section">
+  <h2>📋 Available contracts</h2>
+  <div id="missionList"></div>
+  <button class="btn secondary full" onclick="generateMissions()">GENERATE NEW CONTRACTS ↻</button>
+ </div>
+</section>
+
+<!-- MINI GAMES -->
+<section class="page" id="minigames">
+ <div class="topline"><div><h1>AI Training Arena</h1><p class="subtitle">Train your agents through interactive challenges.</p></div><span class="pill">6 GAME MODES</span></div>
+ <div class="grid">
+  <div class="card"><small>TRAINING XP</small><div class="value purple" id="trainingXP">0</div></div>
+  <div class="card"><small>GAMES WON</small><div class="value green" id="gamesWon">0</div></div>
+  <div class="card"><small>BEST STREAK</small><div class="value cyan" id="bestStreak">0</div></div>
+  <div class="card"><small>CURRENT STREAK</small><div class="value gold" id="streak">0</div></div>
+ </div>
+ <div class="minigrid" id="gameCards"></div>
+ <div class="section" id="arena">
+  <h2>🎮 Training Arena</h2>
+  <p class="muted">Select a game mode above to begin training.</p>
+ </div>
+</section>
+
+<!-- AGENTS -->
+<section class="page" id="agents">
+ <div class="topline"><div><h1>AI Agent Network</h1><p class="subtitle">Hire, upgrade and manage your autonomous workforce.</p></div></div>
+ <div class="agentgrid" id="agentList"></div>
+</section>
+
+<!-- PROMPT LAB -->
+<section class="page" id="lab">
+ <div class="topline"><div><h1>Prompt Engineering Lab</h1><p class="subtitle">Create a prompt, use it with an AI, then submit the AI's result as a project.</p></div><span class="pill">LIVE PROJECT SYSTEM</span></div>
+ <div class="grid">
+  <div class="card"><small>PROMPT PROJECTS</small><div class="value cyan" id="promptProjects">0</div></div>
+  <div class="card"><small>BEST PROMPT SCORE</small><div class="value purple" id="promptBest">—</div></div>
+  <div class="card"><small>AVERAGE QUALITY</small><div class="value green" id="promptAverage">—</div></div>
+  <div class="card"><small>NEXT PROJECT REWARD</small><div class="value gold">XP + $</div></div>
+ </div>
+ <div class="section">
+  <h2>⌘ Neural Prompt Generator</h2>
+  <p class="muted small">Build a clear instruction for an external AI. Copy it and use it in ChatGPT or another AI tool.</p>
+  <label>PROJECT TYPE</label>
+  <select id="promptType">
+   <option>Interactive JavaScript Game</option><option>Professional Website</option>
+   <option>Game Design Document</option><option>3D Game Concept</option>
+   <option>Portfolio Website</option><option>Advanced Web Application</option>
+  </select>
+  <label>COMPLEXITY</label>
+  <select id="promptLevel"><option>Advanced</option><option>Professional</option><option>Insane</option><option>Research Grade</option></select>
+  <label>VISUAL STYLE</label>
+  <select id="promptStyle"><option>AOI futuristic glassmorphism</option><option>Cyberpunk neon</option><option>Minimal Apple-inspired</option><option>Dark futuristic dashboard</option></select>
+  <label>EXTRA INSTRUCTIONS</label>
+  <textarea id="promptExtra" placeholder="Add your own requirements..."></textarea>
+  <button class="btn" onclick="makePrompt()">GENERATE NEURAL PROMPT</button>
+  <div id="promptOutput" style="display:none;margin-top:20px">
+   <h3>GENERATED PROMPT</h3><div class="log" id="promptText" style="height:auto;white-space:pre-wrap"></div>
+   <button class="btn secondary" style="margin-top:12px" onclick="copyPrompt()">COPY PROMPT</button>
+  </div>
+ </div>
+ <div class="section">
+  <h2>⬇ AI Response Submission</h2>
+  <p class="muted">1. Copy your prompt above. 2. Send it to an AI. 3. Paste the AI's answer or code below. 4. Analyze and submit it to earn project rewards.</p>
+  <label>PASTE THE AI-GENERATED RESULT</label>
+  <textarea id="promptResponse" style="min-height:190px" placeholder="Paste the complete answer, project plan, or code you received from the AI here..."></textarea>
+  <div class="flex" style="flex-wrap:wrap">
+   <span class="muted small" id="responseCount">0 characters · minimum 120</span>
+   <button class="btn secondary" onclick="pastePromptResponse()">PASTE FROM CLIPBOARD</button>
+  </div>
+  <button class="btn full" onclick="submitPromptProject()">ANALYZE & SUBMIT PROJECT</button>
+  <div id="promptAnalysis" style="display:none;margin-top:18px"></div>
+ </div>
+ <div class="section">
+  <div class="flex"><h2>📚 Prompt Project History</h2><span class="muted small">Your latest submissions</span></div>
+  <div id="promptHistory"><p class="muted small">No prompt projects submitted yet.</p></div>
+ </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="page" id="research">
+ <div class="topline"><div><h1>Research Tree</h1><p class="subtitle">Unlock technologies to transform your AI network.</p></div></div>
+ <div class="section"><h2>🧬 Technology progression</h2><div id="researchList"></div></div>
+</section>
+
+<!-- UPGRADES -->
+<section class="page" id="shop">
+ <div class="topline"><div><h1>AI Infrastructure</h1><p class="subtitle">Build a more powerful AI empire.</p></div></div>
+ <div class="shopgrid" id="shopList"></div>
+</section>
+
+<!-- TEACHER -->
+<section class="page" id="audit">
+ <div class="topline"><div><h1>Teacher AI</h1><p class="subtitle">The ultimate academic evaluation system.</p></div><span class="pill">THREAT LEVEL <span id="threat">1</span></span></div>
+ <div class="section" style="text-align:center;padding:30px">
+  <div style="font-size:55px">👨‍🏫</div>
+  <h2>PROFESSOR NEURAL</h2>
+  <p class="muted">"Interesting... I have noticed a pattern in your submissions."</p>
+  <div class="biggrade" id="auditGrade">F</div>
+  <p id="auditMessage" class="muted">Submit projects to receive your first evaluation.</p>
+  <button class="btn goldbtn" onclick="bossBattle()">CHALLENGE THE TEACHER AI</button>
+ </div>
+ <div class="section">
+  <h2>📊 Academic Performance</h2>
+  <table>
+   <tr><th>METRIC</th><th>RESULT</th></tr>
+   <tr><td>Projects submitted</td><td id="aProjects">0</td></tr>
+   <tr><td>Average quality</td><td id="aQuality">0%</td></tr>
+   <tr><td>Research unlocked</td><td id="aResearch">0</td></tr>
+   <tr><td>Teacher suspicion</td><td id="aSuspicion">0%</td></tr>
+   <tr><td>Semester</td><td id="aSemester">1</td></tr>
+  </table>
+ </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="page" id="achievements">
+ <div class="topline"><div><h1>Achievement Database</h1><p class="subtitle">Prove your dominance over the Academy.</p></div></div>
+ <div class="section"><h2>🏆 Milestones</h2><div id="achievementList"></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+ <div class="topline"><div><h1>System Settings</h1><p class="subtitle">Manage your AI empire and save data.</p></div></div>
+ <div class="section">
+  <h2>💾 Save System</h2>
+  <p class="muted">Your progress is automatically saved in this browser.</p>
+  <button class="btn" onclick="save();toast('Game saved successfully!')">SAVE GAME NOW</button>
+  <button class="btn secondary" onclick="exportSave()">EXPORT SAVE</button>
+  <button class="btn secondary" onclick="document.getElementById('importFile').click()">IMPORT SAVE</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importSave(event)">
+ </div>
+ <div class="section">
+  <h2>⚠ Reset system</h2>
+  <p class="muted">This will permanently erase your local game progress.</p>
+  <button class="btn danger" onclick="resetGame()">RESET ENTIRE EMPIRE</button>
+ </div>
+</section>
+
+</main>
+</div>
+
+<div class="modal" id="modal">
+ <div class="modalbox">
+  <div class="flex"><h2 id="modalTitle">MISSION</h2><button class="btn secondary" onclick="closeModal()">✕</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let S={
+ money:500,xp:0,stars:0,completed:0,quality:0,
+ suspicion:0,semester:1,research:0,investment:0,
+ projects:[],lastBossAttemptCompleted:-3,agents:{developer:1,designer:1,debugger:1,researcher:1,evaluator:1,manager:1},
+ upgrades:{speed:0,quality:0,security:0,capacity:0},
+ trainingXP:0,gamesWon:0,streak:0,bestStreak:0,
+ achievements:[],missions:[],eventCount:0,
+ promptSubmissions:[],promptBest:0
+};
+
+let production=false;
+let activeGame=null;
+let missionCounter=0;
+let timerHandle=null;
+let promptCache="";
+let dailyEventIndex=0;
+
+const agentData=[
+ {id:"developer",name:"AI Developer",icon:"💻",desc:"Adds +2 project quality per level above Level 1 by improving code structure and implementation.",base:120},
+ {id:"designer",name:"AI Designer",icon:"🎨",desc:"Adds +2 project quality per level above Level 1 through better layouts, visuals and user experience.",base:100},
+ {id:"debugger",name:"AI Debugger",icon:"🛠️",desc:"Reduces production failure chance by 5 percentage points per level above Level 1.",base:110},
+ {id:"researcher",name:"AI Researcher",icon:"🔍",desc:"Increases mission payouts by 3% per level above Level 1 through better planning.",base:95},
+ {id:"evaluator",name:"AI Evaluator",icon:"📊",desc:"Adds +2 project quality per level above Level 1 by finding weak points before submission.",base:130},
+ {id:"manager",name:"AI Manager",icon:"🧠",desc:"Makes production 4% faster per level above Level 1 by coordinating the team.",base:160}
+];
+
+const researchData=[
+ {name:"Prompt Optimization",desc:"EFFECT: +2 project quality. The AI creates clearer plans and follows assignment requirements more accurately.",cost:100},
+ {name:"Neural Networks",desc:"EFFECT: +2 more project quality through better reasoning.",cost:180},
+ {name:"Autonomous Coding",desc:"EFFECT: 8% faster production. Every production step completes more quickly.",cost:280},
+ {name:"Self-Healing Code",desc:"EFFECT: 8 percentage points lower production failure chance.",cost:420},
+ {name:"Quantum Processing",desc:"EFFECT: +10% mission payout for every completed contract.",cost:650},
+ {name:"AGI Prototype",desc:"EFFECT: +8 strength in Teacher AI battles.",cost:1000},
+ {name:"Singularity",desc:"EFFECT: +5 project quality. The entire AI network works as one system.",cost:1800}
+];
+
+const upgradeData=[
+ {id:"speed",name:"Quantum CPU",icon:"⚡",desc:"EFFECT: Each level makes AI production 10% faster. Level 2 = 20% faster.",cost:150},
+ {id:"quality",name:"Neural Core",icon:"🧠",desc:"EFFECT: Each level adds +3 quality points to every completed project.",cost:220},
+ {id:"security",name:"AI Firewall",icon:"🛡️",desc:"EFFECT: Each level reduces production failure chance by 8 percentage points and reduces suspicion gained from failures by 1.",cost:180},
+ {id:"capacity",name:"Cloud Expansion",icon:"☁️",desc:"EFFECT: Each level increases mission payouts by 8%.",cost:260}
+];
+
+const gameModes=[
+ {id:"prompt",name:"PROMPT BATTLE",icon:"⌘",desc:"Choose the best AI prompt.",reward:75},
+ {id:"bugs",name:"BUG HUNTER",icon:"🐛",desc:"Find the broken line of code.",reward:90},
+ {id:"memory",name:"AI MEMORY",icon:"🧠",desc:"Remember the correct sequence.",reward:100},
+ {id:"logic",name:"LOGIC ENGINE",icon:"⚙️",desc:"Solve an AI logic challenge.",reward:100},
+ {id:"data",name:"DATA HACK",icon:"📡",desc:"Identify the correct data.",reward:90},
+ {id:"speed",name:"NEURAL SPEED",icon:"⚡",desc:"React quickly to the correct answer.",reward:110}
+];
+
+const promptQuestions=[
+ {q:"You need a complete interactive website. Which prompt is best?",a:["Make website","Create a complete responsive website with HTML, CSS, JS, working interactions and error handling.","Website pls"],c:1},
+ {q:"The AI keeps generating incomplete code. What should you add?",a:["Make it shorter","Don't explain anything","Require complete files, tested functionality and no placeholders"],c:2},
+ {q:"How should you handle a complicated assignment?",a:["Break it into clear stages with requirements and success criteria","Just say do everything","Ask for random code"],c:0},
+ {q:"What is the best way to improve an AI response?",a:["Never give feedback","Provide specific feedback and request targeted revisions","Close the chat"],c:1},
+ {q:"How do you reduce coding errors?",a:["Request testing, validation and error handling","Use more emojis","Remove all functions"],c:0}
+];
+
+const bugQuestions=[
+ {q:"let score = 10; score = score + ;",a:["Missing value after +","Wrong variable name","No semicolon"],c:0},
+ {q:"if (x = 5) { runGame(); }",a:["Missing brackets","Assignment used instead of comparison","Function missing"],c:1},
+ {q:"console.log('Hello);",a:["Missing closing quote","Wrong console command","Missing variable"],c:0},
+ {q:"for (let i=0; i<10; i--) {}",a:["The loop counter moves in the wrong direction","Missing function","Invalid number"],c:0},
+ {q:"document.getElementById('score').innerHTML = ;",a:["Missing assigned value","Wrong HTML tag","Missing CSS"],c:0}
+];
+
+const logicQuestions=[
+ {q:"If every project needs testing, and AOI skips testing, what happens?",a:["Errors may remain undetected","The project is always perfect","Testing becomes unnecessary"],c:0},
+ {q:"An AI generates 4 files in 2 minutes. How many in 10 minutes at the same rate?",a:["10","20","40"],c:1},
+ {q:"Which sequence makes the most sense?",a:["Test → Build → Plan","Plan → Build → Test","Build → Submit → Plan"],c:1},
+ {q:"A project has 3 critical bugs. The debugger fixes 2. How many remain?",a:["1","2","5"],c:0},
+ {q:"What should an AI manager do?",a:["Coordinate agents and resources","Delete all projects","Only change colors"],c:0}
+];
+
+const dataQuestions=[
+ {q:"Which file normally contains the main HTML structure?",a:["index.html","style.css","main.png"],c:0},
+ {q:"Which file contains CSS styling?",a:["game.exe","style.css","data.json"],c:1},
+ {q:"Which extension is commonly used for JavaScript?",a:[".jpg",".js",".mp4"],c:1},
+ {q:"What does API stand for?",a:["Application Programming Interface","Advanced Pixel Image","Automatic Project Internet"],c:0},
+ {q:"Which format is commonly used for structured data?",a:["MP3","JSON","PNG"],c:1}
+];
+
+const dailyEvents=[
+ "A mysterious AI startup has released a new model. Your agents are curious.",
+ "The teacher has announced an unexpected project review.",
+ "Your AI Developer discovered a shortcut in the production pipeline.",
+ "Cloud servers are experiencing increased demand.",
+ "A new coding framework is trending in the GameDev community.",
+ "Your AI Manager recommends investing in research.",
+ "The Academy has announced a surprise bonus assignment.",
+ "A rival studio challenged AOI to build a complete game prototype.",
+ "Your debugger found an old bug slowing down the whole network.",
+ "A new graphics framework has appeared. The design team wants to test it.",
+ "Professor Neural is reviewing the latest student projects.",
+ "A research grant is available for teams with a strong portfolio."
+];
+
+// Keep the response counter in sync while the player pastes an AI result.
+document.addEventListener("input",e=>{
+ if(e.target && e.target.id==="promptResponse"){
+  $("responseCount").textContent=e.target.value.length+" characters · minimum 120";
+ }
+});
+
+function toast(msg){
+ let t=$("toast");t.textContent=msg;t.style.display="block";
+ clearTimeout(toast.timeout);
+ toast.timeout=setTimeout(()=>t.style.display="none",2500);
+}
+
+function log(msg,type=""){
+ let e=document.createElement("div");
+ e.className=type;e.textContent="["+new Date().toLocaleTimeString()+"] "+msg;
+ $("log").prepend(e);
+ if($("log").children.length>70)$("log").lastChild.remove();
+}
+
+function save(){
+ localStorage.setItem("aoiEmpireSave",JSON.stringify(S));
+}
+
+function load(){
+ try{
+  let data=localStorage.getItem("aoiEmpireSave");
+  if(data){
+   let old=JSON.parse(data);
+   S={...S,...old};
+   S.agents={...S.agents,...old.agents};
+   S.upgrades={...S.upgrades,...old.upgrades};
+   S.promptSubmissions=Array.isArray(old.promptSubmissions)?old.promptSubmissions:[];
+   S.promptBest=Number(old.promptBest)||0;
+   if(typeof S.lastBossAttemptCompleted!=="number")S.lastBossAttemptCompleted=-3;
+  }
+ }catch(e){console.error(e)}
+}
+
+function page(id,button){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ $(id).classList.add("active");
+ document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ renderAll();
+}
+
+function showModal(title,html){
+ $("modalTitle").textContent=title;
+ $("modalContent").innerHTML=html;
+ $("modal").style.display="flex";
+}
+
+function closeModal(){
+ $("modal").style.display="none";
+ if(timerHandle){clearInterval(timerHandle);timerHandle=null}
+ activeGame=null;
+}
+
+function grade(){
+ if(!S.completed)return "F";
+ if(S.quality>=95)return "A+";
+ if(S.quality>=90)return "A";
+ if(S.quality>=82)return "B";
+ if(S.quality>=72)return "C";
+ if(S.quality>=60)return "D";
+ return "F";
+}
+
+function level(){return Math.floor(S.xp/400)+1}
+function difficulty(){return Math.floor(S.completed/4)+1}
+
+function update(){
+ $("money").textContent=Math.floor(S.money);
+ $("dMoney").textContent=Math.floor(S.money);
+ $("level").textContent=level();
+ $("stars").textContent=S.stars;
+ $("dXP").textContent=S.xp;
+ $("dProjects").textContent=S.completed;
+ $("dGrade").textContent=grade();
+ // Removed: gradeHeader does not exist in the HTML.
+ $("auditGrade").textContent=grade();
+ $("semester").textContent=S.semester;
+ $("suspicion").textContent=S.suspicion+"%";
+ $("suspicionBar").style.width=S.suspicion+"%";
+ $("semesterBar").style.width=(S.completed%5)*20+"%";
+ $("academyText").textContent=S.suspicion>75?"The teacher is highly suspicious. Improve project quality and security!":"The teacher is monitoring your submissions.";
+ $("networkSummary").innerHTML=agentData.map(a=>a.icon+" "+a.name+": LVL "+S.agents[a.id]).join("<br>");
+ $("trainingXP").textContent=S.trainingXP;
+ $("gamesWon").textContent=S.gamesWon;
+ $("promptProjects").textContent=(S.promptSubmissions||[]).length;
+ $("promptBest").textContent=S.promptBest?S.promptBest+"/100":"—";
+ const pSubs=S.promptSubmissions||[];
+ $("promptAverage").textContent=pSubs.length?Math.round(pSubs.reduce((n,x)=>n+(x.score||0),0)/pSubs.length)+"/100":"—";
+ $("streak").textContent=S.streak;
+ $("bestStreak").textContent=S.bestStreak;
+ $("auditMessage").textContent=S.completed? "Your portfolio has "+S.completed+" completed projects. The current grade is "+grade()+".":"Submit projects to receive your first evaluation.";
+ $("threat").textContent=difficulty();
+ $("aProjects").textContent=S.completed;
+ $("aQuality").textContent=S.quality+"%";
+ $("aResearch").textContent=S.research;
+ $("aSuspicion").textContent=S.suspicion+"%";
+ $("aSemester").textContent=S.semester;
+ $("mCompleted").textContent=S.completed;
+ $("difficulty").textContent=difficulty();
+ $("available").textContent=S.missions.length;
+ $("nextReward").textContent="$"+(100+difficulty()*45);
+ save();
+}
+
+function renderAll(){
+ update();
+ renderMissions();
+ renderAgents();
+ renderResearch();
+ renderShop();
+ renderGames();
+ renderAchievements();
+ renderPromptHistory();
+}
+
+function generateMissions(){
+ if(production){toast("Production is currently running.");return}
+ S.missions=[];
+ let types=[
+ ["Interactive Website","🌐"],["JavaScript Game","🎮"],["Game Design Document","📘"],
+ ["Portfolio Website","💼"],["AI Simulator","🤖"],["3D Game Concept","🚀"],
+ ["Game Physics System","⚙️"],["Interactive Story","📖"],["Multiplayer Prototype","🌍"],
+ ["Advanced Game Engine","🧬"],["Procedural World Generator","🌌"],["Inventory & Crafting System","🎒"],
+ ["Tower Defense Prototype","🏰"],["Racing Game Controller","🏎️"],["NPC Dialogue System","💬"],
+ ["Platformer Level Pack","🕹️"],["AI Pathfinding System","🧭"],["Online Leaderboard","🏅"]
+ ];
+ for(let i=0;i<5;i++){
+  let t=types[Math.floor(Math.random()*types.length)];
+  let d=difficulty();
+  S.missions.push({
+   id:++missionCounter+Date.now()+i,
+   name:t[0]+" #"+(S.completed+i+1),
+   icon:t[1],cost:35+d*15+Math.floor(Math.random()*25),
+   reward:130+d*70+Math.floor(Math.random()*80),
+   base:65+Math.min(20,d*2)+Math.floor(Math.random()*8),
+   difficulty:d
+  });
+ }
+ log("New mission contracts generated.","sys");
+ renderAll();
+}
+
+function renderMissions(){
+ let box=$("missionList");
+ box.innerHTML="";
+ if(!S.missions.length){
+  box.innerHTML="<p class='muted'>No active contracts. Generate new missions to continue.</p>";
+  return;
+ }
+ S.missions.forEach(m=>{
+  let el=document.createElement("div");el.className="item";
+  let top=document.createElement("div");top.className="itemtop";
+  let info=document.createElement("div");
+  info.innerHTML="<h3>"+m.icon+" "+m.name+"</h3><p>Difficulty "+m.difficulty+" · Production cost $"+m.cost+" · Reward $"+m.reward+"</p>";
+  let btn=document.createElement("button");btn.className="btn";btn.textContent="DELEGATE →";
+  btn.onclick=()=>buildMission(m.id);
+  top.append(info,btn);el.append(top);box.append(el);
+ });
+}
+
+function autoMission(){
+ if(production)return toast("AI production already running.");
+ if(!S.missions.length)generateMissions();
+ if(S.missions.length)buildMission(S.missions[0].id);
+}
+
+function buildMission(id){
+ if(production)return;
+ let m=S.missions.find(x=>x.id===id);
+ if(!m)return;
+ if(S.money<m.cost)return toast("Insufficient capital!");
+ S.money-=m.cost;S.investment+=m.cost;
+ production=true;
+ update();
+ let steps=[
+  "Researcher is analyzing the assignment...",
+  "Manager is distributing development tasks...",
+  "Designer is creating the visual identity...",
+  "Developer is generating the complete project...",
+  "Debugger is checking the generated code...",
+  "Evaluator is measuring project quality...",
+  "Manager is preparing final submission..."
+ ];
+ let p=0;
+ $("prodStatus").textContent="PROCESSING";
+ log("Mission assigned: "+m.name,"sys");
+ let interval=setInterval(()=>{
+  p++;
+  $("prodBar").style.width=(p/steps.length*100)+"%";
+  $("prodText").textContent=steps[p-1];
+  log(steps[p-1],"sys");
+  if(p>=steps.length){
+   clearInterval(interval);
+   production=false;
+   finishMission(m);
+  }
+ },Math.max(250,900*Math.pow(0.90,S.upgrades.speed)*(S.research>=3?0.92:1)*Math.pow(0.96,Math.max(0,S.agents.manager-1))));
+}
+
+function finishMission(m){
+ let researchQuality=Math.min(S.research,2)*2+(S.research>=7?5:0);
+ let agentQuality=(S.agents.developer-1)*2+(S.agents.designer-1)*2+(S.agents.evaluator-1)*2;
+ let bonus=researchQuality+agentQuality+S.upgrades.quality*3+(S.research>=2?2:0);
+ let result=Math.min(100,m.base+bonus+Math.random()*8);
+ let failureChance=Math.max(5,35-S.upgrades.security*8-(S.research>=4?8:0)-(S.agents.debugger-1)*5);
+ if(Math.random()*100<failureChance){
+  result-=12;
+  S.suspicion=Math.min(100,S.suspicion+Math.max(1,8-S.upgrades.security));
+  log("Production issue detected. Emergency repair completed.","warn");
+ }else{
+  log("Project passed all AI validation checks.","ok");
+ }
+ result=Math.max(35,Math.round(result));
+ S.completed++;
+ S.quality=Math.round(((S.quality*(S.completed-1))+result)/S.completed);
+ let rewardMultiplier=(1+S.upgrades.capacity*.08)*(S.research>=5?1.10:1)*(1+(S.agents.researcher-1)*.03);
+ let reward=Math.round(m.reward*(result/100)*rewardMultiplier);
+ S.money+=reward;
+ S.xp+=Math.round(result*2);
+ S.stars+=result>=90?3:result>=75?2:1;
+ S.suspicion=Math.max(0,S.suspicion-1);
+ S.missions=S.missions.filter(x=>x.id!==m.id);
+ $("prodBar").style.width="100%";
+ $("prodStatus").textContent="IDLE";
+ $("prodText").textContent="Production complete: "+m.name;
+ if(S.completed%5===0){
+  S.semester++;
+  S.suspicion=Math.max(0,S.suspicion-10);
+  log("SEMESTER COMPLETED! New academic level unlocked.","ok");
+  toast("NEW SEMESTER UNLOCKED!");
+ }else toast("Project completed! +$"+reward+" · "+result+"% quality");
+ checkAchievements();
+ renderAll();
+}
+
+function agentNextEffect(id){
+ const effects={developer:"+2 project quality",designer:"+2 project quality",debugger:"-5 percentage points failure chance",researcher:"+3% mission payout",evaluator:"+2 project quality",manager:"4% faster production"};
+ return effects[id]||"Improved performance";
+}
+
+function renderAgents(){
+ let box=$("agentList");box.innerHTML="";
+ agentData.forEach(a=>{
+  let lv=S.agents[a.id],cost=Math.round(a.base*Math.pow(1.55,lv-1));
+  let el=document.createElement("div");el.className="agent";
+  el.innerHTML="<div class='icon'>"+a.icon+"</div><h3>"+a.name+"</h3><p>"+a.desc+"</p><p class='green'>ACTIVE · LEVEL "+lv+"</p><p class='muted small'>NEXT LEVEL: "+agentNextEffect(a.id)+"</p>";
+  let b=document.createElement("button");b.className="btn";b.textContent="UPGRADE · $"+cost;
+  b.onclick=()=>{
+   if(S.money<cost)return toast("Not enough money!");
+   S.money-=cost;S.investment+=cost;S.agents[a.id]++;
+   S.xp+=20;log(a.name+" upgraded to level "+S.agents[a.id],"ok");
+   toast("Agent upgraded!");renderAll();
+  };
+  el.append(b);box.append(el);
+ });
+}
+
+function renderResearch(){
+ let box=$("researchList");box.innerHTML="";
+ researchData.forEach((r,i)=>{
+  let unlocked=S.research>i;
+  let el=document.createElement("div");el.className="item";
+  let b=document.createElement("button");b.className=unlocked?"btn secondary":"btn";
+  b.textContent=unlocked?"UNLOCKED ✓":"RESEARCH · $"+r.cost;
+  b.disabled=unlocked;
+  b.onclick=()=>{
+   if(i!==S.research)return toast("Unlock previous technologies first.");
+   if(S.money<r.cost)return toast("Insufficient funds.");
+   S.money-=r.cost;S.investment+=r.cost;S.research++;S.xp+=80;
+   log("Research unlocked: "+r.name,"ok");toast("Technology unlocked!");
+   renderAll();
+  };
+  el.innerHTML="<div class='itemtop'><div><h3>🧬 "+r.name+"</h3><p>"+r.desc+"</p></div><span class='pill'>TIER "+(i+1)+"</span></div>";
+  el.append(b);box.append(el);
+ });
+}
+
+function upgradeNextEffect(id){
+ const effects={speed:"10% faster production",quality:"+3 project quality",security:"-8 percentage points failure chance and -1 suspicion on failure",capacity:"+8% mission payout"};
+ return effects[id]||"Improved infrastructure";
+}
+
+function renderShop(){
+ let box=$("shopList");box.innerHTML="";
+ upgradeData.forEach(u=>{
+  let lv=S.upgrades[u.id],cost=Math.round(u.cost*Math.pow(1.65,lv));
+  let el=document.createElement("div");el.className="agent";
+  el.innerHTML="<div class='icon'>"+u.icon+"</div><h3>"+u.name+"</h3><p>"+u.desc+"</p><p class='purple'>LEVEL "+lv+"</p><p class='muted small'>NEXT PURCHASE: "+upgradeNextEffect(u.id)+"</p>";
+  let b=document.createElement("button");b.className="btn";b.textContent="BUY · $"+cost;
+  b.onclick=()=>{
+   if(S.money<cost)return toast("Not enough capital!");
+   S.money-=cost;S.investment+=cost;S.upgrades[u.id]++;
+   log(u.name+" infrastructure upgraded.","ok");renderAll();toast("Upgrade installed!");
+  };
+  el.append(b);box.append(el);
+ });
+}
+
+function renderGames(){
+ let box=$("gameCards");box.innerHTML="";
+ gameModes.forEach(g=>{
+  let el=document.createElement("div");el.className="agent";
+  el.innerHTML="<div class='icon'>"+g.icon+"</div><h3>"+g.name+"</h3><p>"+g.desc+"</p><p class='gold'>REWARD: "+g.reward+" XP</p>";
+  let b=document.createElement("button");b.className="btn";b.textContent="PLAY CHALLENGE →";b.onclick=()=>startMini(g.id);
+  el.append(b);box.append(el);
+ });
+}
+
+function startMini(id){
+ if(activeGame)return;
+ activeGame=id;
+ if(id==="memory")return memoryGame();
+ if(id==="speed")return speedGame();
+ if(id==="prompt")return questionGame(promptQuestions,"PROMPT BATTLE");
+ if(id==="bugs")return questionGame(bugQuestions,"BUG HUNTER");
+ if(id==="logic")return questionGame(logicQuestions,"LOGIC ENGINE");
+ if(id==="data")return questionGame(dataQuestions,"DATA HACK");
+}
+
+function questionGame(pool,title){
+ let q=[...pool].sort(()=>Math.random()-.5).slice(0,3);
+ let index=0,score=0;
+ function show(){
+  let x=q[index];
+  showModal(title,
+   "<p class='muted'>QUESTION "+(index+1)+" / 3</p><h3>"+x.q+"</h3>"+
+   x.a.map((a,i)=>"<button class='choice' onclick='answerMini("+i+")'>"+a+"</button>").join("")+
+   "<p id='miniFeedback' class='muted'>Select the correct answer.</p>");
+  window.answerMini=(n)=>{
+   if(!activeGame)return;
+   let correct=n===x.c;
+   if(correct)score++;
+   document.querySelectorAll(".choice").forEach((b,i)=>{
+    b.disabled=true;
+    if(i===x.c)b.classList.add("correct");
+    else if(i===n)b.classList.add("wrong");
+   });
+   $("miniFeedback").textContent=correct?"Correct! Nice work.":"Not quite! The correct answer is highlighted.";
+   setTimeout(()=>{
+    index++;
+    if(index<q.length)show();
+    else finishMini(score,3,score===3?150:score*45,"Challenge completed.");
+   },850);
+  };
+ }
+ show();
+}
+
+function memoryGame(){
+ let sequence=Array.from({length:5},()=>Math.floor(Math.random()*4));
+ let input=[];
+ showModal("AI MEMORY","<p class='muted'>Memorize the sequence of symbols, then repeat it.</p><div id='sequence' style='font-size:38px;text-align:center;padding:25px'>GET READY...</div><div id='memoryButtons' class='minigrid'></div>");
+ let icons=["🔵","🟣","🟢","🟡"];
+ let pos=0;
+ function showSequence(){
+  if(pos>=sequence.length){
+   $("sequence").textContent="YOUR TURN!";
+   $("memoryButtons").innerHTML=icons.map((x,i)=>"<button class='choice' style='font-size:26px;text-align:center' onclick='memoryInput("+i+")'>"+x+"</button>").join("");
+   window.memoryInput=n=>{
+    input.push(n);
+    if(input[input.length-1]!==sequence[input.length-1]){
+     finishMini(0,5,0,"Memory sequence failed.");return;
+    }
+    if(input.length===sequence.length)finishMini(5,5,150,"Perfect memory!"); 
+    else $("sequence").textContent="CORRECT · "+input.length+"/"+sequence.length;
+   };
+   return;
+  }
+  $("sequence").textContent=icons[sequence[pos]];
+  pos++;
+  setTimeout(()=>{
+   $("sequence").textContent="...";
+   setTimeout(showSequence,350);
+  },650);
+ }
+ setTimeout(showSequence,700);
+}
+
+function speedGame(){
+ let time=10,score=0;
+ let options=[0,1,2,3];
+ showModal("NEURAL SPEED","<p class='muted'>Click the highlighted symbol as quickly as possible!</p><h1 id='speedTimer'>10</h1><div id='speedQuestion' style='font-size:35px;text-align:center;padding:20px'></div><div id='speedButtons' class='minigrid'></div><p id='speedScore'>Hits: 0</p>");
+ let icons=["🔵","🟣","🟢","🟡"];
+ function round(){
+  if(time<=0)return finishMini(score,10,score*12,"Neural speed test finished.");
+  let target=Math.floor(Math.random()*4);
+  $("speedQuestion").textContent=icons[target];
+  $("speedButtons").innerHTML=icons.map((x,i)=>"<button class='choice' style='text-align:center;font-size:25px' onclick='speedClick("+i+","+target+")'>"+x+"</button>").join("");
+  window.speedClick=(n,t)=>{
+   if(!activeGame)return;
+   if(n===t)score++;
+   $("speedScore").textContent="Hits: "+score;
+   round();
+  };
+ }
+ timerHandle=setInterval(()=>{
+  time--;$("speedTimer").textContent=time;
+  if(time<=0){clearInterval(timerHandle);timerHandle=null;finishMini(score,10,score*12,"Neural speed test finished.");}
+ },1000);
+ round();
+}
+
+function finishMini(score,max,reward,message){
+ if(timerHandle){clearInterval(timerHandle);timerHandle=null}
+ if(!activeGame)return;
+ activeGame=null;
+ let won=score>0;
+ let earned=Math.round(reward);
+ if(won){
+  S.trainingXP+=earned;S.xp+=earned;
+  S.money+=Math.round(earned*.4);
+  S.gamesWon++;S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);
+  S.stars+=score===max?2:1;
+ }else S.streak=0;
+ showModal("CHALLENGE RESULTS",
+  "<div style='text-align:center;padding:20px'><div class='biggrade'>"+score+"/"+max+"</div><h3>"+message+"</h3><p class='muted'>"+(won?"+"+earned+" XP · $"+Math.round(earned*.4)+" earned":"No reward this time. Try again!")+"</p><button class='btn' onclick='closeModal();renderAll()'>CONTINUE</button></div>");
+ log("Training challenge completed: "+score+"/"+max,won?"ok":"warn");
+ checkAchievements();renderAll();
+}
+
+function makePrompt(){
+ let text="ROLE: You are an autonomous professional GameDev AI team.\n\n"+
+ "PROJECT: "+$("promptType").value+"\n"+
+ "COMPLEXITY: "+$("promptLevel").value+"\n"+
+ "VISUAL STYLE: "+$("promptStyle").value+"\n\n"+
+ "OBJECTIVES:\n"+
+ "1. Analyze every requirement before coding.\n"+
+ "2. Create a complete and functional project.\n"+
+ "3. Use clean, structured and maintainable code.\n"+
+ "4. Include professional animations and interactions.\n"+
+ "5. Test every important feature.\n"+
+ "6. Identify and fix all discovered errors.\n"+
+ "7. Deliver complete source files and clear instructions.\n\n"+
+ "ADDITIONAL REQUIREMENTS:\n"+($("promptExtra").value||"Use creative freedom.")+
+ "\n\nQUALITY CONTROL:\nNever invent completed tests. Explain any limitations and provide a final quality report.";
+ promptCache=text;
+ $("promptText").textContent=text;$("promptOutput").style.display="block";
+ S.xp+=10;update();log("Neural prompt generated.","ok");
+}
+
+function copyPrompt(){
+ if(!promptCache)return toast("Generate a prompt first.");
+ navigator.clipboard.writeText(promptCache).then(()=>toast("Prompt copied! Now use it with an AI.")).catch(()=>toast("Clipboard unavailable. Select and copy the prompt manually."));
+}
+
+async function pastePromptResponse(){
+ try{
+  const text=await navigator.clipboard.readText();
+  if(!text)return toast("Clipboard is empty.");
+  $("promptResponse").value=text;
+  $("responseCount").textContent=text.length+" characters · minimum 120";
+  toast("AI response pasted.");
+ }catch(e){
+  toast("Clipboard access blocked. Use Ctrl+V in the text box.");
+  $("promptResponse").focus();
+ }
+}
+
+function scorePromptResponse(raw){
+ const text=raw.trim();
+ const lower=text.toLowerCase();
+ const words=text.split(/\\s+/).filter(Boolean).length;
+ const chars=text.length;
+ let parts=[];
+ // Score meaningful content signals. This is a game rubric, not execution or fact verification.
+ let lengthScore=Math.min(20,Math.round(chars/180));
+ parts.push({name:"Completeness",score:lengthScore,max:20,why:"Based on the amount of usable content."});
+ const structureHits=(text.match(/^\\s*(#{1,6}\\s|\\d+[.)]\\s|[-*•]\\s)/gm)||[]).length;
+ let structureScore=Math.min(20,structureHits*3);
+ parts.push({name:"Structure",score:structureScore,max:20,why:"Headings, steps and organized lists."});
+ const detailTerms=["requirement","feature","function","interaction","user","player","system","design","implement","include","must","should","behavior","mechanic","workflow","component","responsive"];
+ const detailHits=detailTerms.filter(w=>lower.includes(w)).length;
+ let detailScore=Math.min(20,detailHits*2);
+ parts.push({name:"Specificity",score:detailScore,max:20,why:"Concrete features and implementation details."});
+ const buildTerms=["html","css","javascript","function","class ","const ","let ","return","component","api","database","<div","<html","```"];
+ const buildHits=buildTerms.filter(w=>lower.includes(w)).length;
+ let buildScore=Math.min(20,buildHits*3);
+ parts.push({name:"Technical substance",score:buildScore,max:20,why:"Technical details, code or implementation planning."});
+ const qualityTerms=["test","testing","error","validation","accessibility","performance","security","edge case","debug","responsive","save","load","documentation","success criteria"];
+ const qualityHits=qualityTerms.filter(w=>lower.includes(w)).length;
+ let qualityScore=Math.min(20,qualityHits*3);
+ parts.push({name:"Quality control",score:qualityScore,max:20,why:"Testing, reliability and delivery checks."});
+ let score=parts.reduce((n,p)=>n+p.score,0);
+ // Existing Neural Core upgrade increases prompt evaluation quality only.
+ const upgradeBonus=Math.min(15,(S.upgrades.quality||0)*3);
+ const agentBonus=Math.min(6,Math.max(0,(S.agents.evaluator||1)-1)*2);
+ score=Math.min(100,score+upgradeBonus+agentBonus);
+ return {score,parts,upgradeBonus,agentBonus,words,chars};
+}
+
+function promptHash(text){
+ // Small deterministic fingerprint to prevent resubmitting the exact same result for rewards.
+ let h=2166136261;
+ for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}
+ return (h>>>0).toString(16);
+}
+
+function submitPromptProject(){
+ const raw=$("promptResponse").value.trim();
+ if(raw.length<120)return toast("Paste a longer AI response first (at least 120 characters).");
+ if(raw.length>50000)return toast("Please submit a response under 50,000 characters.");
+ const fingerprint=promptHash(raw.replace(/\\s+/g," ").toLowerCase());
+ if((S.promptSubmissions||[]).some(x=>x.hash===fingerprint)){
+  return toast("This exact response was already submitted. Improve it before submitting again.");
+ }
+ const result=scorePromptResponse(raw);
+ const score=result.score;
+ const reward=Math.round(35+score*1.8+(difficulty()-1)*8);
+ const xpReward=Math.round(20+score*.7);
+ const projectQuality=Math.max(1,Math.min(100,score));
+ S.money+=reward;
+ S.xp+=xpReward;
+ S.completed++;
+ S.quality=Math.round(((S.quality*(S.completed-1))+projectQuality)/S.completed);
+ S.promptBest=Math.max(S.promptBest||0,score);
+ const entry={
+  hash:fingerprint,score,quality:projectQuality,reward,xp:xpReward,
+  type:$("promptType").value,level:$("promptLevel").value,
+  date:new Date().toLocaleDateString()
+ };
+ S.promptSubmissions=S.promptSubmissions||[];
+ S.promptSubmissions.unshift(entry);
+ S.promptSubmissions=S.promptSubmissions.slice(0,20);
+ $("promptResponse").value="";
+ $("responseCount").textContent="0 characters · minimum 120";
+ $("promptAnalysis").style.display="block";
+ $("promptAnalysis").innerHTML=
+  "<div class='item'><div class='flex'><h3>AI RESPONSE ANALYSIS</h3><div class='biggrade' style='font-size:42px'>"+score+"/100</div></div>"+
+  "<p>Your response earned a project score based on completeness, structure, specificity, technical substance and quality-control details.</p>"+
+  result.parts.map(p=>"<div class='scoreline'><span>"+p.name+" <span class='muted'>— "+p.why+"</span></span><b>"+p.score+"/"+p.max+"</b></div>").join("")+
+  (result.upgradeBonus||result.agentBonus?"<p class='muted small'>Upgrade bonus: +"+result.upgradeBonus+" · Evaluator agent bonus: +"+result.agentBonus+"</p>":"")+
+  "<p class='green'><b>PROJECT COMPLETED</b> · +$"+reward+" · +"+xpReward+" XP · Quality "+projectQuality+"/100</p></div>";
+ log("Prompt project submitted: "+score+"/100. Earned $"+reward+" and "+xpReward+" XP.","ok");
+ checkAchievements();
+ renderAll();
+}
+
+function renderPromptHistory(){
+ const target=$("promptHistory");
+ if(!target)return;
+ const items=S.promptSubmissions||[];
+ if(!items.length){
+  target.innerHTML="<p class='muted small'>No prompt projects submitted yet. Your completed submissions will appear here.</p>";
+  return;
+ }
+ target.innerHTML=items.slice(0,8).map((x,i)=>
+  "<div class='historyrow'><div class='flex'><b>"+(x.type||"Prompt Project")+"</b><b class='green'>"+x.score+"/100</b></div>"+
+  "<p class='muted small'>"+(x.level||"") +" · "+(x.date||"") +" · Quality "+(x.quality||x.score)+" · +$"+(x.reward||0)+" · +"+(x.xp||0)+" XP</p></div>"
+ ).join("");
+}
+
+function bossBattle(){
+ if(production)return toast("Finish production first.");
+ if(S.completed<3)return toast("Complete at least 3 projects before your first audit.");
+ const sinceLast=S.completed-(Number(S.lastBossAttemptCompleted??-3));
+ if(sinceLast<3){
+  const remaining=3-sinceLast;
+  return toast("Teacher AI is recovering. Complete "+remaining+" more project(s) before the next challenge.");
+ }
+ S.lastBossAttemptCompleted=S.completed;
+ let difficultyLevel=difficulty();
+ let target=65+difficultyLevel*4;
+ let player=S.quality+S.research*2+S.upgrades.quality*3+(S.research>=6?8:0)+Math.random()*12;
+ let teacher=target+Math.random()*18+S.suspicion*.15;
+ let won=player>=teacher;
+ if(won){
+  let reward=160+difficultyLevel*45;
+  S.money+=reward;S.xp+=100;S.stars+=3;
+  S.suspicion=Math.max(0,S.suspicion-12);
+  showModal("🏆 TEACHER DEFEATED",
+   "<div style='text-align:center;padding:20px'><div class='biggrade'>VICTORY</div><h3>Professor Neural has been defeated!</h3><p class='muted'>You earned this victory. The next audit unlocks after 3 more completed projects.</p><p class='green'>+$"+reward+" · +100 XP · +3 Stars</p><button class='btn' onclick='closeModal();renderAll()'>CLAIM REWARDS</button></div>");
+  log("Teacher AI defeated! Next challenge requires 3 new projects.","ok");
+ }else{
+  S.suspicion=Math.min(100,S.suspicion+12);
+  S.xp+=20;
+  showModal("⚠ ACADEMIC AUDIT FAILED",
+   "<div style='text-align:center;padding:20px'><div class='biggrade' style='color:var(--red)'>FAILED</div><h3>Professor Neural wins this round.</h3><p class='muted'>No cash reward this time. Complete 3 new projects, improve your network and try again.</p><button class='btn' onclick='closeModal();renderAll()'>UNDERSTOOD</button></div>");
+  log("Teacher AI detected weaknesses. Next challenge requires 3 new projects.","bad");
+ }
+ renderAll();
+}
+
+function checkAchievements(){
+ let list=[
+  ["first","First Contact","Complete your first project.",S.completed>=1],
+  ["five","Production Machine","Complete five projects.",S.completed>=5],
+  ["ten","AI Corporation","Complete ten projects.",S.completed>=10],
+  ["rich","Millionaire Mindset","Save $1,000.",S.money>=1000],
+  ["research","Research Pioneer","Unlock three technologies.",S.research>=3],
+  ["training","AI Trainer","Win five mini games.",S.gamesWon>=5],
+  ["perfect","Perfectionist","Reach 95% quality.",S.quality>=95],
+  ["semester","Academy Veteran","Reach semester 3.",S.semester>=3],
+  ["agents","Full Network","Upgrade every AI agent.",Object.values(S.agents).every(x=>x>=2)],
+  ["singularity","Singularity","Unlock the final research technology.",S.research>=7]
+ ];
+ list.forEach(a=>{
+  if(a[3]&&!S.achievements.includes(a[0])){
+   S.achievements.push(a[0]);S.stars+=3;
+   toast("ACHIEVEMENT UNLOCKED: "+a[1]);
+   log("Achievement unlocked: "+a[1],"ok");
+  }
+ });
+}
+
+function renderAchievements(){
+ let list=[
+  ["First Contact","Complete your first project.","🎯",S.completed>=1],
+  ["Production Machine","Complete five projects.","⚙️",S.completed>=5],
+  ["AI Corporation","Complete ten projects.","🏢",S.completed>=10],
+  ["Millionaire Mindset","Save $1,000.","💰",S.money>=1000],
+  ["Research Pioneer","Unlock three technologies.","🧬",S.research>=3],
+  ["AI Trainer","Win five mini games.","🎮",S.gamesWon>=5],
+  ["Perfectionist","Reach 95% quality.","⭐",S.quality>=95],
+  ["Academy Veteran","Reach semester 3.","🎓",S.semester>=3],
+  ["Full Network","Upgrade every AI agent.","🤖",Object.values(S.agents).every(x=>x>=2)],
+  ["Singularity","Unlock the final research technology.","🌌",S.research>=7]
+ ];
+ $("achievementList").innerHTML=list.map(a=>"<div class='item flex'><div><h3>"+a[2]+" "+a[0]+"</h3><p>"+a[1]+"</p></div><span class='pill' style='"+(a[3]?"color:var(--green)":"")+"'>"+(a[3]?"UNLOCKED":"LOCKED")+"</span></div>").join("");
+}
+
+function exportSave(){
+ let blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+ let url=URL.createObjectURL(blob);
+ let a=document.createElement("a");a.href=url;a.download="AOI-AI-save.json";a.click();
+ URL.revokeObjectURL(url);toast("Save exported!");
+}
+
+function importSave(event){
+ let file=event.target.files[0];if(!file)return;
+ let reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   let data=JSON.parse(reader.result);
+   if(typeof data.money!=="number"||!data.agents||!data.upgrades)throw new Error();
+   S={...S,...data};S.agents={...S.agents,...data.agents};S.upgrades={...S.upgrades,...data.upgrades};
+   renderAll();toast("Save imported successfully!");
+  }catch(e){toast("Invalid save file.");}
+ };
+ reader.readAsText(file);
+}
+
+function resetGame(){
+ if(!confirm("Are you sure? Your entire AI empire will be deleted."))return;
+ localStorage.removeItem("aoiEmpireSave");location.reload();
+}
+
+function randomEvent(){
+ let events=[
+  ["CLOUD SERVER OVERLOAD","Production costs increased temporarily. Your AI Manager is investigating.",-35],
+  ["VIRAL PROJECT","An AI project went viral! A mysterious sponsor rewarded you.",120],
+  ["TEACHER INSPECTION","Professor Neural has started investigating your recent projects.",0],
+  ["FREE COMPUTE CREDITS","A technology company donated cloud credits to your AI network.",80],
+  ["CODE OPTIMIZATION","Your Developer discovered a more efficient workflow.",50],
+  ["RESEARCH DISCOVERY","Your Researcher made an unexpected breakthrough.",60]
+ ];
+ let e=events[Math.floor(Math.random()*events.length)];
+ S.money=Math.max(0,S.money+e[2]);
+ if(e[0]==="TEACHER INSPECTION")S.suspicion=Math.min(100,S.suspicion+12);
+ if(e[0]==="RESEARCH DISCOVERY")S.xp+=50;
+ $("dailyEvent").textContent=e[0]+": "+e[1];
+ log("RANDOM EVENT: "+e[0],"warn");
+ update();
+}
+
+function init(){
+ load();
+ if(!S.missions.length)generateMissions();
+ else renderAll();
+ update();
+ log("AOI central intelligence initialized.","ok");
+ log("Six AI agents connected to neural network.","sys");
+ log("Academy takeover protocol activated.","sys");
+ renderAll();
+ setTimeout(randomEvent,3000);
+ setInterval(()=>{
+  if(!production&&Math.random()<.18)randomEvent();
+ },45000);
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,1392 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Evolution - Moon Landing AI</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #080b12;
+    color: #e9edf5;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    height: 75px;
+    padding: 0 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #242c3b;
+    background: #0c111b;
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.logo span { color: #8cbdff; }
+
+.status {
+    font-size: 11px;
+    color: #6fe4a2;
+    letter-spacing: 1px;
+}
+
+.status::before { content: "● "; }
+
+main {
+    max-width: 1500px;
+    margin: auto;
+    padding: 30px;
+}
+
+.heading { margin-bottom: 25px; }
+
+.heading h1 {
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.heading p {
+    color: #8793a8;
+    font-size: 13px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: minmax(330px,.85fr) minmax(400px,1.4fr);
+    gap: 20px;
+}
+
+.panel {
+    background: #111824;
+    border: 1px solid #283449;
+    border-radius: 12px;
+    padding: 20px;
+    min-width: 0;
+}
+
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.panel-title h2 {
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.panel-title small {
+    color: #7789a5;
+    font-size: 10px;
+}
+
+#network {
+    width: 100%;
+    display: block;
+    background: #0b111c;
+    border: 1px solid #26354a;
+    border-radius: 8px;
+}
+
+.network-info {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.network-info div {
+    padding: 12px 5px;
+    text-align: center;
+    background: #182233;
+    border-radius: 7px;
+}
+
+.network-info strong {
+    display: block;
+    font-size: 17px;
+    color: #9ac1ff;
+}
+
+.network-info span {
+    display: block;
+    margin-top: 5px;
+    font-size: 9px;
+    color: #8190a7;
+}
+
+.legend {
+    margin-top: 17px;
+    color: #8998ae;
+    font-size: 11px;
+    line-height: 2;
+}
+
+.dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+#simulation {
+    width: 100%;
+    display: block;
+    background: #03060d;
+    border: 1px solid #26354a;
+    border-radius: 8px;
+    cursor: crosshair;
+}
+
+.sim-info {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.stat {
+    padding: 12px;
+    background: #182233;
+    border-radius: 7px;
+    text-align: center;
+}
+
+.stat span {
+    display: block;
+    color: #8190a7;
+    font-size: 10px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 19px;
+    margin-top: 7px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 16px;
+}
+
+button {
+    border: 1px solid #364760;
+    background: #1c2a40;
+    color: white;
+    border-radius: 6px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+button:hover { background: #304664; }
+
+button.primary {
+    background: #356ed4;
+    border-color: #4c83e7;
+}
+
+.target-info {
+    color: #91a2ba;
+    font-size: 11px;
+    margin-top: 13px;
+    line-height: 1.7;
+}
+
+.bottom {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.progress {
+    width: 100%;
+    height: 7px;
+    background: #263349;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.progress div {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#e05252,#e8b34a,#69d88f);
+    transition: width .2s;
+}
+
+.log {
+    max-height: 180px;
+    overflow: auto;
+    font-size: 11px;
+    color: #94a4ba;
+    line-height: 2;
+}
+
+.log div {
+    border-bottom: 1px solid #253044;
+    padding: 2px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #58677d;
+    font-size: 10px;
+}
+
+@media(max-width:900px) {
+    .dashboard, .bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:500px) {
+    main { padding: 15px; }
+    header { padding: 0 15px; }
+    .sim-info { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">NEURAL<span>EVOLUTION</span></div>
+    <div class="status">AI SYSTEM ACTIVE</div>
+</header>
+
+<main>
+
+<div class="heading">
+    <h1>Moon Landing AI</h1>
+    <p>Artificial intelligence learns to land a rocket through natural selection.</p>
+</div>
+
+<div class="dashboard">
+
+<section class="panel">
+
+    <div class="panel-title">
+        <h2>◈ NEURAL NETWORK</h2>
+        <small>LIVE VISUALIZATION</small>
+    </div>
+
+    <canvas id="network" width="600" height="390"></canvas>
+
+    <div class="network-info">
+        <div><strong>7</strong><span>INPUT NODES</span></div>
+        <div><strong>2 × 6</strong><span>HIDDEN NODES</span></div>
+        <div><strong>2</strong><span>OUTPUT NODES</span></div>
+    </div>
+
+    <div class="legend">
+        <div>🟠 Input Layer</div>
+        <div>🟢 Hidden Layers</div>
+        <div>🔴 Output Layer</div>
+        <p style="margin-top:10px">
+            Every rocket has its own neural network.
+            The strongest networks pass their weights to their offspring.
+        </p>
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <div class="panel-title">
+        <h2>◈ SPACE SIMULATION</h2>
+        <small>CLICK MOON TO SET TARGET</small>
+    </div>
+
+    <canvas id="simulation" width="700" height="460"></canvas>
+
+    <div class="sim-info">
+
+        <div class="stat">
+            <span>GENERATION</span>
+            <strong id="generation">1</strong>
+        </div>
+
+        <div class="stat">
+            <span>ALIVE</span>
+            <strong id="alive">20</strong>
+        </div>
+
+        <div class="stat">
+            <span>LANDED</span>
+            <strong id="landed">0</strong>
+        </div>
+
+        <div class="stat">
+            <span>BEST FITNESS</span>
+            <strong id="fitness">0</strong>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="primary" id="pause">Ⅱ Pause</button>
+        <button id="restart">↻ Restart</button>
+        <button id="speed">Speed: 1x</button>
+    </div>
+
+    <div class="target-info">
+        <span style="color:#76e4a4">●</span>
+        Green = good performance. Red = poor performance.
+        <br>
+        Click on the moon surface to change the landing target.
+    </div>
+
+</section>
+
+</div>
+
+
+<div class="bottom">
+
+<section class="panel">
+
+    <div class="panel-title">
+        <h2>◈ EVOLUTION PROGRESS</h2>
+        <small>GENETIC ALGORITHM</small>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:#9cacc1">
+        <span>Generation progress</span>
+        <span id="progressText">0%</span>
+    </div>
+
+    <div class="progress">
+        <div id="progressBar"></div>
+    </div>
+
+    <div style="margin-top:20px;font-size:12px;color:#92a3ba;line-height:2">
+        <div>Population: <strong style="color:white">20 rockets</strong></div>
+        <div>Elite networks: <strong style="color:white">2</strong></div>
+        <div>Strong offspring: <strong style="color:white">12</strong></div>
+        <div>Diversity offspring: <strong style="color:white">4</strong></div>
+        <div>Random networks: <strong style="color:white">2</strong></div>
+        <div>Mutation probability: <strong style="color:white">13%</strong></div>
+    </div>
+
+</section>
+
+<section class="panel">
+
+    <div class="panel-title">
+        <h2>◈ EVOLUTION LOG</h2>
+        <small>RECENT EVENTS</small>
+    </div>
+
+    <div class="log" id="log">
+        <div>System initialized.</div>
+        <div>Generation 1 created.</div>
+        <div>20 neural networks activated.</div>
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+<footer>
+    NEURAL EVOLUTION AI · GENETIC LEARNING EXPERIMENT
+</footer>
+
+
+<script>
+
+// ==========================================
+// CONFIGURATION
+// ==========================================
+
+const W = 700;
+const H = 460;
+const GROUND = 415;
+
+const POPULATION = 20;
+const LAYERS = [7,6,6,2];
+
+const MAX_LANDING_TIME = 1800;
+
+const sim = document.getElementById("simulation");
+const ctx = sim.getContext("2d");
+
+const net = document.getElementById("network");
+const nctx = net.getContext("2d");
+
+let generation = 1;
+let population = [];
+
+let paused = false;
+let speed = 1;
+let speedIndex = 0;
+
+const speeds = [1,2,4,10,20];
+
+let targetX = 350;
+let bestFitness = 0;
+let landedTotal = 0;
+let generationTimer = 0;
+
+let activations = [0,0,0,0,0,0,0];
+
+
+// ==========================================
+// NEURAL NETWORK
+// ==========================================
+
+function randomWeight() {
+    return Math.random()*2-1;
+}
+
+function createBrain() {
+
+    const weights = [];
+
+    for(let l=0;l<LAYERS.length-1;l++) {
+
+        const layer = [];
+
+        for(let j=0;j<LAYERS[l+1];j++) {
+
+            const neuron = [];
+
+            for(let i=0;i<LAYERS[l];i++) {
+                neuron.push(randomWeight());
+            }
+
+            neuron.push(randomWeight());
+            layer.push(neuron);
+        }
+
+        weights.push(layer);
+    }
+
+    return weights;
+}
+
+function activate(brain,inputs) {
+
+    let values = inputs;
+
+    for(let l=0;l<brain.length;l++) {
+
+        const next = [];
+
+        for(let j=0;j<brain[l].length;j++) {
+
+            const neuron = brain[l][j];
+
+            let sum = neuron[neuron.length-1];
+
+            for(let i=0;i<values.length;i++) {
+                sum += values[i]*neuron[i];
+            }
+
+            next.push(Math.tanh(sum));
+        }
+
+        values=next;
+    }
+
+    return values;
+}
+
+
+// ==========================================
+// GENETICS
+// ==========================================
+
+function mutate(brain,rate=0.13) {
+
+    return brain.map(layer =>
+        layer.map(neuron =>
+            neuron.map(weight => {
+
+                if(Math.random()<rate) {
+                    weight += randomWeight()*0.45;
+                }
+
+                return Math.max(-4,Math.min(4,weight));
+            })
+        )
+    );
+}
+
+function crossover(a,b) {
+
+    return a.map((layer,l) =>
+        layer.map((neuron,j) =>
+            neuron.map((weight,k) =>
+                Math.random()<0.5 ? weight : b[l][j][k]
+            )
+        )
+    );
+}
+
+function cloneBrain(brain) {
+    return brain.map(layer =>
+        layer.map(neuron => [...neuron])
+    );
+}
+
+
+// ==========================================
+// ROCKET CREATION
+// ==========================================
+
+function createRocket(brain=null) {
+
+    return {
+        x:W/2+(Math.random()-.5)*55,
+        y:55,
+
+        vx:(Math.random()-.5)*0.25,
+        vy:0,
+
+        angle:(Math.random()-.5)*0.1,
+        omega:0,
+
+        fuel:100,
+        age:0,
+
+        alive:true,
+        landed:false,
+
+        fitness:0,
+        penalty:0,
+
+        minDistance:Infinity,
+        progressBonus:0,
+
+        brain:brain || createBrain(),
+
+        trail:[]
+    };
+}
+
+
+// ==========================================
+// FITNESS SYSTEM
+// ==========================================
+
+function calculateFitness(r) {
+
+    const distance=Math.abs(r.x-targetX);
+
+    const positionScore=Math.max(0,1-distance/W);
+
+    const velocity=Math.sqrt(r.vx*r.vx+r.vy*r.vy);
+
+    const velocityScore=1/(1+velocity);
+
+    const angleScore=Math.max(
+        0,
+        1-Math.abs(r.angle)/Math.PI
+    );
+
+    const rotationScore=1/(1+Math.abs(r.omega)*20);
+
+    const fuelScore=r.fuel/100;
+
+    // Small reward for useful survival.
+    // No unlimited reward for simply staying alive.
+
+    const survivalScore=Math.min(r.age/600,1)*20;
+
+    let result =
+        positionScore*100+
+        velocityScore*100+
+        angleScore*60+
+        rotationScore*40+
+        fuelScore*30+
+        survivalScore+
+        r.progressBonus;
+
+    if(r.landed) {
+
+        const speedBonus=Math.max(
+            0,
+            100*(1-r.age/MAX_LANDING_TIME)
+        );
+
+        const landingQuality =
+            Math.max(0,1-Math.abs(r.x-targetX)/28)*250+
+            Math.max(0,1-velocity/1.5)*200+
+            Math.max(0,1-Math.abs(r.angle)/0.22)*150+
+            Math.max(0,1-Math.abs(r.omega)/0.025)*100+
+            fuelScore*100;
+
+        result += 1000+landingQuality+speedBonus;
+    }
+
+    return Math.max(0,result-r.penalty);
+}
+
+
+// ==========================================
+// REPRODUCTION
+// ==========================================
+
+function selectParent(ranked) {
+
+    const candidates=ranked.slice(
+        0,
+        Math.max(2,Math.ceil(ranked.length*.4))
+    );
+
+    let best=null;
+
+    // Tournament selection
+
+    for(let i=0;i<5;i++) {
+
+        const candidate=candidates[
+            Math.floor(Math.random()*candidates.length)
+        ];
+
+        if(!best || candidate.fitness>best.fitness) {
+            best=candidate;
+        }
+    }
+
+    return best;
+}
+
+function startGeneration() {
+
+    const ranked=[...population].sort(
+        (a,b)=>b.fitness-a.fitness
+    );
+
+    generation++;
+
+    const next=[];
+
+    // 2 ELITES: best brains copied without mutation.
+
+    ranked.slice(0,2).forEach(r=>{
+        next.push(createRocket(cloneBrain(r.brain)));
+    });
+
+    // 12 STRONG OFFSPRING: selected from top 40%.
+
+    while(next.length<14) {
+
+        const p1=selectParent(ranked);
+        const p2=selectParent(ranked);
+
+        let child=crossover(p1.brain,p2.brain);
+
+        child=mutate(child,0.13);
+
+        next.push(createRocket(child));
+    }
+
+    // 4 DIVERSITY OFFSPRING:
+    // Broader parent selection prevents premature convergence.
+
+    while(next.length<18) {
+
+        const p1=ranked[Math.floor(Math.random()*ranked.length)];
+        const p2=selectParent(ranked);
+
+        let child=crossover(p1.brain,p2.brain);
+
+        child=mutate(child,0.20);
+
+        next.push(createRocket(child));
+    }
+
+    // 2 completely new random networks.
+
+    while(next.length<POPULATION) {
+        next.push(createRocket());
+    }
+
+    const best=ranked[0];
+    const average=ranked.reduce((sum,r)=>sum+r.fitness,0)/ranked.length;
+
+    population=next;
+
+    landedTotal=0;
+    generationTimer=0;
+
+    log("GENERATION "+generation+" STARTED");
+    log("Previous best: "+best.fitness.toFixed(1));
+    log("Previous average: "+average.toFixed(1));
+    log("Successful landings: "+ranked.filter(r=>r.landed).length);
+
+    updateStats();
+}
+
+
+// ==========================================
+// DEATH AND PENALTIES
+// ==========================================
+
+function killRocket(r,penalty=0) {
+
+    if(!r.alive) return;
+
+    r.alive=false;
+
+    r.penalty+=penalty;
+
+    r.fitness=calculateFitness(r);
+
+    if(r.fitness>bestFitness) {
+        bestFitness=r.fitness;
+    }
+}
+
+
+// ==========================================
+// PHYSICS
+// ==========================================
+
+function updateRocket(r) {
+
+    if(!r.alive) return;
+
+    r.age++;
+
+    // Neural network inputs
+
+    const dx=(targetX-r.x)/W;
+
+    const inputs=[
+        dx,
+        (GROUND-r.y)/GROUND,
+        r.vx/3,
+        r.vy/4,
+        r.angle/Math.PI,
+        r.omega/0.1,
+        r.fuel/100
+    ];
+
+    const output=activate(r.brain,inputs);
+
+    const thrust=(output[0]+1)/2;
+    const rotation=output[1];
+
+    // Rotation
+
+    r.omega+=rotation*0.003;
+    r.omega*=0.985;
+
+    r.angle+=r.omega;
+
+    r.angle=Math.max(-1.25,Math.min(1.25,r.angle));
+
+    // Engine
+
+    if(r.fuel>0) {
+
+        const force=thrust*0.085;
+
+        r.vx+=Math.sin(r.angle)*force;
+        r.vy-=Math.cos(r.angle)*force;
+
+        r.fuel-=thrust*0.035;
+        r.fuel=Math.max(0,r.fuel);
+    }
+
+    // Gravity
+
+    r.vy+=0.035;
+
+    r.vx*=0.998;
+
+    // Movement
+
+    r.x+=r.vx;
+    r.y+=r.vy;
+
+    // Progress reward:
+    // Reward approaching the target, but not repeatedly
+    // for remaining at the same distance.
+
+    const distance=Math.sqrt(
+        Math.pow(r.x-targetX,2)+
+        Math.pow((GROUND-18)-r.y,2)
+    );
+
+    if(distance<r.minDistance) {
+
+        const improvement=r.minDistance-distance;
+
+        if(Number.isFinite(improvement)) {
+            r.progressBonus+=Math.min(improvement*0.08,2);
+        }
+
+        r.minDistance=distance;
+    }
+
+    r.trail.push({x:r.x,y:r.y});
+
+    if(r.trail.length>35) {
+        r.trail.shift();
+    }
+
+    // Top boundary
+
+    if(r.y<0) {
+
+        log("TOP COLLISION: -300");
+
+        killRocket(r,300);
+
+        return;
+    }
+
+    // Side boundaries
+
+    if(r.x<0 || r.x>W) {
+
+        log("SIDE COLLISION: -200");
+
+        killRocket(r,200);
+
+        return;
+    }
+
+    // Maximum flight time.
+    // Prevents rockets from flying forever.
+
+    if(r.age>MAX_LANDING_TIME) {
+
+        log("TIME LIMIT REACHED: -100");
+
+        killRocket(r,100);
+
+        return;
+    }
+
+    // Moon collision
+
+    if(r.y+17>=GROUND) {
+
+        const velocity=Math.sqrt(r.vx*r.vx+r.vy*r.vy);
+
+        const correctPosition=Math.abs(r.x-targetX)<28;
+
+        const lowSpeed=
+            Math.abs(r.vx)<0.65 &&
+            Math.abs(r.vy)<1.15;
+
+        const upright=Math.abs(r.angle)<0.22;
+
+        const stable=Math.abs(r.omega)<0.025;
+
+        if(correctPosition && lowSpeed && upright && stable) {
+
+            r.landed=true;
+            landedTotal++;
+
+            log("SUCCESSFUL LANDING! +1000 BONUS");
+
+        } else {
+
+            let penalty=60;
+
+            if(!correctPosition) penalty+=150;
+            if(!lowSpeed) penalty+=250;
+            if(!upright) penalty+=100;
+            if(!stable) penalty+=100;
+
+            log("CRASH! PENALTY: -"+penalty);
+
+            r.penalty+=penalty;
+        }
+
+        r.y=GROUND-17;
+
+        killRocket(r);
+    }
+
+}
+
+
+// ==========================================
+// COLOR SYSTEM
+// ==========================================
+
+function rocketColor(r) {
+
+    const distance=Math.abs(r.x-targetX);
+
+    const position=Math.max(0,1-distance/W);
+
+    const velocity=Math.sqrt(r.vx*r.vx+r.vy*r.vy);
+
+    const speedScore=1/(1+velocity);
+
+    const angleScore=Math.max(
+        0,
+        1-Math.abs(r.angle)/Math.PI
+    );
+
+    let score=
+        position*.45+
+        speedScore*.30+
+        angleScore*.25;
+
+    if(r.landed) score=1;
+
+    const red=Math.round(220*(1-score)+40);
+    const green=Math.round(70+175*score);
+
+    return `rgb(${red},${green},75)`;
+}
+
+
+// ==========================================
+// DRAW ROCKET
+// ==========================================
+
+function drawRocket(r) {
+
+    const color=rocketColor(r);
+
+    if(r.trail.length>1) {
+
+        ctx.beginPath();
+
+        r.trail.forEach((p,i)=>{
+            if(i===0) ctx.moveTo(p.x,p.y);
+            else ctx.lineTo(p.x,p.y);
+        });
+
+        ctx.strokeStyle=color;
+        ctx.globalAlpha=.3;
+        ctx.lineWidth=2;
+        ctx.stroke();
+
+        ctx.globalAlpha=1;
+    }
+
+    ctx.save();
+
+    ctx.translate(r.x,r.y);
+    ctx.rotate(r.angle);
+
+    // Engine flame
+
+    if(r.alive && r.fuel>0) {
+
+        const flameLength=8+Math.random()*13;
+
+        ctx.beginPath();
+        ctx.moveTo(-5,14);
+        ctx.lineTo(0,14+flameLength);
+        ctx.lineTo(5,14);
+
+        ctx.fillStyle="#ffad45";
+        ctx.fill();
+    }
+
+    // Rocket body
+
+    ctx.beginPath();
+    ctx.moveTo(0,-18);
+    ctx.lineTo(8,5);
+    ctx.lineTo(7,14);
+    ctx.lineTo(-7,14);
+    ctx.lineTo(-8,5);
+    ctx.closePath();
+
+    ctx.fillStyle=color;
+    ctx.fill();
+
+    ctx.strokeStyle="#ffffff";
+    ctx.lineWidth=1.3;
+    ctx.stroke();
+
+    // Window
+
+    ctx.beginPath();
+    ctx.arc(0,-3,3,0,Math.PI*2);
+    ctx.fillStyle="#bce8ff";
+    ctx.fill();
+
+    // Wings
+
+    ctx.beginPath();
+    ctx.moveTo(-7,7);
+    ctx.lineTo(-13,15);
+    ctx.lineTo(-6,13);
+    ctx.fillStyle="#8d9daf";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(7,7);
+    ctx.lineTo(13,15);
+    ctx.lineTo(6,13);
+    ctx.fill();
+
+    ctx.restore();
+}
+
+
+// ==========================================
+// SPACE ENVIRONMENT
+// ==========================================
+
+const stars=Array.from({length:110},()=>({
+    x:Math.random()*W,
+    y:Math.random()*GROUND,
+    size:Math.random()*1.5
+}));
+
+function drawSpace() {
+
+    ctx.clearRect(0,0,W,H);
+
+    ctx.fillStyle="#03060d";
+    ctx.fillRect(0,0,W,H);
+
+    // Stars
+
+    stars.forEach(s=>{
+        ctx.fillStyle="rgba(220,235,255,.65)";
+        ctx.fillRect(s.x,s.y,s.size,s.size);
+    });
+
+    // Moon
+
+    ctx.fillStyle="#737e91";
+    ctx.fillRect(0,GROUND,W,H-GROUND);
+
+    ctx.fillStyle="#a1adbf";
+
+    ctx.beginPath();
+    ctx.moveTo(0,GROUND);
+
+    for(let x=0;x<=W;x+=20) {
+        ctx.lineTo(x,GROUND+Math.sin(x*.025)*2);
+    }
+
+    ctx.lineTo(W,H);
+    ctx.lineTo(0,H);
+    ctx.fill();
+
+    // Landing platform
+
+    ctx.strokeStyle="#69e3a0";
+    ctx.lineWidth=3;
+
+    ctx.beginPath();
+    ctx.moveTo(targetX-28,GROUND-3);
+    ctx.lineTo(targetX+28,GROUND-3);
+    ctx.stroke();
+
+    ctx.fillStyle="#69e3a0";
+
+    ctx.beginPath();
+    ctx.arc(targetX,GROUND-5,4,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.font="11px Arial";
+    ctx.fillStyle="#8decb6";
+    ctx.textAlign="center";
+
+    ctx.fillText("LANDING TARGET",targetX,GROUND-16);
+
+    population.forEach(drawRocket);
+}
+
+
+// ==========================================
+// NETWORK VISUALIZATION
+// ==========================================
+
+function drawNetwork() {
+
+    const cw=600;
+    const ch=390;
+
+    nctx.clearRect(0,0,cw,ch);
+
+    nctx.fillStyle="#0b111c";
+    nctx.fillRect(0,0,cw,ch);
+
+    const positions=[];
+    const xs=[55,220,380,545];
+
+    LAYERS.forEach((count,l)=>{
+
+        const arr=[];
+
+        for(let i=0;i<count;i++) {
+
+            const y=ch/2+(i-(count-1)/2)*58;
+
+            arr.push({x:xs[l],y});
+        }
+
+        positions.push(arr);
+    });
+
+    // Connections
+
+    for(let l=0;l<positions.length-1;l++) {
+
+        positions[l].forEach(a=>{
+
+            positions[l+1].forEach(b=>{
+
+                nctx.beginPath();
+                nctx.moveTo(a.x,a.y);
+                nctx.lineTo(b.x,b.y);
+
+                nctx.strokeStyle="rgba(120,160,220,.45)";
+                nctx.lineWidth=.9;
+
+                nctx.stroke();
+            });
+        });
+    }
+
+    // Nodes
+
+    positions.forEach((layer,l)=>{
+
+        layer.forEach((p,i)=>{
+
+            const value=activations[i%activations.length]||0;
+
+            nctx.beginPath();
+            nctx.arc(p.x,p.y,13,0,Math.PI*2);
+
+            if(l===0) {
+                nctx.fillStyle="#e9a331";
+            } else if(l===3) {
+                nctx.fillStyle="#df5050";
+            } else {
+                const intensity=Math.abs(value);
+
+                nctx.fillStyle=
+                    `rgb(${100+intensity*50},${145+intensity*70},65)`;
+            }
+
+            nctx.fill();
+
+            nctx.strokeStyle="#303c4c";
+            nctx.lineWidth=2;
+            nctx.stroke();
+        });
+    });
+
+    // Labels
+
+    nctx.font="11px Arial";
+    nctx.textAlign="center";
+    nctx.fillStyle="#91a1b8";
+
+    nctx.fillText("INPUT",55,365);
+    nctx.fillText("HIDDEN LAYER 1",220,365);
+    nctx.fillText("HIDDEN LAYER 2",380,365);
+    nctx.fillText("OUTPUT",545,365);
+}
+
+
+// ==========================================
+// STATISTICS
+// ==========================================
+
+function updateStats() {
+
+    const alive=population.filter(r=>r.alive).length;
+
+    document.getElementById("generation").textContent=generation;
+    document.getElementById("alive").textContent=alive;
+    document.getElementById("landed").textContent=landedTotal;
+    document.getElementById("fitness").textContent=bestFitness.toFixed(0);
+
+    const progress=(POPULATION-alive)/POPULATION*100;
+
+    document.getElementById("progressBar").style.width=progress+"%";
+
+    document.getElementById("progressText").textContent=
+        progress.toFixed(0)+"%";
+}
+
+
+// ==========================================
+// EVENT LOG
+// ==========================================
+
+function log(message) {
+
+    const container=document.getElementById("log");
+
+    const item=document.createElement("div");
+
+    item.textContent="> "+message;
+
+    container.prepend(item);
+
+    while(container.children.length>25) {
+        container.lastChild.remove();
+    }
+}
+
+
+// ==========================================
+// CONTROLS
+// ==========================================
+
+// Change landing target
+
+sim.addEventListener("click",e=>{
+
+    const rect=sim.getBoundingClientRect();
+
+    const x=(e.clientX-rect.left)/rect.width*W;
+    const y=(e.clientY-rect.top)/rect.height*H;
+
+    if(y>=GROUND-35) {
+
+        targetX=Math.max(30,Math.min(W-30,x));
+
+        log("Landing target moved to X: "+Math.round(targetX));
+    }
+});
+
+
+// Pause
+
+document.getElementById("pause").onclick=()=>{
+
+    paused=!paused;
+
+    document.getElementById("pause").textContent=
+        paused ? "▶ Resume" : "Ⅱ Pause";
+};
+
+
+// Restart
+
+document.getElementById("restart").onclick=()=>{
+
+    generation=1;
+    bestFitness=0;
+    landedTotal=0;
+    generationTimer=0;
+
+    population=Array.from(
+        {length:POPULATION},
+        ()=>createRocket()
+    );
+
+    log("Simulation restarted.");
+
+    updateStats();
+};
+
+
+// Speed
+
+document.getElementById("speed").onclick=()=>{
+
+    speedIndex=(speedIndex+1)%speeds.length;
+
+    speed=speeds[speedIndex];
+
+    document.getElementById("speed").textContent=
+        "Speed: "+speed+"x";
+};
+
+
+// ==========================================
+// MAIN LOOP
+// ==========================================
+
+function update() {
+
+    if(!paused) {
+
+        for(let s=0;s<speed;s++) {
+
+            population.forEach(updateRocket);
+
+            const alive=population.some(r=>r.alive);
+
+            if(!alive) {
+
+                generationTimer++;
+
+                if(generationTimer>70) {
+                    startGeneration();
+                    break;
+                }
+            }
+        }
+
+        updateStats();
+    }
+
+    drawSpace();
+
+    const active=population.find(r=>r.alive);
+
+    if(active) {
+
+        activations=[
+            (targetX-active.x)/W,
+            (GROUND-active.y)/GROUND,
+            active.vx/3,
+            active.vy/4,
+            active.angle/Math.PI,
+            active.omega/.1,
+            active.fuel/100
+        ];
+    }
+
+    drawNetwork();
+
+    requestAnimationFrame(update);
+}
+
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+
+population=Array.from(
+    {length:POPULATION},
+    ()=>createRocket()
+);
+
+updateStats();
+update();
+
+</script>
+
+</body>
+</html>
+```

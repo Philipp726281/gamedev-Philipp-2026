@@ -36,7 +36,9 @@ header {
     letter-spacing: 2px;
 }
 
-.logo span { color: #8cbdff; }
+.logo span {
+    color: #8cbdff;
+}
 
 .status {
     font-size: 11px;
@@ -44,7 +46,9 @@ header {
     letter-spacing: 1px;
 }
 
-.status::before { content: "● "; }
+.status::before {
+    content: "● ";
+}
 
 main {
     max-width: 1500px;
@@ -52,7 +56,9 @@ main {
     padding: 30px;
 }
 
-.heading { margin-bottom: 25px; }
+.heading {
+    margin-bottom: 25px;
+}
 
 .heading h1 {
     font-size: 29px;
@@ -145,6 +151,10 @@ main {
     margin-right: 6px;
 }
 
+.green { background: #8fbd38; }
+.orange { background: #eaa332; }
+.red { background: #e05252; }
+
 #simulation {
     width: 100%;
     display: block;
@@ -197,7 +207,9 @@ button {
     font-size: 12px;
 }
 
-button:hover { background: #304664; }
+button:hover {
+    background: #304664;
+}
 
 button.primary {
     background: #356ed4;
@@ -235,7 +247,7 @@ button.primary {
 }
 
 .log {
-    max-height: 180px;
+    max-height: 170px;
     overflow: auto;
     font-size: 11px;
     color: #94a4ba;
@@ -255,7 +267,11 @@ footer {
 }
 
 @media(max-width:900px) {
-    .dashboard, .bottom {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom {
         grid-template-columns: 1fr;
     }
 }
@@ -279,7 +295,7 @@ footer {
 
 <div class="heading">
     <h1>Moon Landing AI</h1>
-    <p>Artificial intelligence learns to land a rocket through natural selection.</p>
+    <p>Watch artificial intelligence learn how to land a rocket through evolution.</p>
 </div>
 
 <div class="dashboard">
@@ -294,18 +310,28 @@ footer {
     <canvas id="network" width="600" height="390"></canvas>
 
     <div class="network-info">
-        <div><strong>7</strong><span>INPUT NODES</span></div>
-        <div><strong>2 × 6</strong><span>HIDDEN NODES</span></div>
-        <div><strong>2</strong><span>OUTPUT NODES</span></div>
+        <div>
+            <strong>5</strong>
+            <span>INPUT NODES</span>
+        </div>
+        <div>
+            <strong>2 × 6</strong>
+            <span>HIDDEN NODES</span>
+        </div>
+        <div>
+            <strong>2</strong>
+            <span>OUTPUT NODES</span>
+        </div>
     </div>
 
     <div class="legend">
-        <div>🟠 Input Layer</div>
-        <div>🟢 Hidden Layers</div>
-        <div>🔴 Output Layer</div>
+        <div><span class="dot orange"></span> Input Layer</div>
+        <div><span class="dot green"></span> Hidden Layers</div>
+        <div><span class="dot red"></span> Output Layer</div>
+
         <p style="margin-top:10px">
-            Every rocket has its own neural network.
-            The strongest networks pass their weights to their offspring.
+            Each rocket has its own neural network.
+            Connections evolve through genetic selection and mutation.
         </p>
     </div>
 
@@ -316,7 +342,7 @@ footer {
 
     <div class="panel-title">
         <h2>◈ SPACE SIMULATION</h2>
-        <small>CLICK MOON TO SET TARGET</small>
+        <small>CLICK THE MOON TO SET TARGET</small>
     </div>
 
     <canvas id="simulation" width="700" height="460"></canvas>
@@ -353,9 +379,10 @@ footer {
 
     <div class="target-info">
         <span style="color:#76e4a4">●</span>
-        Green = good performance. Red = poor performance.
+        Green marker = Landing target.
+        Click anywhere along the moon surface to move it.
         <br>
-        Click on the moon surface to change the landing target.
+        Red = Poor performance. Green = Good performance.
     </div>
 
 </section>
@@ -383,11 +410,10 @@ footer {
 
     <div style="margin-top:20px;font-size:12px;color:#92a3ba;line-height:2">
         <div>Population: <strong style="color:white">20 rockets</strong></div>
-        <div>Elite networks: <strong style="color:white">2</strong></div>
-        <div>Strong offspring: <strong style="color:white">12</strong></div>
-        <div>Diversity offspring: <strong style="color:white">4</strong></div>
-        <div>Random networks: <strong style="color:white">2</strong></div>
-        <div>Mutation probability: <strong style="color:white">13%</strong></div>
+        <div>Reproduction: <strong style="color:white">Top 40%</strong></div>
+        <div>Selection: <strong style="color:white">Fitness weighted</strong></div>
+        <div>Mutation: <strong style="color:white">13% probability</strong></div>
+        <div>Elite preservation: <strong style="color:white">2 best brains</strong></div>
     </div>
 
 </section>
@@ -424,12 +450,16 @@ footer {
 
 const W = 700;
 const H = 460;
-const GROUND = 415;
 
 const POPULATION = 20;
-const LAYERS = [7,6,6,2];
 
-const MAX_LANDING_TIME = 1800;
+const INPUTS = 5;
+const HIDDEN = 6;
+const OUTPUTS = 2;
+
+const LAYERS = [INPUTS,HIDDEN,HIDDEN,OUTPUTS];
+
+const GROUND = 415;
 
 const sim = document.getElementById("simulation");
 const ctx = sim.getContext("2d");
@@ -451,7 +481,7 @@ let bestFitness = 0;
 let landedTotal = 0;
 let generationTimer = 0;
 
-let activations = [0,0,0,0,0,0,0];
+let activations = [0,0,0,0,0];
 
 
 // ==========================================
@@ -464,21 +494,22 @@ function randomWeight() {
 
 function createBrain() {
 
-    const weights = [];
+    let weights = [];
 
     for(let l=0;l<LAYERS.length-1;l++) {
 
-        const layer = [];
+        let layer = [];
 
         for(let j=0;j<LAYERS[l+1];j++) {
 
-            const neuron = [];
+            let neuron = [];
 
             for(let i=0;i<LAYERS[l];i++) {
                 neuron.push(randomWeight());
             }
 
             neuron.push(randomWeight());
+
             layer.push(neuron);
         }
 
@@ -494,11 +525,11 @@ function activate(brain,inputs) {
 
     for(let l=0;l<brain.length;l++) {
 
-        const next = [];
+        let next = [];
 
         for(let j=0;j<brain[l].length;j++) {
 
-            const neuron = brain[l][j];
+            let neuron = brain[l][j];
 
             let sum = neuron[neuron.length-1];
 
@@ -517,16 +548,16 @@ function activate(brain,inputs) {
 
 
 // ==========================================
-// GENETICS
+// GENETIC ALGORITHM
 // ==========================================
 
-function mutate(brain,rate=0.13) {
+function mutate(brain) {
 
     return brain.map(layer =>
         layer.map(neuron =>
             neuron.map(weight => {
 
-                if(Math.random()<rate) {
+                if(Math.random()<0.13) {
                     weight += randomWeight()*0.45;
                 }
 
@@ -547,27 +578,21 @@ function crossover(a,b) {
     );
 }
 
-function cloneBrain(brain) {
-    return brain.map(layer =>
-        layer.map(neuron => [...neuron])
-    );
-}
-
 
 // ==========================================
-// ROCKET CREATION
+// ROCKETS
 // ==========================================
 
 function createRocket(brain=null) {
 
     return {
-        x:W/2+(Math.random()-.5)*55,
+        x:W/2+(Math.random()-.5)*65,
         y:55,
 
-        vx:(Math.random()-.5)*0.25,
+        vx:(Math.random()-.5)*0.3,
         vy:0,
 
-        angle:(Math.random()-.5)*0.1,
+        angle:(Math.random()-.5)*0.12,
         omega:0,
 
         fuel:100,
@@ -578,9 +603,6 @@ function createRocket(brain=null) {
 
         fitness:0,
         penalty:0,
-
-        minDistance:Infinity,
-        progressBonus:0,
 
         brain:brain || createBrain(),
 
@@ -597,7 +619,7 @@ function calculateFitness(r) {
 
     const distance=Math.abs(r.x-targetX);
 
-    const positionScore=Math.max(0,1-distance/W);
+    const distanceScore=Math.max(0,1-distance/W);
 
     const velocity=Math.sqrt(r.vx*r.vx+r.vy*r.vy);
 
@@ -608,39 +630,19 @@ function calculateFitness(r) {
         1-Math.abs(r.angle)/Math.PI
     );
 
-    const rotationScore=1/(1+Math.abs(r.omega)*20);
+    const survivalScore=Math.min(r.age/900,1);
 
     const fuelScore=r.fuel/100;
 
-    // Small reward for useful survival.
-    // No unlimited reward for simply staying alive.
-
-    const survivalScore=Math.min(r.age/600,1)*20;
-
-    let result =
-        positionScore*100+
-        velocityScore*100+
-        angleScore*60+
-        rotationScore*40+
-        fuelScore*30+
-        survivalScore+
-        r.progressBonus;
+    let result=
+        distanceScore*35+
+        velocityScore*25+
+        angleScore*20+
+        survivalScore*50+
+        fuelScore*5;
 
     if(r.landed) {
-
-        const speedBonus=Math.max(
-            0,
-            100*(1-r.age/MAX_LANDING_TIME)
-        );
-
-        const landingQuality =
-            Math.max(0,1-Math.abs(r.x-targetX)/28)*250+
-            Math.max(0,1-velocity/1.5)*200+
-            Math.max(0,1-Math.abs(r.angle)/0.22)*150+
-            Math.max(0,1-Math.abs(r.omega)/0.025)*100+
-            fuelScore*100;
-
-        result += 1000+landingQuality+speedBonus;
+        result+=200;
     }
 
     return Math.max(0,result-r.penalty);
@@ -653,14 +655,17 @@ function calculateFitness(r) {
 
 function selectParent(ranked) {
 
+    // Only the top 40% may reproduce.
+
     const candidates=ranked.slice(
         0,
         Math.max(2,Math.ceil(ranked.length*.4))
     );
 
-    let best=null;
+    // Tournament selection.
+    // Better rockets have a higher chance.
 
-    // Tournament selection
+    let best=null;
 
     for(let i=0;i<5;i++) {
 
@@ -678,74 +683,52 @@ function selectParent(ranked) {
 
 function startGeneration() {
 
-    const ranked=[...population].sort(
+    generation++;
+
+    let ranked=[...population].sort(
         (a,b)=>b.fitness-a.fitness
     );
 
-    generation++;
-
     const next=[];
 
-    // 2 ELITES: best brains copied without mutation.
+    // Preserve the two best neural networks.
 
     ranked.slice(0,2).forEach(r=>{
-        next.push(createRocket(cloneBrain(r.brain)));
+        next.push(createRocket(structuredClone(r.brain)));
     });
 
-    // 12 STRONG OFFSPRING: selected from top 40%.
-
-    while(next.length<14) {
-
-        const p1=selectParent(ranked);
-        const p2=selectParent(ranked);
-
-        let child=crossover(p1.brain,p2.brain);
-
-        child=mutate(child,0.13);
-
-        next.push(createRocket(child));
-    }
-
-    // 4 DIVERSITY OFFSPRING:
-    // Broader parent selection prevents premature convergence.
-
-    while(next.length<18) {
-
-        const p1=ranked[Math.floor(Math.random()*ranked.length)];
-        const p2=selectParent(ranked);
-
-        let child=crossover(p1.brain,p2.brain);
-
-        child=mutate(child,0.20);
-
-        next.push(createRocket(child));
-    }
-
-    // 2 completely new random networks.
+    // Create offspring.
 
     while(next.length<POPULATION) {
-        next.push(createRocket());
-    }
 
-    const best=ranked[0];
-    const average=ranked.reduce((sum,r)=>sum+r.fitness,0)/ranked.length;
+        const parent1=selectParent(ranked);
+        const parent2=selectParent(ranked);
+
+        let child=crossover(
+            parent1.brain,
+            parent2.brain
+        );
+
+        child=mutate(child);
+
+        next.push(createRocket(child));
+    }
 
     population=next;
 
     landedTotal=0;
     generationTimer=0;
 
-    log("GENERATION "+generation+" STARTED");
-    log("Previous best: "+best.fitness.toFixed(1));
-    log("Previous average: "+average.toFixed(1));
-    log("Successful landings: "+ranked.filter(r=>r.landed).length);
+    log("Generation "+generation+" started.");
+    log("Best previous fitness: "+ranked[0].fitness.toFixed(1));
+    log("Worst previous fitness: "+ranked[ranked.length-1].fitness.toFixed(1));
 
     updateStats();
 }
 
 
 // ==========================================
-// DEATH AND PENALTIES
+// ROCKET DEATH
 // ==========================================
 
 function killRocket(r,penalty=0) {
@@ -765,7 +748,7 @@ function killRocket(r,penalty=0) {
 
 
 // ==========================================
-// PHYSICS
+// ROCKET PHYSICS
 // ==========================================
 
 function updateRocket(r) {
@@ -774,18 +757,14 @@ function updateRocket(r) {
 
     r.age++;
 
-    // Neural network inputs
-
     const dx=(targetX-r.x)/W;
 
     const inputs=[
         dx,
-        (GROUND-r.y)/GROUND,
         r.vx/3,
         r.vy/4,
         r.angle/Math.PI,
-        r.omega/0.1,
-        r.fuel/100
+        r.omega/0.1
     ];
 
     const output=activate(r.brain,inputs);
@@ -826,71 +805,40 @@ function updateRocket(r) {
     r.x+=r.vx;
     r.y+=r.vy;
 
-    // Progress reward:
-    // Reward approaching the target, but not repeatedly
-    // for remaining at the same distance.
-
-    const distance=Math.sqrt(
-        Math.pow(r.x-targetX,2)+
-        Math.pow((GROUND-18)-r.y,2)
-    );
-
-    if(distance<r.minDistance) {
-
-        const improvement=r.minDistance-distance;
-
-        if(Number.isFinite(improvement)) {
-            r.progressBonus+=Math.min(improvement*0.08,2);
-        }
-
-        r.minDistance=distance;
-    }
-
     r.trail.push({x:r.x,y:r.y});
 
     if(r.trail.length>35) {
         r.trail.shift();
     }
 
-    // Top boundary
+
+    // TOP COLLISION
 
     if(r.y<0) {
 
-        log("TOP COLLISION: -300");
+        log("TOP COLLISION: -150 FITNESS");
 
-        killRocket(r,300);
+        killRocket(r,150);
 
         return;
     }
 
-    // Side boundaries
+
+    // SIDE COLLISION
 
     if(r.x<0 || r.x>W) {
 
-        log("SIDE COLLISION: -200");
-
-        killRocket(r,200);
-
-        return;
-    }
-
-    // Maximum flight time.
-    // Prevents rockets from flying forever.
-
-    if(r.age>MAX_LANDING_TIME) {
-
-        log("TIME LIMIT REACHED: -100");
+        log("SIDE COLLISION: -100 FITNESS");
 
         killRocket(r,100);
 
         return;
     }
 
-    // Moon collision
+
+    // MOON COLLISION
 
     if(r.y+17>=GROUND) {
-
-        const velocity=Math.sqrt(r.vx*r.vx+r.vy*r.vy);
 
         const correctPosition=Math.abs(r.x-targetX)<28;
 
@@ -907,20 +855,13 @@ function updateRocket(r) {
             r.landed=true;
             landedTotal++;
 
-            log("SUCCESSFUL LANDING! +1000 BONUS");
+            log("SUCCESSFUL LANDING! +200 FITNESS");
 
         } else {
 
-            let penalty=60;
+            log("ROCKET CRASHED: -60 FITNESS");
 
-            if(!correctPosition) penalty+=150;
-            if(!lowSpeed) penalty+=250;
-            if(!upright) penalty+=100;
-            if(!stable) penalty+=100;
-
-            log("CRASH! PENALTY: -"+penalty);
-
-            r.penalty+=penalty;
+            r.penalty+=60;
         }
 
         r.y=GROUND-17;
@@ -932,7 +873,7 @@ function updateRocket(r) {
 
 
 // ==========================================
-// COLOR SYSTEM
+// ROCKET COLORS
 // ==========================================
 
 function rocketColor(r) {
@@ -958,6 +899,7 @@ function rocketColor(r) {
     if(r.landed) score=1;
 
     const red=Math.round(220*(1-score)+40);
+
     const green=Math.round(70+175*score);
 
     return `rgb(${red},${green},75)`;
@@ -972,20 +914,23 @@ function drawRocket(r) {
 
     const color=rocketColor(r);
 
+    // Trail
+
     if(r.trail.length>1) {
 
         ctx.beginPath();
 
         r.trail.forEach((p,i)=>{
+
             if(i===0) ctx.moveTo(p.x,p.y);
             else ctx.lineTo(p.x,p.y);
+
         });
 
         ctx.strokeStyle=color;
         ctx.globalAlpha=.3;
         ctx.lineWidth=2;
         ctx.stroke();
-
         ctx.globalAlpha=1;
     }
 
@@ -1030,6 +975,7 @@ function drawRocket(r) {
 
     ctx.beginPath();
     ctx.arc(0,-3,3,0,Math.PI*2);
+
     ctx.fillStyle="#bce8ff";
     ctx.fill();
 
@@ -1039,6 +985,7 @@ function drawRocket(r) {
     ctx.moveTo(-7,7);
     ctx.lineTo(-13,15);
     ctx.lineTo(-6,13);
+
     ctx.fillStyle="#8d9daf";
     ctx.fill();
 
@@ -1056,10 +1003,12 @@ function drawRocket(r) {
 // SPACE ENVIRONMENT
 // ==========================================
 
-const stars=Array.from({length:110},()=>({
+let stars=Array.from({length:110},()=>({
+
     x:Math.random()*W,
     y:Math.random()*GROUND,
     size:Math.random()*1.5
+
 }));
 
 function drawSpace() {
@@ -1072,13 +1021,17 @@ function drawSpace() {
     // Stars
 
     stars.forEach(s=>{
+
         ctx.fillStyle="rgba(220,235,255,.65)";
+
         ctx.fillRect(s.x,s.y,s.size,s.size);
+
     });
 
     // Moon
 
     ctx.fillStyle="#737e91";
+
     ctx.fillRect(0,GROUND,W,H-GROUND);
 
     ctx.fillStyle="#a1adbf";
@@ -1087,14 +1040,20 @@ function drawSpace() {
     ctx.moveTo(0,GROUND);
 
     for(let x=0;x<=W;x+=20) {
-        ctx.lineTo(x,GROUND+Math.sin(x*.025)*2);
+
+        ctx.lineTo(
+            x,
+            GROUND+Math.sin(x*.025)*2
+        );
+
     }
 
     ctx.lineTo(W,H);
     ctx.lineTo(0,H);
+
     ctx.fill();
 
-    // Landing platform
+    // Landing target
 
     ctx.strokeStyle="#69e3a0";
     ctx.lineWidth=3;
@@ -1116,6 +1075,8 @@ function drawSpace() {
 
     ctx.fillText("LANDING TARGET",targetX,GROUND-16);
 
+    // Rockets
+
     population.forEach(drawRocket);
 }
 
@@ -1135,11 +1096,12 @@ function drawNetwork() {
     nctx.fillRect(0,0,cw,ch);
 
     const positions=[];
+
     const xs=[55,220,380,545];
 
     LAYERS.forEach((count,l)=>{
 
-        const arr=[];
+        let arr=[];
 
         for(let i=0;i<count;i++) {
 
@@ -1167,8 +1129,11 @@ function drawNetwork() {
                 nctx.lineWidth=.9;
 
                 nctx.stroke();
+
             });
+
         });
+
     }
 
     // Nodes
@@ -1183,10 +1148,15 @@ function drawNetwork() {
             nctx.arc(p.x,p.y,13,0,Math.PI*2);
 
             if(l===0) {
+
                 nctx.fillStyle="#e9a331";
+
             } else if(l===3) {
+
                 nctx.fillStyle="#df5050";
+
             } else {
+
                 const intensity=Math.abs(value);
 
                 nctx.fillStyle=
@@ -1198,7 +1168,9 @@ function drawNetwork() {
             nctx.strokeStyle="#303c4c";
             nctx.lineWidth=2;
             nctx.stroke();
+
         });
+
     });
 
     // Labels
@@ -1211,6 +1183,7 @@ function drawNetwork() {
     nctx.fillText("HIDDEN LAYER 1",220,365);
     nctx.fillText("HIDDEN LAYER 2",380,365);
     nctx.fillText("OUTPUT",545,365);
+
 }
 
 
@@ -1223,11 +1196,16 @@ function updateStats() {
     const alive=population.filter(r=>r.alive).length;
 
     document.getElementById("generation").textContent=generation;
+
     document.getElementById("alive").textContent=alive;
+
     document.getElementById("landed").textContent=landedTotal;
+
     document.getElementById("fitness").textContent=bestFitness.toFixed(0);
 
-    const progress=(POPULATION-alive)/POPULATION*100;
+    const dead=POPULATION-alive;
+
+    const progress=dead/POPULATION*100;
 
     document.getElementById("progressBar").style.width=progress+"%";
 
@@ -1257,7 +1235,7 @@ function log(message) {
 
 
 // ==========================================
-// CONTROLS
+// USER CONTROLS
 // ==========================================
 
 // Change landing target
@@ -1267,6 +1245,7 @@ sim.addEventListener("click",e=>{
     const rect=sim.getBoundingClientRect();
 
     const x=(e.clientX-rect.left)/rect.width*W;
+
     const y=(e.clientY-rect.top)/rect.height*H;
 
     if(y>=GROUND-35) {
@@ -1274,7 +1253,9 @@ sim.addEventListener("click",e=>{
         targetX=Math.max(30,Math.min(W-30,x));
 
         log("Landing target moved to X: "+Math.round(targetX));
+
     }
+
 });
 
 
@@ -1286,6 +1267,7 @@ document.getElementById("pause").onclick=()=>{
 
     document.getElementById("pause").textContent=
         paused ? "▶ Resume" : "Ⅱ Pause";
+
 };
 
 
@@ -1294,8 +1276,11 @@ document.getElementById("pause").onclick=()=>{
 document.getElementById("restart").onclick=()=>{
 
     generation=1;
+
     bestFitness=0;
+
     landedTotal=0;
+
     generationTimer=0;
 
     population=Array.from(
@@ -1306,6 +1291,7 @@ document.getElementById("restart").onclick=()=>{
     log("Simulation restarted.");
 
     updateStats();
+
 };
 
 
@@ -1319,6 +1305,7 @@ document.getElementById("speed").onclick=()=>{
 
     document.getElementById("speed").textContent=
         "Speed: "+speed+"x";
+
 };
 
 
@@ -1341,7 +1328,9 @@ function update() {
                 generationTimer++;
 
                 if(generationTimer>70) {
+
                     startGeneration();
+
                     break;
                 }
             }
@@ -1358,13 +1347,12 @@ function update() {
 
         activations=[
             (targetX-active.x)/W,
-            (GROUND-active.y)/GROUND,
             active.vx/3,
             active.vy/4,
             active.angle/Math.PI,
-            active.omega/.1,
-            active.fuel/100
+            active.omega/.1
         ];
+
     }
 
     drawNetwork();
@@ -1383,6 +1371,7 @@ population=Array.from(
 );
 
 updateStats();
+
 update();
 
 </script>

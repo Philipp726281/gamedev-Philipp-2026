@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRAFFIC RUSH</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;overflow:hidden;background:#171b20;color:white;
+  font-family:Arial,sans-serif;
+}
+canvas{display:block}
+#hud{
+  position:absolute;top:15px;left:15px;right:15px;
+  display:flex;justify-content:space-between;pointer-events:none;
+}
+.box{
+  background:#111d;padding:12px 18px;border-radius:10px;
+  border:1px solid #ffffff16;min-width:100px;
+}
+#speed{font-size:30px;font-weight:900;color:#ffbd42}
+#menu,#gameOver{
+  position:fixed;inset:0;background:rgba(9,14,20,.97);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;z-index:5;overflow:auto;padding:20px;
+}
+#gameOver{display:none}
+.content{width:min(750px,96vw);padding:15px 0}
+h1{font-size:clamp(42px,8vw,72px);margin:0;letter-spacing:-3px}
+h1 span{color:#ffb52e}
+.sub{color:#9daab4;letter-spacing:4px;margin:8px 0 24px;font-size:12px}
+button{
+  background:#ffb52e;border:0;padding:13px 24px;
+  border-radius:8px;font-size:15px;font-weight:900;
+  cursor:pointer;transition:.15s;
+}
+button:hover{background:#ffd078;transform:translateY(-2px)}
+button:active{transform:scale(.96)}
+.secondary{background:#26323c;color:white}
+.sectionTitle{
+  color:#aaa;font-size:11px;font-weight:bold;
+  letter-spacing:2px;margin:22px 0 10px;
+}
+#cars{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;
+}
+.car{
+  background:#1b2630;border:2px solid #34414c;
+  border-radius:10px;padding:10px 5px;color:white;
+  min-width:0;
+}
+.car.selected{border-color:#ffb52e;background:#30302a}
+.carPreview{
+  height:45px;display:flex;align-items:center;justify-content:center;
+}
+.carShape{
+  width:28px;height:43px;border-radius:8px;
+  border:3px solid #ffffff55;position:relative;
+  box-shadow:0 3px 10px #0008;
+}
+.carShape:before,.carShape:after{
+  content:"";position:absolute;left:-5px;width:5px;height:12px;
+  background:#111;border-radius:2px;
+}
+.carShape:before{top:5px}
+.carShape:after{bottom:5px}
+.carName{font-size:11px;font-weight:bold;margin-top:5px}
+.carStat{font-size:10px;color:#aab4bc;margin-top:4px}
+.customSpeedArea{
+  display:none;background:#18232d;padding:14px;border-radius:12px;
+  border:1px solid #ffb52e55;margin-top:12px;text-align:left;
+}
+.customSpeedArea.visible{display:block}
+.customSpeedTop{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.customSpeedValue{font-size:22px;font-weight:900;color:#ffbd42}
+.customSpeedArea input{width:100%;margin:15px 0 5px;cursor:grab;accent-color:#ffb52e}
+.customSpeedHint{font-size:11px;color:#9daab4}
+#difficultyArea{
+  background:#18232d;padding:15px;border-radius:12px;
+  border:1px solid #ffffff16;
+}
+#difficultyLabel{
+  font-size:20px;font-weight:900;color:#ffbd42;
+}
+#difficultySlider{
+  width:100%;height:12px;margin:18px 0 9px;
+  appearance:none;border-radius:20px;outline:none;
+  background:linear-gradient(90deg,#51d68a 0%,#e5ce42 50%,#f14d42 100%);
+  cursor:grab;
+}
+#difficultySlider:active{cursor:grabbing}
+#difficultySlider::-webkit-slider-thumb{
+  appearance:none;width:27px;height:27px;border-radius:50%;
+  background:#fff;border:5px solid #ffb52e;
+  box-shadow:0 0 0 5px #ffb52e33,0 3px 12px #0009;
+  transition:transform .1s;
+}
+#difficultySlider:active::-webkit-slider-thumb{transform:scale(1.2)}
+#difficultySlider::-moz-range-thumb{
+  width:18px;height:18px;border-radius:50%;
+  background:white;border:5px solid #ffb52e;
+  box-shadow:0 0 0 5px #ffb52e33;
+}
+.sliderLabels{display:flex;justify-content:space-between;color:#89949d;font-size:10px}
+#difficultyDescription{color:#aab4bc;font-size:12px;margin-top:9px}
+.settings{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+#startButton{width:min(300px,90%);font-size:18px;margin-top:20px}
+#instructions{color:#89949d;font-size:12px;line-height:1.8;margin-top:18px}
+#mobile{
+  display:none;position:fixed;bottom:18px;left:0;right:0;
+  justify-content:space-between;padding:0 18px;pointer-events:none;
+}
+.mobileGroup{display:flex;gap:10px;pointer-events:auto}
+#mobile button{
+  width:62px;height:62px;border-radius:50%;padding:0;
+  background:#ffffff35;color:white;border:1px solid #ffffff55;
+}
+@media(max-width:650px){
+  #cars{grid-template-columns:repeat(4,1fr);gap:5px}
+  .car{padding:7px 2px}
+  .carName{font-size:9px}
+  .carStat{font-size:8px}
+  #mobile{display:flex}
+  #hud .box{padding:8px 10px;font-size:12px;min-width:75px}
+  #speed{font-size:23px}
+}
+</style>
+</head>
+<body>
+
+<div id="hud">
+  <div class="box">
+    <div style="color:#aaa;font-size:10px">OVERTAKEN</div>
+    <b id="overtakes">0</b>
+  </div>
+  <div class="box">
+    <div style="color:#aaa;font-size:10px">SPEED</div>
+    <span id="speed">0</span> KM/H
+  </div>
+  <div class="box">
+    <div style="color:#aaa;font-size:10px">SCORE</div>
+    <b id="score">0</b>
+  </div>
+</div>
+
+<div id="menu">
+  <div class="content">
+    <h1>TRAFFIC <span>RUSH</span></h1>
+    <div class="sub">OVERTAKE. SURVIVE. REPEAT.</div>
+
+    <div class="sectionTitle">CHOOSE YOUR CAR</div>
+    <div id="cars"></div>
+    <div class="customSpeedArea" id="customSpeedArea">
+      <div class="customSpeedTop">
+        <b>CUSTOM TOP SPEED</b>
+        <span class="customSpeedValue" id="customSpeedValue">300 KM/H</span>
+      </div>
+      <input id="customSpeedSlider" type="range" min="50" max="3000" step="10" value="300">
+      <div class="customSpeedHint">Set your own maximum speed: 50–3,000 km/h</div>
+    </div>
+
+    <div class="sectionTitle">DIFFICULTY</div>
+    <div id="difficultyArea">
+      <div id="difficultyLabel">NORMAL</div>
+      <input id="difficultySlider" type="range" min="1" max="5" step=".01" value="2">
+      <div class="sliderLabels">
+        <span>EASY</span><span>NORMAL</span><span>HARD</span>
+        <span>INSANE</span><span>EXTREME</span>
+      </div>
+      <div id="difficultyDescription">Normal traffic and balanced speeds.</div>
+    </div>
+
+    <div class="settings">
+      <button class="secondary" id="soundButton">🔊 SOUND ON</button>
+    </div>
+
+    <button id="startButton">START RACE →</button>
+
+    <div id="instructions">
+      W / ↑ Gas &nbsp; S / ↓ Brake &nbsp; A / ← Left &nbsp; D / → Right<br>
+      Overtake traffic. Don't crash.
+    </div>
+  </div>
+</div>
+
+<div id="gameOver">
+  <div class="content">
+    <h1 style="color:#ff554b">CRASH!</h1>
+    <div class="sub">YOUR RACE IS OVER</div>
+    <h2 id="finalScore">SCORE: 0</h2>
+    <p id="finalOvertakes" style="color:#aaa"></p>
+    <div class="sectionTitle">CHOOSE ANOTHER CAR</div>
+    <div id="carsAfter"></div>
+    <div class="customSpeedArea" id="customSpeedAreaAfter">
+      <div class="customSpeedTop">
+        <b>CUSTOM TOP SPEED</b>
+        <span class="customSpeedValue" id="customSpeedValueAfter">300 KM/H</span>
+      </div>
+      <input id="customSpeedSliderAfter" type="range" min="50" max="3000" step="10" value="300">
+      <div class="customSpeedHint">Set your own maximum speed: 50–3,000 km/h</div>
+    </div>
+    <div class="sectionTitle">CHANGE DIFFICULTY</div>
+    <div id="difficultyArea">
+      <div id="difficultyLabelAfter" style="font-size:20px;color:#ffbd42;font-weight:bold">NORMAL</div>
+      <input id="difficultySliderAfter" type="range" min="1" max="5" step=".01" value="2">
+      <div class="sliderLabels">
+        <span>EASY</span><span>NORMAL</span><span>HARD</span>
+        <span>INSANE</span><span>EXTREME</span>
+      </div>
+      <div id="difficultyDescriptionAfter" style="color:#aaa;font-size:12px;margin-top:9px"></div>
+    </div>
+    <div class="settings">
+      <button class="secondary" id="soundButtonAfter">🔊 SOUND ON</button>
+    </div>
+    <button id="retryButton" style="margin-top:15px">RACE AGAIN →</button>
+  </div>
+</div>
+
+<div id="mobile">
+  <div class="mobileGroup">
+    <button id="leftBtn">◀</button>
+    <button id="rightBtn">▶</button>
+  </div>
+  <div class="mobileGroup">
+    <button id="brakeBtn">▼</button>
+    <button id="gasBtn">▲</button>
+  </div>
+</div>
+
+<canvas id="game"></canvas>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+let W,H;
+function resize(){
+  W=canvas.width=innerWidth;
+  H=canvas.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+// --------------------------------------------------
+// CARS
+// --------------------------------------------------
+
+const cars=[
+  {name:"CITY",color:"#e83e35",max:190,accel:190,handling:1.05},
+  {name:"SPORT",color:"#328bd8",max:225,accel:220,handling:1.12},
+  {name:"GT-R",color:"#e6bd38",max:245,accel:205,handling:1.05},
+  {name:"MUSCLE",color:"#a24bd0",max:260,accel:240,handling:.85},
+  {name:"SUPERCAR",color:"#f2f2f2",max:290,accel:250,handling:1.08},
+  {name:"TRACK",color:"#22b58c",max:275,accel:225,handling:1.3},
+  {name:"HYPER",color:"#f47c32",max:330,accel:280,handling:1.15},
+  {name:"DRIFTER",color:"#d65b9d",max:230,accel:220,handling:.95},
+  {name:"CUSTOM",color:"#ffb52e",max:300,accel:300,handling:1.05,custom:true}
+];
+
+let selectedCar=0;
+let customMaxSpeed=300;
+
+function updateCustomSpeedUI(){
+  const visible=!!cars[selectedCar].custom;
+  document.getElementById("customSpeedArea").classList.toggle("visible",visible);
+  document.getElementById("customSpeedAreaAfter").classList.toggle("visible",visible);
+  document.getElementById("customSpeedSlider").value=customMaxSpeed;
+  document.getElementById("customSpeedSliderAfter").value=customMaxSpeed;
+  document.getElementById("customSpeedValue").textContent=customMaxSpeed+" KM/H";
+  document.getElementById("customSpeedValueAfter").textContent=customMaxSpeed+" KM/H";
+  cars[cars.length-1].max=customMaxSpeed;
+  document.querySelectorAll(".car").forEach((button,index)=>{
+    if(index===cars.length-1)button.querySelector(".carStat").textContent=customMaxSpeed+" KM/H";
+  });
+}
+
+function setCustomSpeed(value){
+  customMaxSpeed=Number(value);
+  cars[cars.length-1].max=customMaxSpeed;
+  updateCustomSpeedUI();
+  createCarButtons("cars");
+  createCarButtons("carsAfter");
+}
+
+function createCarButtons(containerId){
+  const container=document.getElementById(containerId);
+  container.innerHTML="";
+
+  cars.forEach((car,i)=>{
+    const button=document.createElement("button");
+    button.className="car"+(i===selectedCar?" selected":"");
+    button.innerHTML=`
+      <div class="carPreview">
+        <div class="carShape" style="background:${car.color}"></div>
+      </div>
+      <div class="carName">${car.name}</div>
+      <div class="carStat">${car.max} KM/H</div>
+    `;
+    button.onclick=()=>{
+      selectedCar=i;
+      createCarButtons("cars");
+      createCarButtons("carsAfter");
+      updateCustomSpeedUI();
+      playClick();
+    };
+    container.appendChild(button);
+  });
+}
+createCarButtons("cars");
+createCarButtons("carsAfter");
+updateCustomSpeedUI();
+
+document.getElementById("customSpeedSlider").addEventListener("input",e=>setCustomSpeed(e.target.value));
+document.getElementById("customSpeedSliderAfter").addEventListener("input",e=>setCustomSpeed(e.target.value));
+
+// --------------------------------------------------
+// DIFFICULTY
+// --------------------------------------------------
+
+const difficultyNames=["EASY","NORMAL","HARD","INSANE","EXTREME"];
+const difficultyDescriptions=[
+  "Weniger Verkehr und langsamere Autos. Perfekt zum Üben.",
+  "Normaler Verkehr mit unterschiedlichen Geschwindigkeiten.",
+  "Mehr Autos und weniger Platz zum Überholen.",
+  "Sehr dichter Verkehr mit schnellen Fahrzeugen.",
+  "Maximaler Verkehr. Extrem schnelle Autos. Kaum Fehler erlaubt."
+];
+
+let difficulty=2;
+
+function updateDifficulty(value,fromAfter=false){
+  difficulty=Number(value);
+  const level=Math.min(4,Math.floor(difficulty-.001));
+  const label=difficultyNames[level];
+  const description=difficultyDescriptions[level];
+
+  document.getElementById("difficultyLabel").textContent=label;
+  document.getElementById("difficultyDescription").textContent=description;
+
+  document.getElementById("difficultyLabelAfter").textContent=label;
+  document.getElementById("difficultyDescriptionAfter").textContent=description;
+
+  document.getElementById("difficultySlider").value=difficulty;
+  document.getElementById("difficultySliderAfter").value=difficulty;
+}
+
+document.getElementById("difficultySlider").addEventListener("input",e=>updateDifficulty(e.target.value));
+document.getElementById("difficultySliderAfter").addEventListener("input",e=>updateDifficulty(e.target.value,true));
+
+// --------------------------------------------------
+// SOUND
+// --------------------------------------------------
+
+let soundOn=true;
+let audio=null;
+let engineOsc=null;
+let engineGain=null;
+let engineFilter=null;
+
+function initAudio(){
+  if(audio)return;
+  audio=new (window.AudioContext||window.webkitAudioContext)();
+
+  engineOsc=audio.createOscillator();
+  engineOsc.type="sawtooth";
+
+  engineFilter=audio.createBiquadFilter();
+  engineFilter.type="lowpass";
+  engineFilter.frequency.value=350;
+
+  engineGain=audio.createGain();
+  engineGain.gain.value=0;
+
+  engineOsc.connect(engineFilter);
+  engineFilter.connect(engineGain);
+  engineGain.connect(audio.destination);
+  engineOsc.start();
+}
+
+function playTone(freq,duration,type="sine",volume=.12){
+  if(!soundOn)return;
+  initAudio();
+
+  const osc=audio.createOscillator();
+  const gain=audio.createGain();
+
+  osc.type=type;
+  osc.frequency.setValueAtTime(freq,audio.currentTime);
+  gain.gain.setValueAtTime(volume,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+
+  osc.connect(gain);
+  gain.connect(audio.destination);
+  osc.start();
+  osc.stop(audio.currentTime+duration);
+}
+
+function playClick(){playTone(500,.07,"sine",.06)}
+function playPass(){playTone(850,.12,"sine",.08)}
+function playCrash(){
+  playTone(90,.45,"sawtooth",.2);
+  setTimeout(()=>playTone(55,.35,"square",.12),90);
+}
+
+function updateEngineSound(){
+  if(!audio||!engineOsc)return;
+
+  const active=soundOn&&running;
+  const target=active?.035+(speed/300)*.08:0;
+  engineGain.gain.setTargetAtTime(target,audio.currentTime,.08);
+  engineOsc.frequency.setTargetAtTime(65+speed*2.2,audio.currentTime,.07);
+  engineFilter.frequency.setTargetAtTime(180+speed*5,audio.currentTime,.1);
+}
+
+function toggleSound(){
+  soundOn=!soundOn;
+  const label=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF";
+  document.getElementById("soundButton").textContent=label;
+  document.getElementById("soundButtonAfter").textContent=label;
+  if(!soundOn&&engineGain)engineGain.gain.setTargetAtTime(0,audio.currentTime,.05);
+  playClick();
+}
+document.getElementById("soundButton").onclick=toggleSound;
+document.getElementById("soundButtonAfter").onclick=toggleSound;
+
+// --------------------------------------------------
+// GAME
+// --------------------------------------------------
+
+const keys={};
+const touch={left:false,right:false,gas:false,brake:false};
+
+addEventListener("keydown",e=>{
+  keys[e.key.toLowerCase()]=true;
+  if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(e.key.toLowerCase()))e.preventDefault();
+});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+function bindTouch(id,key){
+  const el=document.getElementById(id);
+  el.addEventListener("pointerdown",e=>{e.preventDefault();touch[key]=true});
+  el.addEventListener("pointerup",()=>touch[key]=false);
+  el.addEventListener("pointerleave",()=>touch[key]=false);
+  el.addEventListener("pointercancel",()=>touch[key]=false);
+}
+bindTouch("leftBtn","left");
+bindTouch("rightBtn","right");
+bindTouch("gasBtn","gas");
+bindTouch("brakeBtn","brake");
+
+const gas=()=>keys.w||keys.arrowup||touch.gas;
+const brake=()=>keys.s||keys.arrowdown||touch.brake;
+const left=()=>keys.a||keys.arrowleft||touch.left;
+const right=()=>keys.d||keys.arrowright||touch.right;
+
+// Game canvas layout
+let running=false;
+let lastTime=0;
+let speed=0;
+let playerX=0;
+let roadOffset=0;
+let score=0;
+let overtakes=0;
+let time=0;
+let traffic=[];
+let spawnTimer=0;
+let roadWidth=0;
+let roadX=0;
+let laneWidth=0;
+let crashFlash=0;
+
+const playerY=0;
+const playerWidth=35;
+const playerHeight=67;
+
+const colors=[
+  "#e83e35","#328bd8","#e6bd38","#a24bd0",
+  "#f2f2f2","#22b58c","#f47c32","#d65b9d",
+  "#444e5a","#bdc6cf","#1e7a68","#e0a16c"
+];
+
+const types=[
+  {name:"COMPACT",width:29,height:54},
+  {name:"SEDAN",width:34,height:64},
+  {name:"SPORT",width:36,height:65},
+  {name:"SUV",width:42,height:73},
+  {name:"VAN",width:41,height:76},
+  {name:"TRUCK",width:47,height:88}
+];
+
+function layoutRoad(){
+  roadWidth=Math.min(660,W*.88);
+  roadX=(W-roadWidth)/2;
+  laneWidth=roadWidth/4;
+}
+
+function laneCenter(lane){
+  return roadX+laneWidth*(lane+.5);
+}
+
+function spawnTraffic(){
+  const lane=Math.floor(Math.random()*4);
+
+  if(traffic.some(c=>c.lane===lane&&c.y<190))return;
+
+  const type=types[Math.floor(Math.random()*types.length)];
+  const level=difficulty;
+  const minSpeed=[65,75,85,105,125][Math.floor(level)-1]||75;
+  const maxSpeed=[120,145,170,200,240][Math.floor(level)-1]||145;
+
+  traffic.push({
+    lane,
+    y:-100-Math.random()*120,
+    speed:minSpeed+Math.random()*(maxSpeed-minSpeed),
+    color:colors[Math.floor(Math.random()*colors.length)],
+    width:type.width,
+    height:type.height,
+    type:type.name,
+    passed:false
+  });
+}
+
+function drawCar(x,y,color,width,height,isPlayer=false){
+  ctx.save();
+  ctx.translate(x,y);
+
+  // shadow
+  ctx.fillStyle="#0007";
+  ctx.fillRect(-width/2+4,5,width,height);
+
+  // wheels
+  ctx.fillStyle="#101114";
+  ctx.fillRect(-width/2-4,-height*.3,5,16);
+  ctx.fillRect(width/2-1,-height*.3,5,16);
+  ctx.fillRect(-width/2-4,height*.2,5,16);
+  ctx.fillRect(width/2-1,height*.2,5,16);
+
+  // body
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.roundRect(-width/2,-height/2,width,height,7);
+  ctx.fill();
+
+  // windshield
+  ctx.fillStyle="#142b3b";
+  ctx.beginPath();
+  ctx.roundRect(-width*.36,-height*.25,width*.72,height*.26,4);
+  ctx.fill();
+
+  ctx.fillStyle="#8baebd";
+  ctx.fillRect(-width*.36,2,width*.72,7);
+
+  // lights
+  ctx.fillStyle="#fff2bd";
+  ctx.fillRect(-width*.4,-height/2,width*.27,5);
+  ctx.fillRect(width*.13,-height/2,width*.27,5);
+
+  ctx.fillStyle="#ff2828";
+  ctx.fillRect(-width*.4,height/2-5,width*.27,5);
+  ctx.fillRect(width*.13,height/2-5,width*.27,5);
+
+  if(isPlayer){
+    ctx.strokeStyle="#fff";
+    ctx.lineWidth=2;
+    ctx.strokeRect(-width/2-1,-height/2-1,width+2,height+2);
+  }
+
+  ctx.restore();
+}
+
+function startGame(){
+  initAudio();
+  if(audio.state==="suspended")audio.resume();
+
+  document.getElementById("menu").style.display="none";
+  document.getElementById("gameOver").style.display="none";
+
+  running=true;
+  speed=80;
+  playerX=0;
+  roadOffset=0;
+  score=0;
+  overtakes=0;
+  time=0;
+  traffic=[];
+  spawnTimer=.3;
+  crashFlash=0;
+
+  lastTime=performance.now();
+  requestAnimationFrame(loop);
+}
+
+function update(dt){
+  time+=dt;
+  crashFlash=Math.max(0,crashFlash-dt);
+
+  const car=cars[selectedCar];
+
+  // Acceleration
+  if(gas())speed+=car.accel*dt;
+  else speed-=30*dt;
+
+  if(brake())speed-=260*dt;
+
+  speed=Math.max(0,Math.min(car.max,speed));
+
+  // Steering
+  let steering=0;
+  if(left())steering-=1;
+  if(right())steering+=1;
+
+  playerX+=steering*(210+speed*.65)*car.handling*dt;
+
+  const maxX=roadWidth/2-playerWidth/2-14;
+  playerX=Math.max(-maxX,Math.min(maxX,playerX));
+
+  // Traffic spawn: more traffic at higher difficulty
+  const spawnInterval=Math.max(.22,1.15-(difficulty*.16)-time*.002);
+  spawnTimer-=dt;
+
+  if(spawnTimer<=0){
+    spawnTraffic();
+    spawnTimer=spawnInterval*(.7+Math.random()*.6);
+  }
+
+  // Road scroll
+  roadOffset+=speed*dt*1.5;
+
+  // Traffic movement
+  for(let i=traffic.length-1;i>=0;i--){
+    const carAI=traffic[i];
+    const relativeSpeed=speed-carAI.speed;
+    carAI.y+=relativeSpeed*dt*1.4;
+
+    if(!carAI.passed&&carAI.y>H-135+playerHeight/2){
+      carAI.passed=true;
+      overtakes++;
+      score+=100;
+      playPass();
+    }
+
+    const dx=Math.abs(W/2+playerX-laneCenter(carAI.lane));
+    const dy=Math.abs((H-135)-carAI.y);
+
+    if(dx<(playerWidth+carAI.width)/2-6&&
+       dy<(playerHeight+carAI.height)/2-7){
+      endGame();
+      return;
+    }
+
+    if(carAI.y>H+130)traffic.splice(i,1);
+  }
+
+  score+=Math.floor(speed*dt*.06);
+  updateEngineSound();
+
+  document.getElementById("speed").textContent=Math.round(speed);
+  document.getElementById("score").textContent=score;
+  document.getElementById("overtakes").textContent=overtakes;
+}
+
+function draw(){
+  layoutRoad();
+  ctx.clearRect(0,0,W,H);
+
+  // grass
+  ctx.fillStyle="#477c43";
+  ctx.fillRect(0,0,W,H);
+
+  // roadside details
+  for(let i=0;i<45;i++){
+    const y=(i*117+roadOffset*.45)%H;
+    const side=i%2===0?-1:1;
+    const x=side===-1?roadX-25:roadX+roadWidth+25;
+
+    ctx.fillStyle=i%3===0?"#315d32":"#568b4b";
+    ctx.beginPath();
+    ctx.arc(x,y,5+(i%4)*2,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  // road
+  ctx.fillStyle="#36393e";
+  ctx.fillRect(roadX,0,roadWidth,H);
+
+  // road edges
+  ctx.fillStyle="#eee";
+  ctx.fillRect(roadX-9,0,9,H);
+  ctx.fillRect(roadX+roadWidth,0,9,H);
+
+  for(let y=-80;y<H+80;y+=80){
+    const yy=(y+roadOffset*1.5)%80;
+    ctx.fillStyle="#e34b40";
+    ctx.fillRect(roadX-9,yy,9,40);
+    ctx.fillRect(roadX+roadWidth,yy,9,40);
+  }
+
+  // lane markings
+  ctx.fillStyle="#eee";
+  for(let lane=1;lane<4;lane++){
+    const x=roadX+laneWidth*lane;
+    for(let y=-100;y<H+100;y+=110){
+      const yy=(y+roadOffset)%110;
+      ctx.fillRect(x-2,yy,4,55);
+    }
+  }
+
+  // traffic
+  traffic.forEach(car=>{
+    drawCar(laneCenter(car.lane),car.y,car.color,car.width,car.height);
+  });
+
+  // player
+  drawCar(W/2+playerX,H-135,cars[selectedCar].color,playerWidth,playerHeight,true);
+
+  // speed effects
+  if(speed>cars[selectedCar].max*.75){
+    ctx.strokeStyle="#ffffff22";
+    ctx.lineWidth=2;
+    for(let i=0;i<12;i++){
+      const x=roadX+Math.random()*roadWidth;
+      const y=Math.random()*H;
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.lineTo(x,y+25);
+      ctx.stroke();
+    }
+  }
+
+  if(crashFlash>0){
+    ctx.fillStyle=`rgba(255,30,20,${crashFlash*.5})`;
+    ctx.fillRect(0,0,W,H);
+  }
+}
+
+function endGame(){
+  running=false;
+  playCrash();
+
+  document.getElementById("finalScore").textContent="SCORE: "+score;
+  document.getElementById("finalOvertakes").textContent=
+    "Overtakes: "+overtakes+"  |  Time: "+time.toFixed(1)+"s";
+
+  document.getElementById("gameOver").style.display="flex";
+}
+
+function loop(now){
+  if(!running)return;
+  const dt=Math.min((now-lastTime)/1000,.04);
+  lastTime=now;
+
+  update(dt);
+  draw();
+
+  if(running)requestAnimationFrame(loop);
+}
+
+document.getElementById("startButton").onclick=startGame;
+document.getElementById("retryButton").onclick=startGame;
+
+// initial draw
+layoutRoad();
+draw();
+
+</script>
+</body>
+</html>

@@ -1,64 +1,311 @@
-<h1 align="center">t2a19-json-fred.html</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philipp's JSON Explorer</title>
 
-  <script>
-    async function fetchData(url){
-      const response = await fetch(url);
-      const data =  await response.json();
-      console.log(data);
+<style>
+* {
+    box-sizing: border-box;
+}
 
-      const myJson = JSON.stringify(data, null, 2);
-      document.getElementById('myDiv1').innerHTML = `<pre>${myJson}</pre>`;
+body {
+    margin: 0;
+    padding: 30px 15px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #101827, #243b55);
+    color: white;
+    min-height: 100vh;
+}
 
-      document.getElementById('myDiv1').innerHTML += `<img src="${data.image}" alt="Random Image" style="max-width: 100%; height: auto;">`;
-   
-   }
+h1 {
+    font-size: 38px;
+    color: #38bdf8;
+    margin-bottom: 10px;
+    text-align: center;
+}
 
-  </script>
+.subtitle {
+    color: #cbd5e1;
+    margin-bottom: 30px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.container, .info-container {
+    max-width: 850px;
+    margin: 25px auto;
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+select {
+    width: 80%;
+    max-width: 400px;
+    display: block;
+    margin: auto;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid #38bdf8;
+    background: #0f172a;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: #818cf8;
+}
+
+#myDiv1 {
+    margin-top: 25px;
+    padding: 20px;
+    background: #0f172a;
+    border-radius: 12px;
+    min-height: 100px;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+pre {
+    text-align: left;
+    white-space: pre-wrap;
+    color: #86efac;
+    font-size: 14px;
+    overflow-x: auto;
+}
+
+img {
+    max-width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 14px;
+    margin-top: 20px;
+    box-shadow: 0 5px 20px rgba(56,189,248,0.2);
+}
+
+.footer {
+    margin-top: 25px;
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+}
+
+.loading {
+    color: #38bdf8;
+}
+
+.info-container h2 {
+    color: #38bdf8;
+    text-align: center;
+    font-size: 28px;
+}
+
+.info-container h3 {
+    color: #86efac;
+    margin-bottom: 8px;
+}
+
+.info-container p {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+.info-card {
+    background: #0f172a;
+    padding: 18px;
+    margin: 15px 0;
+    border-radius: 12px;
+    border-left: 4px solid #38bdf8;
+}
+
+.info-container pre {
+    background: #020617;
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌐 JSON Explorer</h1>
+
+    <p class="subtitle">
+        Welcome to Philipp's JSON Explorer!
+        Choose something below and explore the internet.
+    </p>
+
+    <select id="mySelect" onchange="fetchData(this.value)">
+        <option value="">Choose something...</option>
+        <option value="https://randomfox.ca/floof/">🦊 Random Fox</option>
+        <option value="https://dog.ceo/api/breeds/image/random">🐶 Random Dog</option>
+        <option value="https://api.thecatapi.com/v1/images/search">🐱 Random Cat</option>
+        <option value="https://random.dog/woof.json">🐕 Random Dog JSON</option>
+        <option value="https://official-joke-api.appspot.com/random_joke">😂 Random Joke</option>
+        <option value="https://api.agify.io/?name=fred">🎂 Age Guess</option>
+        <option value="https://api.nationalize.io/?name=fred">🌎 Nationality Guess</option>
+        <option value="https://api.genderize.io/?name=fred">👤 Gender Guess</option>
+    </select>
+
+    <div id="myDiv1">
+        <h2>👋 Hello!</h2>
+        <p>Select an option above to see JSON data and pictures.</p>
+    </div>
+
+</div>
 
 
-  <select id="mySelect" size="1" onchange="fetchData(this.value)">
-    <option ></option>  
-    <option value="https://randomfox.ca/floof/">randomfox</option>
-  </select><br><br>
+<!-- JSON INFORMATION SECTION -->
 
-  <div id="myDiv1">...</div>
-Why is JSON useful to the internet?
+<div class="info-container">
 
-Sharing data: Websites use JSON to send and receive information between servers and users.
+    <h2>📚 Why is JSON useful to the internet?</h2>
 
-Communication between apps: JSON allows different applications and systems to exchange information, even if they are built using different programming languages.
+    <div class="info-card">
+        <h3>📤 1. Sharing Data</h3>
+        <p>
+        Websites use JSON to send and receive information
+        between servers and users.
+        </p>
+    </div>
 
-Easy to read: JSON organizes information into key-value pairs, making it easier for computers and people to understand.
+    <div class="info-card">
+        <h3>📱 2. Communication Between Apps</h3>
+        <p>
+        JSON allows different applications and systems to exchange
+        information, even if they are built using different
+        programming languages.
+        </p>
+    </div>
 
-Loading website content: Websites use JSON to load information without refreshing the entire page, such as messages, weather updates, and social media posts.
+    <div class="info-card">
+        <h3>👀 3. Easy to Read</h3>
+        <p>
+        JSON organizes information into key-value pairs,
+        making it easier for computers and people to understand.
+        </p>
+    </div>
 
-Storing information: JSON can store information like usernames, scores, settings, and product details.
+    <div class="info-card">
+        <h3>⚡ 4. Loading Website Content</h3>
+        <p>
+        Websites use JSON to load information without refreshing
+        the entire page, such as messages, weather updates,
+        and social media posts.
+        </p>
+    </div>
 
-Example of JSON
+    <div class="info-card">
+        <h3>💾 5. Storing Information</h3>
+        <p>
+        JSON can store information like usernames, scores,
+        settings, and product details.
+        </p>
+    </div>
 
-json
-{
+    <h2>💻 Example of JSON</h2>
+
+    <div class="info-card">
+        <h3>🌎 Weather Example</h3>
+        <pre>{
   "location": "Mission",
   "Date": 16,
   "weather": "Crappy"
-}
-Why is JSON useful to the internet?
+}</pre>
+    </div>
 
-Sharing data: Websites use JSON to send and receive information between servers and users.
-
-Communication between apps: JSON allows different applications and systems to exchange information, even if they are built using different programming languages.
-
-Easy to read: JSON organizes information into key-value pairs, making it easier for computers and people to understand.
-
-Loading website content: Websites use JSON to load information without refreshing the entire page, such as messages, weather updates, and social media posts.
-
-Storing information: JSON can store information like usernames, scores, settings, and product details.
-
-Example of JSON
-
-json
-{
+    <div class="info-card">
+        <h3>👤 Person Example</h3>
+        <pre>{
   "name": "John",
   "age": 16,
   "city": "Vancouver"
+}</pre>
+    </div>
+
+    <div class="info-card">
+        <h3>✅ Conclusion</h3>
+        <p>
+        JSON is important to the internet because it makes it
+        easy for websites, apps, and servers to communicate
+        and exchange information quickly and efficiently.
+        Without JSON, sharing data between different systems
+        would often be more complicated.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="footer">
+    Created by Philipp | JSON Explorer 2026
+</div>
+
+
+<script>
+async function fetchData(url) {
+
+    if (!url) return;
+
+    const output = document.getElementById('myDiv1');
+
+    output.innerHTML = '<h2 class="loading">Loading... ⏳</h2>';
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("API could not be loaded");
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+
+        const myJson = JSON.stringify(data, null, 2);
+
+        output.innerHTML =
+            `<h2>📦 JSON Data</h2><pre>${myJson}</pre>`;
+
+        let imageUrl = "";
+
+        if (url.includes("randomfox")) {
+            imageUrl = data.image;
+        }
+        else if (url.includes("dog.ceo")) {
+            imageUrl = data.message;
+        }
+        else if (url.includes("thecatapi")) {
+            imageUrl = data[0].url;
+        }
+        else if (url.includes("random.dog")) {
+            imageUrl = data.url;
+        }
+
+        if (imageUrl && /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(imageUrl)) {
+            output.innerHTML += `
+                <h2>🖼️ Random Image</h2>
+                <img src="${imageUrl}" alt="Random Animal">
+            `;
+        }
+
+    } catch (error) {
+        output.innerHTML = `
+            <h2 style="color:#f87171;">❌ Error</h2>
+            <p>Something went wrong. Please try again!</p>
+        `;
+        console.error(error);
+    }
 }
+</script>
+
+</body>
+</html>

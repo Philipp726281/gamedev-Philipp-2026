@@ -18,3 +18,47 @@ json
   "age": 16,
   "city": "Vancouver"
 }
+Why is JSON useful to the internet?
+
+Sharing data: Websites use JSON to send and receive information between servers and users.
+
+Communication between apps: JSON allows different applications and systems to exchange information, even if they are built using different programming languages.
+
+Easy to read: JSON organizes information into key-value pairs, making it easier for computers and people to understand.
+
+Loading website content: Websites use JSON to load information without refreshing the entire page, such as messages, weather updates, and social media posts.
+
+Storing information: JSON can store information like usernames, scores, settings, and product details.
+
+Example of JSON
+
+json
+{
+  "name": "John",
+  "age": 16,
+  "city": "Vancouver"
+}
+<h1 align="center">t2a19-json-fred.html</h1>
+
+  <script>
+    async function fetchData(url){
+      const response = await fetch(url);
+      const data =  await response.json();
+      console.log(data);
+
+      const myJson = JSON.stringify(data, null, 2);
+      document.getElementById('myDiv1').innerHTML = `<pre>${myJson}</pre>`;
+
+      document.getElementById('myDiv1').innerHTML += `<img src="${data.image}" alt="Random Image" style="max-width: 100%; height: auto;">`;
+   
+   }
+
+  </script>
+
+
+  <select id="mySelect" size="1" onchange="fetchData(this.value)">
+    <option ></option>  
+    <option value="https://randomfox.ca/floof/">randomfox</option>
+  </select><br><br>
+
+  <div id="myDiv1">...</div>

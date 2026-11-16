@@ -4,422 +4,536 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T2A20 Sort - Philipp</title>
-
+<title>Sorting Visualizer</title>
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px;
+  background:#111820;
+  color:#eaf0f6;
+  font-family:Arial,sans-serif;
 }
-
-body {
-    margin: 0;
-    padding: 30px 15px;
-    font-family: Arial, sans-serif;
-    background: #101827;
-    color: white;
+h1{text-align:center;margin:5px 0 20px}
+.panel{
+  max-width:1200px;
+  margin:auto;
+  background:#1b2632;
+  padding:18px;
+  border-radius:12px;
+  border:1px solid #344454;
 }
-
-.container {
-    max-width: 850px;
-    margin: auto;
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:15px;
 }
-
-h1 {
-    text-align: center;
-    color: #60a5fa;
-    font-size: 32px;
+button,select,input{
+  background:#293949;
+  color:white;
+  border:1px solid #53677c;
+  border-radius:6px;
+  padding:9px 12px;
+  font-size:14px;
 }
-
-.subtitle {
-    text-align: center;
-    color: #9ca3af;
-    margin-bottom: 30px;
+button{cursor:pointer}
+button:hover{background:#3a5065}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=range]{padding:0;accent-color:#56a8ff}
+input[type=number]{width:95px}
+label{font-size:14px}
+#chartBox{
+  width:100%;
+  height:430px;
+  background:#0d141c;
+  border:1px solid #344454;
+  border-radius:8px;
+  overflow:hidden;
 }
-
-.panel {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #334155;
+canvas{width:100%;height:100%;display:block}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;
+  margin-top:15px;
 }
-
-h2 {
-    color: #60a5fa;
-    margin-top: 0;
+.stat{
+  background:#263646;
+  padding:13px;
+  border-radius:7px;
+  text-align:center;
 }
-
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    margin: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.2s;
+.stat strong{
+  display:block;
+  font-size:22px;
+  margin-top:5px;
+  color:#78bdff;
 }
-
-button:hover {
-    background: #3b82f6;
-    transform: translateY(-2px);
+#status{text-align:center;margin:14px 0;color:#a9c9e8}
+.legend{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-top:12px;
+  font-size:13px;
 }
-
-.random {
-    background: #475569;
+.dot{
+  display:inline-block;
+  width:10px;height:10px;
+  border-radius:2px;
+  margin-right:5px;
 }
-
-.simple {
-    background: #059669;
-}
-
-.quick {
-    background: #9333ea;
-}
-
-input {
-    background: #0f172a;
-    border: 1px solid #475569;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    width: 100px;
-}
-
-#myDiv01 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-    min-height: 65px;
-}
-
-.number {
-    background: #334155;
-    border: 2px solid #60a5fa;
-    border-radius: 10px;
-    padding: 15px 20px;
-    font-size: 23px;
-    font-weight: bold;
-    min-width: 55px;
-    text-align: center;
-    animation: appear 0.3s;
-}
-
-@keyframes appear {
-    from {opacity: 0; transform: translateY(10px);}
-    to {opacity: 1; transform: translateY(0);}
-}
-
-#status {
-    color: #a5b4fc;
-    margin-top: 15px;
-    min-height: 20px;
-}
-
-pre {
-    background: #0b1220;
-    padding: 18px;
-    border-radius: 10px;
-    overflow-x: auto;
-    color: #a7f3d0;
-    line-height: 1.6;
-    font-size: 13px;
-}
-
-.description {
-    color: #cbd5e1;
-    line-height: 1.6;
-}
-
 </style>
 </head>
-
 <body>
 
-<div class="container">
-
-<h1>T2A20 SORT - PHILIPP</h1>
-<p class="subtitle">Sorting Algorithms – Bubble Sort, Simple Sort & Quick Sort</p>
+<h1>Sorting Visualizer</h1>
 
 <div class="panel">
 
-<h2>1. Number Generator</h2>
+  <div class="controls">
+    <label>Algorithm:
+      <select id="algorithm">
+        <option value="bubble">Bubble Sort</option>
+        <option value="simple">Simple Sort</option>
+        <option value="quick">Quick Sort</option>
+      </select>
+    </label>
 
-<p class="description">
-Generate random numbers and sort them using different algorithms.
-</p>
+    <label>Numbers:
+      <input id="amount" type="number" min="2" max="10000" value="300">
+    </label>
 
-<label>Number of cards:</label>
-<input type="number" id="amount" value="10" min="2" max="52">
+    <button onclick="generate()">Generate</button>
+    <button onclick="startSort()" id="startBtn">Start</button>
+    <button onclick="pauseSort()">Pause</button>
+    <button onclick="resetSort()">Reset</button>
+    <button onclick="nextStep()">Next Step</button>
+    <button onclick="instantSort()">Instant</button>
+  </div>
 
-<br><br>
+  <div class="controls">
+    <label>Speed:
+      <input id="speed" type="range" min="1" max="100" value="50">
+      <span id="speedText">50</span>
+    </label>
 
-<button class="random" onclick="randomCards()">Set Random</button>
-<button onclick="showCards()">Show</button>
+    <label>
+      <input type="checkbox" id="turbo">
+      Turbo
+    </label>
+  </div>
 
-<div id="myDiv01"></div>
+  <div id="chartBox">
+    <canvas id="chart"></canvas>
+  </div>
 
-<p id="status">Generate numbers to begin.</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#4b9cff"></i>Unsorted</span>
+    <span><i class="dot" style="background:#ffca55"></i>Comparing</span>
+    <span><i class="dot" style="background:#f16d65"></i>Swapping</span>
+    <span><i class="dot" style="background:#50d890"></i>Sorted</span>
+  </div>
 
-</div>
+  <div class="stats">
+    <div class="stat">Numbers<strong id="count">300</strong></div>
+    <div class="stat">Comparisons<strong id="comparisons">0</strong></div>
+    <div class="stat">Swaps<strong id="swaps">0</strong></div>
+    <div class="stat">Time<strong id="time">0.00 s</strong></div>
+    <div class="stat">Progress<strong id="progress">0%</strong></div>
+  </div>
 
-<div class="panel">
-
-<h2>2. Sorting Algorithms</h2>
-
-<p class="description">
-Choose one of the three sorting methods.
-</p>
-
-<button class="simple" onclick="simpleSort()">Simple Sort</button>
-
-<button onclick="bubbleSort()">Bubble Sort</button>
-
-<button class="quick" onclick="quickSortStart()">Quick Sort</button>
-
-<button class="random" onclick="resetCards()">Reset</button>
-
-</div>
-
-<div class="panel">
-
-<h2>3. How do they work?</h2>
-
-<h3 style="color:#34d399">Simple Sort</h3>
-<p class="description">
-Finds the smallest number in the unsorted part and moves it to the next position.
-</p>
-
-<h3 style="color:#60a5fa">Bubble Sort</h3>
-<p class="description">
-Compares two neighboring numbers. If the first is bigger, they switch places.
-This repeats until everything is sorted.
-</p>
-
-<h3 style="color:#c084fc">Quick Sort</h3>
-<p class="description">
-Chooses a pivot number. Smaller numbers go to the left and bigger numbers go to the right.
-Then it repeats this process on both sides.
-</p>
-
-</div>
-
-<div class="panel">
-
-<h2>4. Simple Code Examples</h2>
-
-<h3 style="color:#34d399">Simple Sort</h3>
-
-<pre>
-let numbers = [5, 2, 8, 1, 4];
-
-for (let i = 0; i < numbers.length; i++) {
-    for (let j = i + 1; j < numbers.length; j++) {
-
-        if (numbers[i] > numbers[j]) {
-            let temp = numbers[i];
-            numbers[i] = numbers[j];
-            numbers[j] = temp;
-        }
-
-    }
-}
-
-console.log(numbers);
-</pre>
-
-<h3 style="color:#60a5fa">Bubble Sort</h3>
-
-<pre>
-let numbers = [5, 2, 8, 1, 4];
-
-for (let i = 0; i < numbers.length - 1; i++) {
-
-    for (let j = 0; j < numbers.length - 1 - i; j++) {
-
-        if (numbers[j] > numbers[j + 1]) {
-
-            let temp = numbers[j];
-            numbers[j] = numbers[j + 1];
-            numbers[j + 1] = temp;
-
-        }
-    }
-}
-
-console.log(numbers);
-</pre>
-
-<h3 style="color:#c084fc">Quick Sort</h3>
-
-<pre>
-function quickSort(numbers) {
-
-    if (numbers.length <= 1) {
-        return numbers;
-    }
-
-    let pivot = numbers[0];
-
-    let smaller = numbers.slice(1).filter(n => n <= pivot);
-    let bigger = numbers.slice(1).filter(n => n > pivot);
-
-    return [
-        ...quickSort(smaller),
-        pivot,
-        ...quickSort(bigger)
-    ];
-}
-
-console.log(quickSort([5, 2, 8, 1, 4]));
-</pre>
-
-</div>
-
+  <div id="status">Ready</div>
 </div>
 
 <script>
+const canvas = document.getElementById("chart");
+const ctx = canvas.getContext("2d");
 
-let myMax = 10;
-let myCards = [];
-let originalCards = [];
+let numbers = [];
+let original = [];
+let generator = null;
+let running = false;
+let finished = false;
+let timer = null;
 
-function randomCards() {
+let comparisons = 0;
+let swaps = 0;
+let steps = 0;
+let totalEstimate = 1;
+let startTime = 0;
+let elapsed = 0;
 
-    myMax = Math.max(2, Math.min(52,
-        Number(document.getElementById("amount").value) || 10));
+let highlightA = -1;
+let highlightB = -1;
+let highlightType = "";
+let sortedFrom = Infinity;
+let sortedIndices = new Set();
 
-    myCards = [];
+function resizeCanvas(){
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1,Math.floor(rect.width*dpr));
+  canvas.height = Math.max(1,Math.floor(rect.height*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  draw();
+}
 
-    for (let i = 0; i < myMax; i++) {
-        myCards.push(Math.floor(Math.random() * 100));
+window.addEventListener("resize",resizeCanvas);
+
+function updateStats(){
+  document.getElementById("count").textContent=numbers.length;
+  document.getElementById("comparisons").textContent=comparisons.toLocaleString();
+  document.getElementById("swaps").textContent=swaps.toLocaleString();
+
+  const currentTime=elapsed+(running?(performance.now()-startTime)/1000:0);
+  document.getElementById("time").textContent=currentTime.toFixed(2)+" s";
+
+  const percent=finished?100:Math.min(99,Math.floor(steps/totalEstimate*100));
+  document.getElementById("progress").textContent=percent+"%";
+}
+
+function draw(){
+  const w=canvas.clientWidth;
+  const h=canvas.clientHeight;
+  if(!w || !h)return;
+
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#0d141c";
+  ctx.fillRect(0,0,w,h);
+
+  if(numbers.length===0)return;
+
+  const maxValue=Math.max(...numbers);
+  const minValue=Math.min(...numbers);
+  const range=Math.max(1,maxValue-minValue);
+  const barWidth=w/numbers.length;
+
+  for(let i=0;i<numbers.length;i++){
+    const value=numbers[i];
+    const barHeight=Math.max(1,((value-minValue)/range)*(h-12));
+    const x=i*barWidth;
+    const y=h-barHeight;
+
+    let color="#4b9cff";
+
+    if(finished || sortedIndices.has(i) || i>=sortedFrom){
+      color="#50d890";
     }
 
-    originalCards = [...myCards];
-
-    showCards();
-    document.getElementById("status").innerText =
-        "Random numbers generated!";
-}
-
-function showCards() {
-
-    let output = "";
-
-    for (let i = 0; i < myCards.length; i++) {
-        output += '<div class="number">' + myCards[i] + '</div>';
+    if(i===highlightA || i===highlightB){
+      color=highlightType==="swap"?"#f16d65":"#ffca55";
     }
 
-    document.getElementById("myDiv01").innerHTML = output;
+    ctx.fillStyle=color;
+    ctx.fillRect(x,y,Math.max(1,barWidth),barHeight);
+  }
 }
 
-function resetCards() {
+function generate(){
+  pauseSort();
 
-    myCards = [...originalCards];
-    showCards();
+  let amount=parseInt(document.getElementById("amount").value);
+  if(!Number.isFinite(amount))amount=300;
+  amount=Math.max(2,Math.min(10000,amount));
+  document.getElementById("amount").value=amount;
 
-    document.getElementById("status").innerText =
-        "Original numbers restored.";
+  numbers=Array.from({length:amount},()=>Math.floor(Math.random()*1000)+1);
+  original=[...numbers];
+
+  comparisons=0;
+  swaps=0;
+  steps=0;
+  elapsed=0;
+  finished=false;
+  generator=null;
+
+  highlightA=-1;
+  highlightB=-1;
+  highlightType="";
+  sortedFrom=Infinity;
+  sortedIndices.clear();
+
+  totalEstimate=Math.max(1,amount*amount);
+  document.getElementById("status").textContent="New numbers generated";
+  updateStats();
+  draw();
 }
 
-// SIMPLE SORT
-function simpleSort() {
+function resetSort(){
+  pauseSort();
+  numbers=[...original];
+  comparisons=0;
+  swaps=0;
+  steps=0;
+  elapsed=0;
+  finished=false;
+  generator=null;
+  highlightA=-1;
+  highlightB=-1;
+  highlightType="";
+  sortedFrom=Infinity;
+  sortedIndices.clear();
+  document.getElementById("status").textContent="Reset";
+  updateStats();
+  draw();
+}
 
-    for (let i = 0; i < myCards.length; i++) {
+function* bubbleSort(){
+  const n=numbers.length;
+  for(let end=n-1;end>0;end--){
+    for(let i=0;i<end;i++){
+      comparisons++;
+      highlightA=i;
+      highlightB=i+1;
+      highlightType="compare";
 
-        let smallest = i;
+      if(numbers[i]>numbers[i+1]){
+        const temp=numbers[i];
+        numbers[i]=numbers[i+1];
+        numbers[i+1]=temp;
+        swaps++;
+        highlightType="swap";
+      }
 
-        for (let j = i + 1; j < myCards.length; j++) {
+      steps++;
+      yield;
 
-            if (myCards[j] < myCards[smallest]) {
-                smallest = j;
-            }
+    }
+    sortedIndices.add(end);
+  }
+  sortedIndices.add(0);
+}
 
+function* simpleSort(){
+  const n=numbers.length;
+  for(let i=0;i<n-1;i++){
+    let min=i;
+
+    for(let j=i+1;j<n;j++){
+      comparisons++;
+      highlightA=min;
+      highlightB=j;
+      highlightType="compare";
+
+      if(numbers[j]<numbers[min])min=j;
+
+      steps++;
+      yield;
+    }
+
+    if(min!==i){
+      const temp=numbers[i];
+      numbers[i]=numbers[min];
+      numbers[min]=temp;
+      swaps++;
+      highlightA=i;
+      highlightB=min;
+      highlightType="swap";
+      yield;
+    }
+
+    sortedIndices.add(i);
+  }
+  sortedIndices.add(n-1);
+}
+
+function* quickSort(){
+  const stack=[[0,numbers.length-1]];
+
+  while(stack.length){
+    const [low,high]=stack.pop();
+    if(low>=high){
+      if(low===high)sortedIndices.add(low);
+      continue;
+    }
+
+    const pivot=numbers[high];
+    let i=low-1;
+
+    for(let j=low;j<high;j++){
+      comparisons++;
+      highlightA=j;
+      highlightB=high;
+      highlightType="compare";
+
+      if(numbers[j]<=pivot){
+        i++;
+        if(i!==j){
+          const temp=numbers[i];
+          numbers[i]=numbers[j];
+          numbers[j]=temp;
+          swaps++;
+          highlightA=i;
+          highlightB=j;
+          highlightType="swap";
         }
+      }
 
-        let temp = myCards[i];
-        myCards[i] = myCards[smallest];
-        myCards[smallest] = temp;
-
+      steps++;
+      yield;
     }
 
-    showCards();
-
-    document.getElementById("status").innerText =
-        "Simple Sort completed!";
-}
-
-// BUBBLE SORT
-function bubbleSort() {
-
-    for (let i = 0; i < myCards.length - 1; i++) {
-
-        for (let j = 0; j < myCards.length - 1 - i; j++) {
-
-            if (myCards[j] > myCards[j + 1]) {
-
-                let temp = myCards[j];
-                myCards[j] = myCards[j + 1];
-                myCards[j + 1] = temp;
-
-            }
-
-        }
-
+    const pivotIndex=i+1;
+    if(pivotIndex!==high){
+      const temp=numbers[pivotIndex];
+      numbers[pivotIndex]=numbers[high];
+      numbers[high]=temp;
+      swaps++;
     }
 
-    showCards();
+    sortedIndices.add(pivotIndex);
+    highlightA=pivotIndex;
+    highlightB=high;
+    highlightType="swap";
+    yield;
 
-    document.getElementById("status").innerText =
-        "Bubble Sort completed!";
+    stack.push([low,pivotIndex-1]);
+    stack.push([pivotIndex+1,high]);
+  }
+
+  for(let i=0;i<numbers.length;i++)sortedIndices.add(i);
 }
 
-// QUICK SORT
-function quickSortStart() {
+function prepare(){
+  comparisons=0;
+  swaps=0;
+  steps=0;
+  elapsed=0;
+  finished=false;
+  sortedFrom=Infinity;
+  sortedIndices.clear();
 
-    myCards = quickSort(myCards);
+  highlightA=-1;
+  highlightB=-1;
+  highlightType="";
 
-    showCards();
+  const algorithm=document.getElementById("algorithm").value;
+  const n=numbers.length;
 
-    document.getElementById("status").innerText =
-        "Quick Sort completed!";
+  if(algorithm==="bubble"){
+    generator=bubbleSort();
+    totalEstimate=Math.max(1,n*(n-1)/2);
+  }else if(algorithm==="simple"){
+    generator=simpleSort();
+    totalEstimate=Math.max(1,n*(n-1)/2);
+  }else{
+    generator=quickSort();
+    totalEstimate=Math.max(1,n*Math.log2(n)*2);
+  }
 }
 
-function quickSort(numbers) {
+function advance(){
+  if(!generator || finished)return false;
 
-    if (numbers.length <= 1) {
-        return numbers;
-    }
+  const result=generator.next();
 
-    let pivot = numbers[0];
+  if(result.done){
+    finished=true;
+    running=false;
+    highlightA=-1;
+    highlightB=-1;
+    highlightType="";
+    document.getElementById("status").textContent="Sorting completed!";
+    return false;
+  }
 
-    let smaller = [];
-    let bigger = [];
-
-    for (let i = 1; i < numbers.length; i++) {
-
-        if (numbers[i] <= pivot) {
-            smaller.push(numbers[i]);
-        } else {
-            bigger.push(numbers[i]);
-        }
-
-    }
-
-    return [
-        ...quickSort(smaller),
-        pivot,
-        ...quickSort(bigger)
-    ];
+  return true;
 }
 
-// Start with random numbers
-randomCards();
+function startSort(){
+  if(finished || !generator){
+    numbers=[...original];
+    prepare();
+  }
 
+  if(running)return;
+
+  running=true;
+  startTime=performance.now();
+  document.getElementById("status").textContent="Sorting...";
+  play();
+}
+
+function pauseSort(){
+  if(running){
+    elapsed+=(performance.now()-startTime)/1000;
+  }
+  running=false;
+  if(timer!==null){
+    clearTimeout(timer);
+    timer=null;
+  }
+  updateStats();
+  if(!finished)document.getElementById("status").textContent="Paused";
+}
+
+function play(){
+  if(!running)return;
+
+  const turbo=document.getElementById("turbo").checked;
+  const speed=Number(document.getElementById("speed").value);
+
+  let batch=turbo?Math.max(100, speed*100):Math.max(1,Math.floor(speed/5));
+
+  for(let i=0;i<batch;i++){
+    if(!advance())break;
+  }
+
+  draw();
+  updateStats();
+
+  if(running){
+    const delay=turbo?0:Math.max(1,35-speed*0.3);
+    timer=setTimeout(play,delay);
+  }
+}
+
+function nextStep(){
+  pauseSort();
+
+  if(finished || !generator){
+    numbers=[...original];
+    prepare();
+  }
+
+  advance();
+  draw();
+  updateStats();
+  if(finished)document.getElementById("status").textContent="Sorting completed!";
+  else document.getElementById("status").textContent="Step: "+steps;
+}
+
+function instantSort(){
+  pauseSort();
+
+  numbers=[...original];
+  prepare();
+
+  document.getElementById("status").textContent="Sorting instantly...";
+
+  while(advance()){}
+
+  finished=true;
+  elapsed=0;
+  highlightA=-1;
+  highlightB=-1;
+  highlightType="";
+  draw();
+  updateStats();
+  document.getElementById("status").textContent="Sorting completed instantly!";
+}
+
+document.getElementById("speed").addEventListener("input",function(){
+  document.getElementById("speedText").textContent=this.value;
+});
+
+generate();
+resizeCanvas();
 </script>
-
 </body>
 </html>

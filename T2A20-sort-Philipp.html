@@ -1,48 +1,425 @@
-<h1 align="center">T2A20-sort-Philipp.html</h1>
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2A20 Sort - Philipp</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    color: #60a5fa;
+    font-size: 32px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #9ca3af;
+    margin-bottom: 30px;
+}
+
+.panel {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #334155;
+}
+
+h2 {
+    color: #60a5fa;
+    margin-top: 0;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.random {
+    background: #475569;
+}
+
+.simple {
+    background: #059669;
+}
+
+.quick {
+    background: #9333ea;
+}
+
+input {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100px;
+}
+
+#myDiv01 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    min-height: 65px;
+}
+
+.number {
+    background: #334155;
+    border: 2px solid #60a5fa;
+    border-radius: 10px;
+    padding: 15px 20px;
+    font-size: 23px;
+    font-weight: bold;
+    min-width: 55px;
+    text-align: center;
+    animation: appear 0.3s;
+}
+
+@keyframes appear {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+#status {
+    color: #a5b4fc;
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+pre {
+    background: #0b1220;
+    padding: 18px;
+    border-radius: 10px;
+    overflow-x: auto;
+    color: #a7f3d0;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+.description {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>T2A20 SORT - PHILIPP</h1>
+<p class="subtitle">Sorting Algorithms – Bubble Sort, Simple Sort & Quick Sort</p>
+
+<div class="panel">
+
+<h2>1. Number Generator</h2>
+
+<p class="description">
+Generate random numbers and sort them using different algorithms.
+</p>
+
+<label>Number of cards:</label>
+<input type="number" id="amount" value="10" min="2" max="52">
+
+<br><br>
+
+<button class="random" onclick="randomCards()">Set Random</button>
+<button onclick="showCards()">Show</button>
+
+<div id="myDiv01"></div>
+
+<p id="status">Generate numbers to begin.</p>
+
+</div>
+
+<div class="panel">
+
+<h2>2. Sorting Algorithms</h2>
+
+<p class="description">
+Choose one of the three sorting methods.
+</p>
+
+<button class="simple" onclick="simpleSort()">Simple Sort</button>
+
+<button onclick="bubbleSort()">Bubble Sort</button>
+
+<button class="quick" onclick="quickSortStart()">Quick Sort</button>
+
+<button class="random" onclick="resetCards()">Reset</button>
+
+</div>
+
+<div class="panel">
+
+<h2>3. How do they work?</h2>
+
+<h3 style="color:#34d399">Simple Sort</h3>
+<p class="description">
+Finds the smallest number in the unsorted part and moves it to the next position.
+</p>
+
+<h3 style="color:#60a5fa">Bubble Sort</h3>
+<p class="description">
+Compares two neighboring numbers. If the first is bigger, they switch places.
+This repeats until everything is sorted.
+</p>
+
+<h3 style="color:#c084fc">Quick Sort</h3>
+<p class="description">
+Chooses a pivot number. Smaller numbers go to the left and bigger numbers go to the right.
+Then it repeats this process on both sides.
+</p>
+
+</div>
+
+<div class="panel">
+
+<h2>4. Simple Code Examples</h2>
+
+<h3 style="color:#34d399">Simple Sort</h3>
+
+<pre>
+let numbers = [5, 2, 8, 1, 4];
+
+for (let i = 0; i < numbers.length; i++) {
+    for (let j = i + 1; j < numbers.length; j++) {
+
+        if (numbers[i] > numbers[j]) {
+            let temp = numbers[i];
+            numbers[i] = numbers[j];
+            numbers[j] = temp;
+        }
+
+    }
+}
+
+console.log(numbers);
+</pre>
+
+<h3 style="color:#60a5fa">Bubble Sort</h3>
+
+<pre>
+let numbers = [5, 2, 8, 1, 4];
+
+for (let i = 0; i < numbers.length - 1; i++) {
+
+    for (let j = 0; j < numbers.length - 1 - i; j++) {
+
+        if (numbers[j] > numbers[j + 1]) {
+
+            let temp = numbers[j];
+            numbers[j] = numbers[j + 1];
+            numbers[j + 1] = temp;
+
+        }
+    }
+}
+
+console.log(numbers);
+</pre>
+
+<h3 style="color:#c084fc">Quick Sort</h3>
+
+<pre>
+function quickSort(numbers) {
+
+    if (numbers.length <= 1) {
+        return numbers;
+    }
+
+    let pivot = numbers[0];
+
+    let smaller = numbers.slice(1).filter(n => n <= pivot);
+    let bigger = numbers.slice(1).filter(n => n > pivot);
+
+    return [
+        ...quickSort(smaller),
+        pivot,
+        ...quickSort(bigger)
+    ];
+}
+
+console.log(quickSort([5, 2, 8, 1, 4]));
+</pre>
+
+</div>
+
+</div>
 
 <script>
-    let myMax = 3; // 52 when working
-    let myCards = new Array(myMax);
 
-    function randomCards() {
-        for (let myLoop = 0; myLoop < myMax; myLoop++) {
-            myCards[myLoop] = Math.floor(Math.random() * 10);
-        }
-        showCards();
+let myMax = 10;
+let myCards = [];
+let originalCards = [];
+
+function randomCards() {
+
+    myMax = Math.max(2, Math.min(52,
+        Number(document.getElementById("amount").value) || 10));
+
+    myCards = [];
+
+    for (let i = 0; i < myMax; i++) {
+        myCards.push(Math.floor(Math.random() * 100));
     }
 
-    function showCards() {
-        let myTemp = '';
+    originalCards = [...myCards];
 
-        for (let myLoop = 0; myLoop < myMax; myLoop++) {
-            myTemp += myLoop + ' = ' + myCards[myLoop] + '<br>';
-        }
+    showCards();
+    document.getElementById("status").innerText =
+        "Random numbers generated!";
+}
 
-        document.getElementById('myDiv01').innerHTML = myTemp;
+function showCards() {
+
+    let output = "";
+
+    for (let i = 0; i < myCards.length; i++) {
+        output += '<div class="number">' + myCards[i] + '</div>';
     }
 
-    function sortCards() {
-        // Bubble Sort
-        for (let i = 0; i < myMax - 1; i++) {
-            for (let j = 0; j < myMax - 1 - i; j++) {
+    document.getElementById("myDiv01").innerHTML = output;
+}
 
-                if (myCards[j] > myCards[j + 1]) {
-                    let myTemp = myCards[j];
-                    myCards[j] = myCards[j + 1];
-                    myCards[j + 1] = myTemp;
-                }
+function resetCards() {
+
+    myCards = [...originalCards];
+    showCards();
+
+    document.getElementById("status").innerText =
+        "Original numbers restored.";
+}
+
+// SIMPLE SORT
+function simpleSort() {
+
+    for (let i = 0; i < myCards.length; i++) {
+
+        let smallest = i;
+
+        for (let j = i + 1; j < myCards.length; j++) {
+
+            if (myCards[j] < myCards[smallest]) {
+                smallest = j;
+            }
+
+        }
+
+        let temp = myCards[i];
+        myCards[i] = myCards[smallest];
+        myCards[smallest] = temp;
+
+    }
+
+    showCards();
+
+    document.getElementById("status").innerText =
+        "Simple Sort completed!";
+}
+
+// BUBBLE SORT
+function bubbleSort() {
+
+    for (let i = 0; i < myCards.length - 1; i++) {
+
+        for (let j = 0; j < myCards.length - 1 - i; j++) {
+
+            if (myCards[j] > myCards[j + 1]) {
+
+                let temp = myCards[j];
+                myCards[j] = myCards[j + 1];
+                myCards[j + 1] = temp;
 
             }
+
         }
 
-        showCards();
     }
+
+    showCards();
+
+    document.getElementById("status").innerText =
+        "Bubble Sort completed!";
+}
+
+// QUICK SORT
+function quickSortStart() {
+
+    myCards = quickSort(myCards);
+
+    showCards();
+
+    document.getElementById("status").innerText =
+        "Quick Sort completed!";
+}
+
+function quickSort(numbers) {
+
+    if (numbers.length <= 1) {
+        return numbers;
+    }
+
+    let pivot = numbers[0];
+
+    let smaller = [];
+    let bigger = [];
+
+    for (let i = 1; i < numbers.length; i++) {
+
+        if (numbers[i] <= pivot) {
+            smaller.push(numbers[i]);
+        } else {
+            bigger.push(numbers[i]);
+        }
+
+    }
+
+    return [
+        ...quickSort(smaller),
+        pivot,
+        ...quickSort(bigger)
+    ];
+}
+
+// Start with random numbers
+randomCards();
+
 </script>
 
-<input type="button" value="Set Random" onclick="randomCards()">
-
-<input type="button" value="Show" onclick="showCards()">
-
-<input type="button" value="Sort" onclick="sortCards()">
-
-<div id="myDiv01"></div> 
+</body>
+</html>

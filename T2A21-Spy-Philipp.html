@@ -1,42 +1,95 @@
+
 <h1 align=center>t2a21-spy-by-Philipp.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
 
+<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br><br>
 
-<input type=button value="encrypt" onclick="{
-   let myTemp = ''
-   myString = document.getElementById('myArea01').value.toLowerCase().split('')
-   for (let myLoop=0;   myLoop < myString.length; myLoop++){
-      myTemp = myString[myLoop]
-    if (myString[myLoop] == 'e') {myTemp  = 'f'} 
-    if (myString[myLoop] == 'h') {myTemp  = 'i'}
-    if (myString[myLoop] == 'o') {myTemp  = 'x'}
-    if (myString[myLoop] == 'v') {myTemp  = 'b'}
-    if (myString[myLoop] == 'n') {myTemp  = 'm'}
-    if (myString[myLoop] == 'y') {myTemp  = 'q'}
-      myString[myLoop] = myTemp
+<select id="encryptionType">
+  <option value="replace">Replace Encryption</option>
+  <option value="caesar">Caesar Cipher</option>
+  <option value="reverse">Reverse Encryption</option>
+  <option value="binary">Binary Encryption</option>
+</select>
+
+<br><br>
+
+<input type="button" value="Encrypt" onclick="{
+   let text = document.getElementById('myArea01').value.toLowerCase()
+   let type = document.getElementById('encryptionType').value
+   let result = ''
+
+   if (type == 'replace') {
+      let chars = text.split('')
+      for (let i=0; i<chars.length; i++) {
+         if (chars[i] == 'e') chars[i] = 'f'
+         else if (chars[i] == 'h') chars[i] = 'i'
+         else if (chars[i] == 'o') chars[i] = 'x'
+         else if (chars[i] == 'v') chars[i] = 'b'
+         else if (chars[i] == 'n') chars[i] = 'm'
+         else if (chars[i] == 'y') chars[i] = 'q'
+      }
+      result = chars.join('')
    }
-   document.getElementById('myArea02').value = myString.join('')
-}"><br><br>
 
-
-
-<textarea id="myArea02" rows=4 cols=70></textarea><br>
-
-<input type=button value="decrypt" onclick="{
-   let myTemp = ''
-   myString = document.getElementById('myArea02').value.toLowerCase().split('')
-   for (let myLoop=0;   myLoop < myString.length; myLoop++){
-      myTemp = myString[myLoop]
-    if (myString[myLoop] == 'f') {myTemp  = 'e'} 
-    if (myString[myLoop] == 'i') {myTemp  = 'h'}
-    if (myString[myLoop] == 'x') {myTemp  = 'o'}
-    if (myString[myLoop] == 'b') {myTemp  = 'v'}
-    if (myString[myLoop] == 'm') {myTemp  = 'n'}
-    if (myString[myLoop] == 'q') {myTemp  = 'y'}
-      myString[myLoop] = myTemp
+   if (type == 'caesar') {
+      result = text.replace(/[a-z]/g, function(c) {
+         return String.fromCharCode((c.charCodeAt(0)-97+3)%26+97)
+      })
    }
-   document.getElementById('myArea03').value = myString.join('')
-}"><br><br>
 
+   if (type == 'reverse') {
+      result = text.split('').reverse().join('')
+   }
+
+   if (type == 'binary') {
+      result = text.split('').map(c =>
+         c.charCodeAt(0).toString(2).padStart(8,'0')
+      ).join(' ')
+   }
+
+   document.getElementById('myArea02').value = result
+}">
+
+<br><br>
+
+<textarea id="myArea02" rows=4 cols=70></textarea><br><br>
+
+<input type="button" value="Decrypt" onclick="{
+   let text = document.getElementById('myArea02').value
+   let type = document.getElementById('encryptionType').value
+   let result = ''
+
+   if (type == 'replace') {
+      let chars = text.split('')
+      for (let i=0; i<chars.length; i++) {
+         if (chars[i] == 'f') chars[i] = 'e'
+         else if (chars[i] == 'i') chars[i] = 'h'
+         else if (chars[i] == 'x') chars[i] = 'o'
+         else if (chars[i] == 'b') chars[i] = 'v'
+         else if (chars[i] == 'm') chars[i] = 'n'
+         else if (chars[i] == 'q') chars[i] = 'y'
+      }
+      result = chars.join('')
+   }
+
+   if (type == 'caesar') {
+      result = text.replace(/[a-z]/g, function(c) {
+         return String.fromCharCode((c.charCodeAt(0)-97-3+26)%26+97)
+      })
+   }
+
+   if (type == 'reverse') {
+      result = text.split('').reverse().join('')
+   }
+
+   if (type == 'binary') {
+      result = text.trim().split(/\s+/).map(b =>
+         String.fromCharCode(parseInt(b,2))
+      ).join('')
+   }
+
+   document.getElementById('myArea03').value = result
+}">
+
+<br><br>
 
 <textarea id="myArea03" rows=4 cols=70></textarea><br>

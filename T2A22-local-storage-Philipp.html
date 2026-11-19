@@ -1,26 +1,214 @@
-<h2>T2A22-local-storage-Philipp.html</h2>
 
-Use local storage to make a to-do list
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Storage To-Do</title>
 
-<body onload="{
-   myStorage = localStorage.getItem('myStoredText')
-   if(myStorage  != null){
-      document.getElementById('myText1').value = myStorage 
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e8eef7, #dce7f3);
+    color: #263449;
+}
+
+.container {
+    max-width: 750px;
+    margin: 30px auto;
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(40,60,90,0.12);
+}
+
+h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 0;
+    color: #263e60;
+}
+
+.subtitle {
+    text-align: center;
+    color: #75849a;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 16px;
+    border: 2px solid #dce4ee;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    resize: vertical;
+    outline: none;
+    transition: 0.2s;
+    color: #263449;
+}
+
+textarea:focus {
+    border-color: #5287c7;
+    box-shadow: 0 0 0 3px rgba(82,135,199,0.12);
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+button {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.store {
+    background: #3679c7;
+    color: white;
+}
+
+.retrieve {
+    background: #e9eff7;
+    color: #34577e;
+}
+
+.clear {
+    background: #f4e8e8;
+    color: #a64e4e;
+}
+
+.status {
+    margin-top: 22px;
+    padding: 13px;
+    background: #f1f5fa;
+    border-radius: 9px;
+    color: #64758b;
+    font-size: 14px;
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #9aa6b5;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body onload="loadText()">
+
+<div class="container">
+
+    <h2>My Local Storage</h2>
+
+    <p class="subtitle">
+        Save your notes directly in your browser.
+    </p>
+
+    <label for="myText1">Your To-Do List / Notes</label>
+
+    <textarea id="myText1"
+    placeholder="Write your tasks or notes here..."></textarea>
+
+    <div class="buttons">
+
+        <button class="store" onclick="storeText()">
+            Save Text
+        </button>
+
+        <button class="retrieve" onclick="retrieveText()">
+            Load Text
+        </button>
+
+        <button class="clear" onclick="clearText()">
+            Clear
+        </button>
+
+    </div>
+
+    <div class="status" id="status">
+        Ready to use!
+    </div>
+
+    <div class="footer">
+        T2A22 - Local Storage Project
+    </div>
+
+</div>
+
+<script>
+
+function loadText() {
+    let myStorage = localStorage.getItem('myStoredText');
+
+    if (myStorage !== null) {
+        document.getElementById('myText1').value = myStorage;
+        document.getElementById('status').innerHTML =
+            'Your saved text has been loaded!';
     }
-}">
+}
 
-<body onunload="{
-   localstorage.setItem('myStoredText',document.getElementById('myText1').value)
-}">   
+function storeText() {
+    let myText = document.getElementById('myText1').value;
 
-Text example: <input id="myText1" type=text size=70 value="" placeholder="Write here to store"><br>
+    localStorage.setItem('myStoredText', myText);
 
-<input type="button" value="Store Text" onClick="{
-   localStorage.setItem('myStoredText', document.getElementById('myText1').value)
-   alert(document.getElementById('myText1').value + ' \nHas been stored')
-   document.getElementById('myText1').value = ''
-}">
+    document.getElementById('status').innerHTML =
+        '✓ Your text has been saved successfully!';
+}
 
-<input type="button" value="Retrieve Text" onClick="{
-   document.getElementById('myText1').value = localStorage.getItem('myStoredText')
-}">
+function retrieveText() {
+    let myStorage = localStorage.getItem('myStoredText');
+
+    if (myStorage !== null) {
+        document.getElementById('myText1').value = myStorage;
+        document.getElementById('status').innerHTML =
+            '✓ Your saved text has been retrieved!';
+    } else {
+        document.getElementById('status').innerHTML =
+            'No saved text found!';
+    }
+}
+
+function clearText() {
+    document.getElementById('myText1').value = '';
+
+    localStorage.removeItem('myStoredText');
+
+    document.getElementById('status').innerHTML =
+        'Your text has been cleared!';
+}
+
+</script>
+
+</body>
+</html>

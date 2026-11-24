@@ -1,428 +1,366 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Browser Hack</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 35px 20px;
-    font-family: Arial, sans-serif;
-    color: #263b50;
-    background: #f1f8fc;
-}
-
-.container {
-    max-width: 1100px;
-    margin: auto;
-}
-
-/* HEADER */
-
-header {
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-header h1 {
-    font-size: 38px;
-    color: #167e91;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-header p {
-    color: #71889a;
-    font-size: 15px;
-}
-
-/* SECTIONS */
-
-.section {
-    background: #ffffff;
-    border: 1px solid #e1edf3;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 22px;
-    box-shadow: 0 5px 20px rgba(40, 90, 120, 0.06);
-}
-
-.section h2 {
-    color: #167e91;
-    font-size: 19px;
-    margin-top: 0;
-    margin-bottom: 18px;
-}
-
-.section p {
-    color: #71889a;
-    line-height: 1.6;
-}
-
-/* BUTTONS */
-
-button,
-input[type="button"] {
-    background: #e9f6fa;
-    border: 1px solid #cce7ee;
-    color: #246b7a;
-    padding: 11px 17px;
-    border-radius: 8px;
-    margin: 5px 3px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: 0.2s ease;
-}
-
-button:hover,
-input[type="button"]:hover {
-    background: #d5f0f4;
-    border-color: #65bfca;
-    color: #125b6c;
-    transform: translateY(-2px);
-}
-
-/* INPUT */
-
-input[type="text"] {
-    width: 100%;
-    background: #f7fbfd;
-    border: 1px solid #d5e6ed;
-    border-radius: 8px;
-    padding: 12px;
-    color: #167e91;
-    margin-bottom: 12px;
-    outline: none;
-}
-
-/* OUTPUT */
-
-textarea {
-    width: 100%;
-    min-height: 260px;
-    resize: vertical;
-    background: #f7fbfd;
-    color: #385467;
-    border: 1px solid #d5e6ed;
-    border-radius: 10px;
-    padding: 16px;
-    font-family: Consolas, monospace;
-    font-size: 13px;
-    line-height: 1.7;
-    outline: none;
-}
-
-textarea:focus,
-input:focus {
-    border-color: #65bfca;
-}
-
-/* OBJECT BUTTONS */
-
-.object-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-.object-buttons input {
-    min-width: 115px;
-}
-
-/* DEMO OBJECTS */
-
-.demo-area {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
-}
-
-.demo-area img {
-    width: 120px;
-    border-radius: 10px;
-    border: 1px solid #d5e6ed;
-}
-
-.demo-area a {
-    color: #16879b;
-    font-weight: bold;
-}
-
-.demo-area input[type="text"] {
-    max-width: 220px;
-    margin: 0;
-}
-
-table {
-    border-collapse: collapse;
-    background: #f7fbfd;
-    color: #385467;
-}
-
-td {
-    border: 1px solid #d5e6ed;
-    padding: 12px 18px;
-}
-
-/* BACK */
-
-.back {
-    background: #167e91 !important;
-    color: white !important;
-    padding: 13px 28px !important;
-    font-size: 15px !important;
-}
-
-.back:hover {
-    background: #126779 !important;
-}
-
-@media (max-width: 600px) {
-
     body {
-        padding: 20px 12px;
+        background: #eaf4ff;
+        font-family: Arial, sans-serif;
+        color: #263449;
+        margin: 25px;
     }
 
-    header h1 {
-        font-size: 29px;
+    h1 {
+        text-align: center;
+        color: #245b91;
+    }
+
+    h3 {
+        color: #245b91;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        background: white;
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px #00000015;
+    }
+
+    input[type="button"] {
+        background: #2878bd;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 9px 13px;
+        margin: 4px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    input[type="button"]:hover {
+        background: #164d80;
+        transform: translateY(-2px);
+    }
+
+    input[type="text"], textarea {
+        border: 1px solid #b9cde0;
+        border-radius: 6px;
+        padding: 9px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        font-family: Consolas, monospace;
+    }
+
+    #myTextarea {
+        width: 100%;
+        min-height: 350px;
+        background: #f5f8fc;
+    }
+
+    #myText1 {
+        width: 100%;
     }
 
     .section {
-        padding: 17px;
+        background: #f4f8fc;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 10px;
     }
 
-    .object-buttons input {
-        flex: 1 1 40%;
+    #myBold {
+        color: #245b91;
+        font-size: 22px;
     }
 
-}
+    #myRotate {
+        display: inline-block;
+        padding: 10px;
+        background: #dceeff;
+        border-radius: 7px;
+    }
 
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    th, td {
+        border: 1px solid #b9cde0;
+        padding: 9px;
+        text-align: left;
+    }
+
+    th {
+        background: #dceeff;
+    }
+
+    a {
+        color: #1769aa;
+    }
 </style>
-
-<script>
-
-function myObjectData(myObject) {
-
-    var output = "";
-
-    document.getElementById("objectName").value = "";
-    document.getElementById("objectData").value = "";
-
-    if (!myObject) {
-        document.getElementById("objectData").value =
-        "Object not available in this browser.";
-        return;
-    }
-
-    for (var prop in myObject) {
-
-        try {
-            var value = myObject[prop];
-
-            if (typeof value !== "function" &&
-                typeof value !== "object") {
-
-                output += prop + " = " + value + "\n";
-            }
-
-        } catch (error) {
-            output += prop + " = Not accessible\n";
-        }
-    }
-
-    document.getElementById("objectName").value =
-    myObject.id || myObject.tagName || "Browser Object";
-
-    document.getElementById("objectData").value =
-    output || "No readable properties found.";
-}
-
-</script>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<header>
-    <h1>⌘ BROWSER HACK</h1>
-    <p>Explore your browser. Discover objects. Understand how the web works.</p>
-</header>
+<h1>Browser Hack</h1>
 
+<p id="myBold"><b>Browser Hack by Philipp</b></p>
 
-<!-- OBJECT EXPLORER -->
-
-<div class="section">
-
-    <h2>Object Explorer</h2>
-
-    <input type="text"
-    id="objectName"
-    placeholder="Selected Object"
-    readonly>
-
-    <textarea
-    id="objectData"
-    placeholder="Select any object below to explore its properties..."
-    readonly></textarea>
-
-</div>
-
-
-<!-- BROWSER OBJECTS -->
+<p>
+Click the buttons to explore different browser objects,
+properties and methods.
+</p>
 
 <div class="section">
+    <h3>Example elements</h3>
 
-    <h2>Browser Objects · 01–15</h2>
+    <p>My favourite fruits:</p>
 
-    <p>Explore the built-in objects of your browser.</p>
+    <ul id="myList">
+        <li>Strawberry</li>
+        <li>Mango</li>
+        <li>Watermelon</li>
+    </ul>
 
-    <div class="object-buttons">
-
-        <input type="button" value="01 Window"
-        onclick="myObjectData(window)">
-
-        <input type="button" value="02 Document"
-        onclick="myObjectData(document)">
-
-        <input type="button" value="03 Form"
-        onclick="myObjectData(document.getElementById('myForm2'))">
-
-        <input type="button" value="04 Textarea"
-        onclick="myObjectData(document.getElementById('exampleTextarea'))">
-
-        <input type="button" value="05 Location"
-        onclick="myObjectData(window.location)">
-
-        <input type="button" value="06 Parent"
-        onclick="myObjectData(window.parent)">
-
-        <input type="button" value="07 Chrome"
-        onclick="myObjectData(window.chrome)">
-
-        <input type="button" value="08 Image Style"
-        onclick="myObjectData(document.getElementById('move1').style)">
-
-        <input type="button" value="09 Body Style"
-        onclick="myObjectData(document.body.style)">
-
-        <input type="button" value="10 Image"
-        onclick="myObjectData(document.getElementById('move1'))">
-
-        <input type="button" value="11 Local Storage"
-        onclick="myObjectData(window.localStorage)">
-
-        <input type="button" value="12 Image Element"
-        onclick="myObjectData(document.getElementById('move1'))">
-
-        <input type="button" value="13 Text Input"
-        onclick="myObjectData(document.getElementById('exampleInput'))">
-
-        <input type="button" value="14 Navigator"
-        onclick="myObjectData(navigator)">
-
-    </div>
-
-</div>
-
-
-<!-- HTML OBJECTS -->
-
-<div class="section">
-
-    <h2>Page Objects · 16–20</h2>
-
-    <p>These are real HTML elements on this webpage.</p>
-
-    <div class="demo-area">
-
-        <a id="myLink" href="https://www.google.com">
-            Google Link ↗
+    <p>
+        My favourite website:
+        <a id="myLink" href="https://www.wikipedia.org" target="_blank">
+            Wikipedia
         </a>
-        
-        <input type="text"
-        id="myBox"
-        value="Hello Browser">
+    </p>
 
-        <img id="myImage"
-        src="https://www.w3schools.com/html/img_girl.jpg"
-        alt="Example image">
+    <p id="myRotate">Rotate me!</p>
 
-        <table id="myTable">
-            <tr>
-                <td>Browser</td>
-                <td>Test</td>
-            </tr>
-            <tr>
-                <td>HTML</td>
-                <td>Object</td>
-            </tr>
-        </table>
+    <table id="myTable">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        <tr>
+            <td>Michael</td>
+            <td>19</td>
+        </tr>
+        <tr>
+            <td>Emma</td>
+            <td>16</td>
+        </tr>
+    </table>
+</div>
 
-        <button id="myButton">Test Button</button>
+<div class="section">
+    <h3>Object Sort</h3>
 
+    <form name="myForm2">
+        <textarea name="myTextarea" rows="3" cols="50">wow</textarea>
+        <br><br>
+        <input type="text" name="myText1" id="myText2" size="50">
+    </form>
+</div>
+
+<h3>Click the buttons to see all usable properties and methods of the object.</h3>
+
+<form name="myForm">
+
+    <input type="text" name="myText1" id="objectName" placeholder="Selected object">
+
+    <div class="section">
+        <h3>Buttons 1–7</h3>
+
+        <input type="button" value="1 window" onclick="myObjectData(window)">
+        <input type="button" value="2 document" onclick="myObjectData(document)">
+        <input type="button" value="3 document.myForm2" onclick="myObjectData(document.myForm2)">
+        <input type="button" value="4 myTextarea" onclick="myObjectData(document.myForm2.myTextarea)">
+        <br>
+        <input type="button" value="5 window.location" onclick="myObjectData(window.location)">
+        <input type="button" value="6 window.parent" onclick="myObjectData(window.parent)">
+        <input type="button" value="7 window.chrome" onclick="myObjectData(window.chrome)">
     </div>
 
-    <br>
+    <div class="section">
+        <h3>Buttons 8–14</h3>
 
-    <div class="object-buttons">
-
-        <input type="button" value="15 Screen"
-        onclick="myObjectData(screen)">
-
-        
-        <input type="button" value="16 Link"
-        onclick="myObjectData(document.getElementById('myLink'))">
-
-        <input type="button" value="17 Textbox"
-        onclick="myObjectData(document.getElementById('myBox'))">
-
-        <input type="button" value="18 Image"
-        onclick="myObjectData(document.getElementById('myImage'))">
-
-        <input type="button" value="19 Table"
-        onclick="myObjectData(document.getElementById('myTable'))">
-
-        <input type="button" value="20 Button"
-        onclick="myObjectData(document.getElementById('myButton'))">
-
+        <input type="button" value="8 document.body.style" onclick="myObjectData(document.body.style)">
+        <input type="button" value="9 style" onclick="myObjectData(document.body.style)">
+        <input type="button" value="10 document.body" onclick="myObjectData(document.body)">
+        <br>
+        <input type="button" value="11 localStorage" onclick="myObjectData(window.localStorage)">
+        <input type="button" value="12 document.body.style" onclick="myObjectData(document.body.style)">
+        <input type="button" value="13 myText1" onclick="myObjectData(document.myForm2.myText1)">
+        <input type="button" value="14 getElementById" onclick="myObjectData(document.getElementById('myText2'))">
     </div>
 
-</div>
+    <div class="section">
+        <h3>Buttons 15–20</h3>
 
+        <input type="button" value="15 myList" onclick="myObjectData(document.getElementById('myList'))">
 
-<!-- BACK BUTTON -->
+        <input type="button" value="16 myTable" onclick="myObjectData(document.getElementById('myTable'))">
 
-<div style="text-align:center;">
+        <input type="button" value="17 myLink" onclick="myObjectData(document.getElementById('myLink'))">
 
-    <input type="button"
-    class="back"
-    value="← Back"
-    onclick="window.history.back()">
+        <input type="button" value="18 myRotate" onclick="rotateText(); myObjectData(document.getElementById('myRotate'))">
 
-</div>
+        <input type="button" value="19 body style" onclick="changeBackground(); myObjectData(document.body.style)">
 
-</div>
+        <input type="button" value="20 myBold" onclick="changeBold(); myObjectData(document.getElementById('myBold'))">
+    </div>
 
-<!-- HIDDEN ORIGINAL TEST OBJECTS -->
+    <h3>Selected object information</h3>
 
-<form id="myForm2" style="display:none;">
-    <textarea id="exampleTextarea">wow</textarea>
+    <textarea name="myTextarea" id="myTextarea" rows="20" cols="70" wrap="off"></textarea>
+
 </form>
 
-<input type="text" id="exampleInput" style="display:none;">
+<br>
+
+<input type="button" value="Refresh" onclick="location.reload()">
+
+<input type="button" value="Back" style="font-size:18px" onclick="window.history.back()">
+
+</div>
+
+<script>
+
+document.name = "myDocument";
+window.name = "myWindow";
+
+document.cookie = "cookieName=fred";
+
+var splitIndex = 0;
+var splitArray = new Array();
+
+function splits(string, text) {
+    var strLength = string.length;
+    var txtLength = text.length;
+
+    if (strLength == 0 || txtLength == 0) return;
+
+    var i = string.indexOf(text);
+
+    if (i == -1) {
+        splitArray[splitIndex++] = string;
+        return;
+    }
+
+    splitArray[splitIndex++] = string.substring(0, i);
+
+    if (i + txtLength < strLength) {
+        splits(string.substring(i + txtLength, strLength), text);
+    }
+
+    return;
+}
+
+function split(string, text) {
+    splitIndex = 0;
+    splitArray = [];
+    splits(string, text);
+}
+
+function join(arrayName) {
+    var temp = '';
+
+    for (var i = 0; i < splitIndex; i++) {
+        temp += arrayName[i] + '\n';
+    }
+
+    return temp;
+}
+
+function sort(arrayName) {
+    for (var i = 0; i < splitIndex - 1; i++) {
+        for (var j = i + 1; j < splitIndex; j++) {
+            if (arrayName[j] < arrayName[i]) {
+                var temp = arrayName[i];
+                arrayName[i] = arrayName[j];
+                arrayName[j] = temp;
+            }
+        }
+    }
+}
+
+function sorttext() {
+    var textArea = document.myForm2.myTextarea;
+
+    split(textArea.value, '\n');
+    sort(splitArray);
+    textArea.value = join(splitArray);
+}
+
+function myObjectData(myObject) {
+
+    var output = document.getElementById("myTextarea");
+    var objectName = document.getElementById("objectName");
+
+    output.value = "";
+
+    if (myObject === undefined || myObject === null) {
+        objectName.value = "Object not available";
+        output.value = "This object is not available in this browser.";
+        return;
+    }
+
+    objectName.value = myObject.name || myObject.constructor?.name || "Selected object";
+
+    var properties = [];
+
+    for (var prop in myObject) {
+        try {
+            properties.push(prop + " = " + myObject[prop]);
+        } catch (error) {
+            properties.push(prop + " = [not accessible]");
+        }
+    }
+
+    properties.sort();
+
+    output.value = properties.join("\n");
+}
+
+function rotateText() {
+    var element = document.getElementById("myRotate");
+
+    if (element.style.transform === "rotate(180deg)") {
+        element.style.transform = "rotate(0deg)";
+    } else {
+        element.style.transform = "rotate(180deg)";
+    }
+}
+
+function changeBackground() {
+    if (document.body.style.backgroundColor === "rgb(255, 244, 204)") {
+        document.body.style.backgroundColor = "#eaf4ff";
+    } else {
+        document.body.style.backgroundColor = "#fff4cc";
+    }
+}
+
+function changeBold() {
+    var element = document.getElementById("myBold");
+
+    if (element.style.fontSize === "30px") {
+        element.style.fontSize = "22px";
+        element.style.color = "#245b91";
+    } else {
+        element.style.fontSize = "30px";
+        element.style.color = "#d35400";
+    }
+}
+
+</script>
 
 </body>
 </html>
-```

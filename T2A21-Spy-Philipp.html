@@ -1,18 +1,188 @@
 
-<h1 align=center>t2a21-spy-by-Philipp.html</h1>
+<!DOCTYPE html>
+<html>
 
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br><br>
+<head>
+<title>Spy Encryption</title>
 
+<style>
+* {
+   box-sizing: border-box;
+}
+
+body {
+   margin: 0;
+   padding: 40px 20px;
+   background: linear-gradient(135deg, #edf4ff, #f5f0ff, #eef8ff);
+   font-family: Arial, sans-serif;
+   color: #26334a;
+}
+
+.container {
+   max-width: 820px;
+   margin: auto;
+   padding: 35px;
+   background: rgba(255,255,255,0.95);
+   border: 1px solid #e5eaf4;
+   border-radius: 20px;
+   box-shadow: 0 12px 40px rgba(53,75,120,0.10);
+}
+
+h1 {
+   text-align: center;
+   font-size: 34px;
+   margin: 0 0 8px;
+   color: #3159a8;
+   letter-spacing: -1px;
+}
+
+.subtitle {
+   text-align: center;
+   color: #8996ac;
+   font-size: 14px;
+   margin-bottom: 35px;
+}
+
+h3 {
+   font-size: 14px;
+   font-weight: 700;
+   color: #536a91;
+   margin-bottom: 11px;
+}
+
+.section {
+   margin-bottom: 25px;
+}
+
+textarea {
+   display: block;
+   width: 100%;
+   min-height: 115px;
+   padding: 16px;
+   background: #f7f9ff;
+   color: #293954;
+   border: 1.5px solid #dfe7f5;
+   border-radius: 12px;
+   font-size: 15px;
+   font-family: Arial, sans-serif;
+   resize: vertical;
+   outline: none;
+   transition: 0.25s;
+}
+
+textarea:focus {
+   background: white;
+   border-color: #7099ed;
+   box-shadow: 0 0 0 4px #7099ed20;
+}
+
+select {
+   width: 100%;
+   padding: 14px;
+   background: #f7f9ff;
+   color: #344767;
+   border: 1.5px solid #dfe7f5;
+   border-radius: 11px;
+   font-size: 15px;
+   cursor: pointer;
+   outline: none;
+   transition: 0.2s;
+}
+
+select:focus {
+   border-color: #7099ed;
+   box-shadow: 0 0 0 4px #7099ed20;
+}
+
+input[type="button"] {
+   padding: 13px 27px;
+   background: linear-gradient(135deg, #477ce5, #7459dc);
+   color: white;
+   border: none;
+   border-radius: 10px;
+   font-size: 14px;
+   font-weight: bold;
+   cursor: pointer;
+   transition: 0.25s;
+   box-shadow: 0 4px 12px #5879d52b;
+}
+
+input[type="button"]:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 7px 18px #5879d54a;
+   filter: brightness(1.07);
+}
+
+input[type="button"]:active {
+   transform: scale(0.97);
+}
+
+/* Different section colors */
+
+.section:nth-of-type(1) h3 {
+   color: #477ce5;
+}
+
+.section:nth-of-type(2) h3 {
+   color: #8661d9;
+}
+
+.section:nth-of-type(3) h3 {
+   color: #168eaa;
+}
+
+.section:nth-of-type(4) h3 {
+   color: #299b78;
+}
+
+.section:nth-of-type(5) h3 {
+   color: #299b78;
+}
+
+@media (max-width: 600px) {
+   body {
+      padding: 15px;
+   }
+
+   .container {
+      padding: 22px;
+   }
+
+   h1 {
+      font-size: 27px;
+   }
+
+   input[type="button"] {
+      width: 100%;
+   }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>SPY ENCRYPTION</h1>
+<p class="subtitle">Secure message encryption tool</p>
+
+<div class="section">
+<h3>01 / Original Message</h3>
+<textarea id="myArea01" rows=4>Hello how are you</textarea>
+</div>
+
+<div class="section">
+<h3>02 / Encryption Method</h3>
 <select id="encryptionType">
   <option value="replace">Replace Encryption</option>
   <option value="caesar">Caesar Cipher</option>
   <option value="reverse">Reverse Encryption</option>
   <option value="binary">Binary Encryption</option>
 </select>
+</div>
 
-<br><br>
-
-<input type="button" value="Encrypt" onclick="{
+<div class="section">
+<input type="button" value="Encrypt →" onclick="{
    let text = document.getElementById('myArea01').value.toLowerCase()
    let type = document.getElementById('encryptionType').value
    let result = ''
@@ -48,12 +218,15 @@
 
    document.getElementById('myArea02').value = result
 }">
+</div>
 
-<br><br>
+<div class="section">
+<h3>03 / Encrypted Message</h3>
+<textarea id="myArea02" rows=4></textarea>
+</div>
 
-<textarea id="myArea02" rows=4 cols=70></textarea><br><br>
-
-<input type="button" value="Decrypt" onclick="{
+<div class="section">
+<input type="button" value="← Decrypt" onclick="{
    let text = document.getElementById('myArea02').value
    let type = document.getElementById('encryptionType').value
    let result = ''
@@ -89,7 +262,14 @@
 
    document.getElementById('myArea03').value = result
 }">
+</div>
 
-<br><br>
+<div class="section">
+<h3>04 / Decrypted Message</h3>
+<textarea id="myArea03" rows=4></textarea>
+</div>
 
-<textarea id="myArea03" rows=4 cols=70></textarea><br>
+</div>
+
+</body>
+</html>

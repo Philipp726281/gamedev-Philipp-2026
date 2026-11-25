@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a23-canvas by Philipp</title>
+</head>
+
+<body>
+
+<h2 align="center">t2a23-canvas by Philipp</h2>
+
+<p>Click the button to draw basic shapes, then ask AI to help you add more!</p>
+
+<br>
+
+<input type="button" value="Draw Basic Shapes" onclick="{
+
+    // Clear the canvas
+    myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+    // Draw a Line
+    myContext.beginPath();
+    myContext.lineWidth = 3;
+    myContext.strokeStyle = 'black';
+    myContext.moveTo(20, 20);
+    myContext.lineTo(150, 20);
+    myContext.stroke();
+
+    // Draw a Rectangle
+    myContext.fillStyle = 'blue';
+    myContext.fillRect(30, 50, 100, 60);
+
+    // Draw a Circle
+    myContext.beginPath();
+    myContext.lineWidth = 5;
+    myContext.strokeStyle = 'green';
+    myContext.arc(220, 80, 40, 0, 2 * Math.PI);
+    myContext.stroke();
+
+    // Write Text
+    myContext.fillStyle = 'red';
+    myContext.font = '24px Arial';
+    myContext.fillText('Hello World!', 30, 180);
+
+}">
+
+<br><br>
+
+<!-- Canvas -->
+<canvas id="myCoolTag" width="500" height="300"
+style="border: 1px solid #000000;">
+</canvas>
+
+<script>
+
+// Set up global variables
+let myCanvas = document.getElementById('myCoolTag');
+let myContext = myCanvas.getContext('2d');
+
+</script>
+
+</body>
+</html>

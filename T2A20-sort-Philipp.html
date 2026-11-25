@@ -1,539 +1,220 @@
 
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sorting Visualizer</title>
+<title>t2a20 Sort</title>
+
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  padding:20px;
-  background:#111820;
-  color:#eaf0f6;
-  font-family:Arial,sans-serif;
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    color: #263445;
+    text-align: center;
+    padding: 30px;
 }
-h1{text-align:center;margin:5px 0 20px}
-.panel{
-  max-width:1200px;
-  margin:auto;
-  background:#1b2632;
-  padding:18px;
-  border-radius:12px;
-  border:1px solid #344454;
+
+.container {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
 }
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:center;
-  align-items:center;
-  margin-bottom:15px;
+
+h1 { color: #2563eb; }
+
+p { color: #64748b; }
+
+input[type=button] {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin: 6px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
 }
-button,select,input{
-  background:#293949;
-  color:white;
-  border:1px solid #53677c;
-  border-radius:6px;
-  padding:9px 12px;
-  font-size:14px;
+
+input[type=button]:hover {
+    filter: brightness(0.85);
+    transform: translateY(-2px);
 }
-button{cursor:pointer}
-button:hover{background:#3a5065}
-button:disabled{opacity:.4;cursor:not-allowed}
-input[type=range]{padding:0;accent-color:#56a8ff}
-input[type=number]{width:95px}
-label{font-size:14px}
-#chartBox{
-  width:100%;
-  height:430px;
-  background:#0d141c;
-  border:1px solid #344454;
-  border-radius:8px;
-  overflow:hidden;
+
+.green { background: #16a34a !important; }
+.orange { background: #ea580c !important; }
+.purple { background: #7c3aed !important; }
+.red { background: #dc2626 !important; }
+
+.number-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 5px;
+    min-height: 200px;
+    margin-top: 25px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    flex-wrap: wrap;
 }
-canvas{width:100%;height:100%;display:block}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  gap:10px;
-  margin-top:15px;
+
+.number {
+    background: #3b82f6;
+    color: white;
+    min-width: 35px;
+    padding: 10px 5px;
+    border-radius: 6px;
+    font-weight: bold;
 }
-.stat{
-  background:#263646;
-  padding:13px;
-  border-radius:7px;
-  text-align:center;
+
+#myDiv01 {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    text-align: left;
+    line-height: 1.8;
 }
-.stat strong{
-  display:block;
-  font-size:22px;
-  margin-top:5px;
-  color:#78bdff;
-}
-#status{text-align:center;margin:14px 0;color:#a9c9e8}
-.legend{
-  display:flex;
-  justify-content:center;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-top:12px;
-  font-size:13px;
-}
-.dot{
-  display:inline-block;
-  width:10px;height:10px;
-  border-radius:2px;
-  margin-right:5px;
+
+input[type=number] {
+    padding: 9px;
+    width: 65px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
 }
 </style>
 </head>
+
 <body>
 
-<h1>Sorting Visualizer</h1>
+<div class="container">
 
-<div class="panel">
+<h1>t2a20 Sort</h1>
+<p>Generate, display and sort random numbers.</p>
 
-  <div class="controls">
-    <label>Algorithm:
-      <select id="algorithm">
-        <option value="bubble">Bubble Sort</option>
-        <option value="simple">Simple Sort</option>
-        <option value="quick">Quick Sort</option>
-      </select>
-    </label>
+<p>
+Number of values:
+<input type="number" id="myAmount" value="10" min="2" max="100">
+</p>
 
-    <label>Numbers:
-      <input id="amount" type="number" min="2" max="10000" value="300">
-    </label>
+<input type="button" value="Set Random" onclick="{
+    myMax = Math.max(2, Math.min(100, Number(document.getElementById('myAmount').value)));
+    myCards = [];
+    for (let i = 0; i < myMax; i++) {
+        myCards[i] = Math.floor(Math.random() * 100);
+    }
+    showNumbers();
+}">
 
-    <button onclick="generate()">Generate</button>
-    <button onclick="startSort()" id="startBtn">Start</button>
-    <button onclick="pauseSort()">Pause</button>
-    <button onclick="resetSort()">Reset</button>
-    <button onclick="nextStep()">Next Step</button>
-    <button onclick="instantSort()">Instant</button>
-  </div>
+<input type="button" value="Show" onclick="showNumbers()">
 
-  <div class="controls">
-    <label>Speed:
-      <input id="speed" type="range" min="1" max="100" value="50">
-      <span id="speedText">50</span>
-    </label>
+<br>
 
-    <label>
-      <input type="checkbox" id="turbo">
-      Turbo
-    </label>
-  </div>
+<input type="button" class="green" value="Bubble Sort" onclick="bubbleSort()">
 
-  <div id="chartBox">
-    <canvas id="chart"></canvas>
-  </div>
+<input type="button" class="orange" value="Selection Sort" onclick="selectionSort()">
 
-  <div class="legend">
-    <span><i class="dot" style="background:#4b9cff"></i>Unsorted</span>
-    <span><i class="dot" style="background:#ffca55"></i>Comparing</span>
-    <span><i class="dot" style="background:#f16d65"></i>Swapping</span>
-    <span><i class="dot" style="background:#50d890"></i>Sorted</span>
-  </div>
+<input type="button" class="purple" value="Insertion Sort" onclick="insertionSort()">
 
-  <div class="stats">
-    <div class="stat">Numbers<strong id="count">300</strong></div>
-    <div class="stat">Comparisons<strong id="comparisons">0</strong></div>
-    <div class="stat">Swaps<strong id="swaps">0</strong></div>
-    <div class="stat">Time<strong id="time">0.00 s</strong></div>
-    <div class="stat">Progress<strong id="progress">0%</strong></div>
-  </div>
+<br>
 
-  <div id="status">Ready</div>
+<input type="button" value="Reverse" onclick="{
+    myCards.reverse();
+    showNumbers();
+}">
+
+<input type="button" class="red" value="Reset" onclick="{
+    myCards = [];
+    showNumbers();
+}">
+
+<div id="myDiv01">Click Set Random to start!</div>
+
+<div class="number-container" id="myGraph"></div>
+
 </div>
 
 <script>
-const canvas = document.getElementById("chart");
-const ctx = canvas.getContext("2d");
+let myMax = 10;
+let myCards = [];
 
-let numbers = [];
-let original = [];
-let generator = null;
-let running = false;
-let finished = false;
-let timer = null;
+function showNumbers() {
+    let output = '';
 
-let comparisons = 0;
-let swaps = 0;
-let steps = 0;
-let totalEstimate = 1;
-let startTime = 0;
-let elapsed = 0;
-
-let highlightA = -1;
-let highlightB = -1;
-let highlightType = "";
-let sortedFrom = Infinity;
-let sortedIndices = new Set();
-
-function resizeCanvas(){
-  const rect = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = Math.max(1,Math.floor(rect.width*dpr));
-  canvas.height = Math.max(1,Math.floor(rect.height*dpr));
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  draw();
-}
-
-window.addEventListener("resize",resizeCanvas);
-
-function updateStats(){
-  document.getElementById("count").textContent=numbers.length;
-  document.getElementById("comparisons").textContent=comparisons.toLocaleString();
-  document.getElementById("swaps").textContent=swaps.toLocaleString();
-
-  const currentTime=elapsed+(running?(performance.now()-startTime)/1000:0);
-  document.getElementById("time").textContent=currentTime.toFixed(2)+" s";
-
-  const percent=finished?100:Math.min(99,Math.floor(steps/totalEstimate*100));
-  document.getElementById("progress").textContent=percent+"%";
-}
-
-function draw(){
-  const w=canvas.clientWidth;
-  const h=canvas.clientHeight;
-  if(!w || !h)return;
-
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle="#0d141c";
-  ctx.fillRect(0,0,w,h);
-
-  if(numbers.length===0)return;
-
-  const maxValue=Math.max(...numbers);
-  const minValue=Math.min(...numbers);
-  const range=Math.max(1,maxValue-minValue);
-  const barWidth=w/numbers.length;
-
-  for(let i=0;i<numbers.length;i++){
-    const value=numbers[i];
-    const barHeight=Math.max(1,((value-minValue)/range)*(h-12));
-    const x=i*barWidth;
-    const y=h-barHeight;
-
-    let color="#4b9cff";
-
-    if(finished || sortedIndices.has(i) || i>=sortedFrom){
-      color="#50d890";
+    for (let i = 0; i < myCards.length; i++) {
+        output += '<b>' + i + ':</b> ' + myCards[i] + '<br>';
     }
 
-    if(i===highlightA || i===highlightB){
-      color=highlightType==="swap"?"#f16d65":"#ffca55";
+    document.getElementById('myDiv01').innerHTML = output || 'No numbers available.';
+
+    let graph = '';
+
+    for (let i = 0; i < myCards.length; i++) {
+        let height = myCards[i] * 1.5 + 10;
+
+        graph += '<div class="number" style="height:' + height + 'px">' 
+              + myCards[i] + '</div>';
     }
 
-    ctx.fillStyle=color;
-    ctx.fillRect(x,y,Math.max(1,barWidth),barHeight);
-  }
+    document.getElementById('myGraph').innerHTML = graph;
 }
 
-function generate(){
-  pauseSort();
 
-  let amount=parseInt(document.getElementById("amount").value);
-  if(!Number.isFinite(amount))amount=300;
-  amount=Math.max(2,Math.min(10000,amount));
-  document.getElementById("amount").value=amount;
-
-  numbers=Array.from({length:amount},()=>Math.floor(Math.random()*1000)+1);
-  original=[...numbers];
-
-  comparisons=0;
-  swaps=0;
-  steps=0;
-  elapsed=0;
-  finished=false;
-  generator=null;
-
-  highlightA=-1;
-  highlightB=-1;
-  highlightType="";
-  sortedFrom=Infinity;
-  sortedIndices.clear();
-
-  totalEstimate=Math.max(1,amount*amount);
-  document.getElementById("status").textContent="New numbers generated";
-  updateStats();
-  draw();
-}
-
-function resetSort(){
-  pauseSort();
-  numbers=[...original];
-  comparisons=0;
-  swaps=0;
-  steps=0;
-  elapsed=0;
-  finished=false;
-  generator=null;
-  highlightA=-1;
-  highlightB=-1;
-  highlightType="";
-  sortedFrom=Infinity;
-  sortedIndices.clear();
-  document.getElementById("status").textContent="Reset";
-  updateStats();
-  draw();
-}
-
-function* bubbleSort(){
-  const n=numbers.length;
-  for(let end=n-1;end>0;end--){
-    for(let i=0;i<end;i++){
-      comparisons++;
-      highlightA=i;
-      highlightB=i+1;
-      highlightType="compare";
-
-      if(numbers[i]>numbers[i+1]){
-        const temp=numbers[i];
-        numbers[i]=numbers[i+1];
-        numbers[i+1]=temp;
-        swaps++;
-        highlightType="swap";
-      }
-
-      steps++;
-      yield;
-
-    }
-    sortedIndices.add(end);
-  }
-  sortedIndices.add(0);
-}
-
-function* simpleSort(){
-  const n=numbers.length;
-  for(let i=0;i<n-1;i++){
-    let min=i;
-
-    for(let j=i+1;j<n;j++){
-      comparisons++;
-      highlightA=min;
-      highlightB=j;
-      highlightType="compare";
-
-      if(numbers[j]<numbers[min])min=j;
-
-      steps++;
-      yield;
-    }
-
-    if(min!==i){
-      const temp=numbers[i];
-      numbers[i]=numbers[min];
-      numbers[min]=temp;
-      swaps++;
-      highlightA=i;
-      highlightB=min;
-      highlightType="swap";
-      yield;
-    }
-
-    sortedIndices.add(i);
-  }
-  sortedIndices.add(n-1);
-}
-
-function* quickSort(){
-  const stack=[[0,numbers.length-1]];
-
-  while(stack.length){
-    const [low,high]=stack.pop();
-    if(low>=high){
-      if(low===high)sortedIndices.add(low);
-      continue;
-    }
-
-    const pivot=numbers[high];
-    let i=low-1;
-
-    for(let j=low;j<high;j++){
-      comparisons++;
-      highlightA=j;
-      highlightB=high;
-      highlightType="compare";
-
-      if(numbers[j]<=pivot){
-        i++;
-        if(i!==j){
-          const temp=numbers[i];
-          numbers[i]=numbers[j];
-          numbers[j]=temp;
-          swaps++;
-          highlightA=i;
-          highlightB=j;
-          highlightType="swap";
+// BUBBLE SORT
+function bubbleSort() {
+    for (let i = 0; i < myCards.length; i++) {
+        for (let j = 0; j < myCards.length - i - 1; j++) {
+            if (myCards[j] > myCards[j+1]) {
+                let temp = myCards[j];
+                myCards[j] = myCards[j+1];
+                myCards[j+1] = temp;
+            }
         }
-      }
+    }
+    showNumbers();
+}
 
-      steps++;
-      yield;
+
+// SELECTION SORT
+function selectionSort() {
+    for (let i = 0; i < myCards.length; i++) {
+        let minIndex = i;
+
+        for (let j = i + 1; j < myCards.length; j++) {
+            if (myCards[j] < myCards[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        let temp = myCards[i];
+        myCards[i] = myCards[minIndex];
+        myCards[minIndex] = temp;
     }
 
-    const pivotIndex=i+1;
-    if(pivotIndex!==high){
-      const temp=numbers[pivotIndex];
-      numbers[pivotIndex]=numbers[high];
-      numbers[high]=temp;
-      swaps++;
+    showNumbers();
+}
+
+
+// INSERTION SORT
+function insertionSort() {
+    for (let i = 1; i < myCards.length; i++) {
+        let current = myCards[i];
+        let j = i - 1;
+
+        while (j >= 0 && myCards[j] > current) {
+            myCards[j + 1] = myCards[j];
+            j--;
+        }
+
+        myCards[j + 1] = current;
     }
 
-    sortedIndices.add(pivotIndex);
-    highlightA=pivotIndex;
-    highlightB=high;
-    highlightType="swap";
-    yield;
-
-    stack.push([low,pivotIndex-1]);
-    stack.push([pivotIndex+1,high]);
-  }
-
-  for(let i=0;i<numbers.length;i++)sortedIndices.add(i);
+    showNumbers();
 }
-
-function prepare(){
-  comparisons=0;
-  swaps=0;
-  steps=0;
-  elapsed=0;
-  finished=false;
-  sortedFrom=Infinity;
-  sortedIndices.clear();
-
-  highlightA=-1;
-  highlightB=-1;
-  highlightType="";
-
-  const algorithm=document.getElementById("algorithm").value;
-  const n=numbers.length;
-
-  if(algorithm==="bubble"){
-    generator=bubbleSort();
-    totalEstimate=Math.max(1,n*(n-1)/2);
-  }else if(algorithm==="simple"){
-    generator=simpleSort();
-    totalEstimate=Math.max(1,n*(n-1)/2);
-  }else{
-    generator=quickSort();
-    totalEstimate=Math.max(1,n*Math.log2(n)*2);
-  }
-}
-
-function advance(){
-  if(!generator || finished)return false;
-
-  const result=generator.next();
-
-  if(result.done){
-    finished=true;
-    running=false;
-    highlightA=-1;
-    highlightB=-1;
-    highlightType="";
-    document.getElementById("status").textContent="Sorting completed!";
-    return false;
-  }
-
-  return true;
-}
-
-function startSort(){
-  if(finished || !generator){
-    numbers=[...original];
-    prepare();
-  }
-
-  if(running)return;
-
-  running=true;
-  startTime=performance.now();
-  document.getElementById("status").textContent="Sorting...";
-  play();
-}
-
-function pauseSort(){
-  if(running){
-    elapsed+=(performance.now()-startTime)/1000;
-  }
-  running=false;
-  if(timer!==null){
-    clearTimeout(timer);
-    timer=null;
-  }
-  updateStats();
-  if(!finished)document.getElementById("status").textContent="Paused";
-}
-
-function play(){
-  if(!running)return;
-
-  const turbo=document.getElementById("turbo").checked;
-  const speed=Number(document.getElementById("speed").value);
-
-  let batch=turbo?Math.max(100, speed*100):Math.max(1,Math.floor(speed/5));
-
-  for(let i=0;i<batch;i++){
-    if(!advance())break;
-  }
-
-  draw();
-  updateStats();
-
-  if(running){
-    const delay=turbo?0:Math.max(1,35-speed*0.3);
-    timer=setTimeout(play,delay);
-  }
-}
-
-function nextStep(){
-  pauseSort();
-
-  if(finished || !generator){
-    numbers=[...original];
-    prepare();
-  }
-
-  advance();
-  draw();
-  updateStats();
-  if(finished)document.getElementById("status").textContent="Sorting completed!";
-  else document.getElementById("status").textContent="Step: "+steps;
-}
-
-function instantSort(){
-  pauseSort();
-
-  numbers=[...original];
-  prepare();
-
-  document.getElementById("status").textContent="Sorting instantly...";
-
-  while(advance()){}
-
-  finished=true;
-  elapsed=0;
-  highlightA=-1;
-  highlightB=-1;
-  highlightType="";
-  draw();
-  updateStats();
-  document.getElementById("status").textContent="Sorting completed instantly!";
-}
-
-document.getElementById("speed").addEventListener("input",function(){
-  document.getElementById("speedText").textContent=this.value;
-});
-
-generate();
-resizeCanvas();
 </script>
+
 </body>
 </html>

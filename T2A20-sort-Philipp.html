@@ -1,220 +1,223 @@
 
-<!DOCTYPE html>
 <html>
-<head>
-<title>t2a20 Sort</title>
+<body>
+
+<h1 align="center">T2A20-sort-Philipp.html</h1>
+
+<script>
+    let myMax = 3; // 52 when working
+    let myCards = new Array(myMax);
+</script>
+
+<input type="button" value="Set Random" onclick="
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+        myCards[myLoop] = Math.floor(Math.random() * 10);
+    }
+    document.getElementById('myDiv01').innerHTML = 'Random numbers set!';
+">
+
+<input type="button" value="Show" onclick="
+    let myTemp = '';
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+        myTemp += myLoop + ' = ' + myCards[myLoop] + '<br>';
+    }
+    document.getElementById('myDiv01').innerHTML = myTemp;
+">
+
+<input type="button" value="Sort" onclick="
+    let myTemp = 0;
+
+    for (let myLoop2 = 0; myLoop2 < myMax - 1; myLoop2++) {
+        for (let myLoop = 0; myLoop < myMax - 1 - myLoop2; myLoop++) {
+
+            if (myCards[myLoop] > myCards[myLoop + 1]) {
+                myTemp = myCards[myLoop];
+                myCards[myLoop] = myCards[myLoop + 1];
+                myCards[myLoop + 1] = myTemp;
+            }
+        }
+    }
+
+    let myShow = '';
+    for (let myLoop = 0; myLoop < myMax; myLoop++) {
+        myShow += myLoop + ' = ' + myCards[myLoop] + '<br>';
+    }
+
+    document.getElementById('myDiv01').innerHTML = myShow;
+">
+
+<div id="myDiv01">
+   Set Random Numbers
+</div>
+
+</body>
+</html>
+
+<hr style="border: 0; height: 4px; background-color: #E30000; margin: 35px 0;">
+
+<!-- BUBBLE SORT DESIGN -->
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #eef2f7;
-    color: #263445;
-    text-align: center;
-    padding: 30px;
-}
-
-.container {
+.bubble-container {
     max-width: 850px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    margin: 30px auto;
+    padding: 25px;
+    background: #fff5f5;
+    border: 1px solid #ffd6d6;
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(150, 0, 0, 0.10);
+    font-family: Arial, sans-serif;
 }
 
-h1 { color: #2563eb; }
-
-p { color: #64748b; }
-
-input[type=button] {
-    background: #2563eb;
+.bubble-title {
+    background: linear-gradient(135deg, #e30000, #ff5555);
     color: white;
+    text-align: center;
+    padding: 22px;
+    border-radius: 13px;
+    margin: 0 0 12px 0;
+    text-shadow: 2px 2px 3px #790000;
+    box-shadow: 0 4px 10px #e3000030;
+}
+
+.bubble-subtitle {
+    text-align: center;
+    color: #9c5555;
+    margin-bottom: 25px;
+}
+
+.bubble-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.bubble-buttons input {
     border: none;
-    padding: 12px 18px;
-    margin: 6px;
-    border-radius: 8px;
+    padding: 13px 20px;
+    border-radius: 9px;
+    color: white;
+    background: #e53939;
     font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
 }
 
-input[type=button]:hover {
-    filter: brightness(0.85);
-    transform: translateY(-2px);
+.bubble-buttons input:hover {
+    background: #b90000;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px #e3000040;
 }
 
-.green { background: #16a34a !important; }
-.orange { background: #ea580c !important; }
-.purple { background: #7c3aed !important; }
-.red { background: #dc2626 !important; }
+.bubble-buttons input:active {
+    transform: scale(0.96);
+}
 
-.number-container {
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    gap: 5px;
-    min-height: 200px;
-    margin-top: 25px;
-    padding: 15px;
-    background: #f8fafc;
+.bubble-output {
+    background: white;
+    border: 1px solid #ffdada;
     border-radius: 12px;
-    flex-wrap: wrap;
+    padding: 20px;
+    min-height: 75px;
+    color: #783333;
+    line-height: 2;
 }
 
-.number {
-    background: #3b82f6;
-    color: white;
-    min-width: 35px;
-    padding: 10px 5px;
-    border-radius: 6px;
+.bubble-output strong {
+    color: #d00000;
+}
+
+.bubble-number {
+    display: inline-block;
+    background: #ffe1e1;
+    color: #bd1717;
+    font-size: 17px;
     font-weight: bold;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ffc2c2;
 }
 
-#myDiv01 {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f1f5f9;
-    border-radius: 10px;
-    text-align: left;
-    line-height: 1.8;
-}
-
-input[type=number] {
-    padding: 9px;
-    width: 65px;
-    border: 1px solid #cbd5e1;
-    border-radius: 7px;
+.bubble-info {
+    text-align: center;
+    color: #a36b6b;
+    font-size: 12px;
+    margin-top: 18px;
 }
 </style>
-</head>
 
-<body>
+<div class="bubble-container">
 
-<div class="container">
+    <h1 class="bubble-title">
+        Bubble Sort
+    </h1>
 
-<h1>t2a20 Sort</h1>
-<p>Generate, display and sort random numbers.</p>
+    <p class="bubble-subtitle">
+        Random Numbers · Sorting Algorithm
+    </p>
 
-<p>
-Number of values:
-<input type="number" id="myAmount" value="10" min="2" max="100">
-</p>
+    <script>
+        let bubbleMax = 10;
+        let bubbleCards = new Array(bubbleMax);
+    </script>
 
-<input type="button" value="Set Random" onclick="{
-    myMax = Math.max(2, Math.min(100, Number(document.getElementById('myAmount').value)));
-    myCards = [];
-    for (let i = 0; i < myMax; i++) {
-        myCards[i] = Math.floor(Math.random() * 100);
-    }
-    showNumbers();
-}">
+    <div class="bubble-buttons">
 
-<input type="button" value="Show" onclick="showNumbers()">
+        <input type="button" value="Generate Numbers" onclick="{
+            for (let i = 0; i < bubbleMax; i++) {
+                bubbleCards[i] = Math.floor(Math.random() * 100);
+            }
 
-<br>
+            document.getElementById('bubbleDiv').innerHTML =
+                '10 random numbers created! Click Show Numbers.';
+        }">
 
-<input type="button" class="green" value="Bubble Sort" onclick="bubbleSort()">
+        <input type="button" value="Show Numbers" onclick="{
+            let output = '<strong>Original Numbers:</strong><br>';
 
-<input type="button" class="orange" value="Selection Sort" onclick="selectionSort()">
+            for (let i = 0; i < bubbleMax; i++) {
+                output += '<span class=bubble-number>' + bubbleCards[i] + '</span>';
+            }
 
-<input type="button" class="purple" value="Insertion Sort" onclick="insertionSort()">
+            document.getElementById('bubbleDiv').innerHTML = output;
+        }">
 
-<br>
+        <input type="button" value="Bubble Sort" onclick="{
+            for (let i = 0; i < bubbleMax; i++) {
+                for (let j = 0; j < bubbleMax - 1 - i; j++) {
 
-<input type="button" value="Reverse" onclick="{
-    myCards.reverse();
-    showNumbers();
-}">
+                    if (bubbleCards[j] > bubbleCards[j+1]) {
+                        let temp = bubbleCards[j];
+                        bubbleCards[j] = bubbleCards[j+1];
+                        bubbleCards[j+1] = temp;
+                    }
+                }
+            }
 
-<input type="button" class="red" value="Reset" onclick="{
-    myCards = [];
-    showNumbers();
-}">
+            let output = '<strong>Sorted Numbers:</strong><br>';
 
-<div id="myDiv01">Click Set Random to start!</div>
+            for (let i = 0; i < bubbleMax; i++) {
+                output += '<span class=bubble-number>' + bubbleCards[i] + '</span>';
+            }
 
-<div class="number-container" id="myGraph"></div>
+            document.getElementById('bubbleDiv').innerHTML = output;
+        }">
+
+    </div>
+
+    <div class="bubble-output" id="bubbleDiv">
+        Your numbers will appear here...
+    </div>
+
+    <div class="bubble-info">
+        BUBBLE SORT · 10 NUMBERS · ASCENDING ORDER
+    </div>
 
 </div>
-
-<script>
-let myMax = 10;
-let myCards = [];
-
-function showNumbers() {
-    let output = '';
-
-    for (let i = 0; i < myCards.length; i++) {
-        output += '<b>' + i + ':</b> ' + myCards[i] + '<br>';
-    }
-
-    document.getElementById('myDiv01').innerHTML = output || 'No numbers available.';
-
-    let graph = '';
-
-    for (let i = 0; i < myCards.length; i++) {
-        let height = myCards[i] * 1.5 + 10;
-
-        graph += '<div class="number" style="height:' + height + 'px">' 
-              + myCards[i] + '</div>';
-    }
-
-    document.getElementById('myGraph').innerHTML = graph;
-}
-
-
-// BUBBLE SORT
-function bubbleSort() {
-    for (let i = 0; i < myCards.length; i++) {
-        for (let j = 0; j < myCards.length - i - 1; j++) {
-            if (myCards[j] > myCards[j+1]) {
-                let temp = myCards[j];
-                myCards[j] = myCards[j+1];
-                myCards[j+1] = temp;
-            }
-        }
-    }
-    showNumbers();
-}
-
-
-// SELECTION SORT
-function selectionSort() {
-    for (let i = 0; i < myCards.length; i++) {
-        let minIndex = i;
-
-        for (let j = i + 1; j < myCards.length; j++) {
-            if (myCards[j] < myCards[minIndex]) {
-                minIndex = j;
-            }
-        }
-
-        let temp = myCards[i];
-        myCards[i] = myCards[minIndex];
-        myCards[minIndex] = temp;
-    }
-
-    showNumbers();
-}
-
-
-// INSERTION SORT
-function insertionSort() {
-    for (let i = 1; i < myCards.length; i++) {
-        let current = myCards[i];
-        let j = i - 1;
-
-        while (j >= 0 && myCards[j] > current) {
-            myCards[j + 1] = myCards[j];
-            j--;
-        }
-
-        myCards[j + 1] = current;
-    }
-
-    showNumbers();
-}
-</script>
 
 </body>
 </html>

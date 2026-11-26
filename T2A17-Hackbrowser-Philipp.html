@@ -1,366 +1,275 @@
+<b>Browser Hack by Philipp</b>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Browser Hack</title>
 
+<body bgcolor="#81F7F3">		<br>
+		Object Sort base
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+<head><title>moving objects</title>
 <style>
+    v\:* {
+        BEHAVIOR: url(#default#VML);
+    }
+
     body {
-        background: #eaf4ff;
-        font-family: Arial, sans-serif;
-        color: #263449;
-        margin: 25px;
+        background-color: #e8eaf6;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #252b40;
+        margin: 20px;
     }
 
-    h1 {
-        text-align: center;
-        color: #245b91;
+    h2, h3 {
+        font-family: "Trebuchet MS", Arial, sans-serif;
+        color: #3949ab;
     }
 
-    h3 {
-        color: #245b91;
-    }
-
-    .container {
-        max-width: 1100px;
-        margin: auto;
-        background: white;
-        padding: 25px;
-        border-radius: 14px;
-        box-shadow: 0 4px 18px #00000015;
-    }
-
-    input[type="button"] {
-        background: #2878bd;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 9px 13px;
-        margin: 4px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    input[type="button"]:hover {
-        background: #164d80;
-        transform: translateY(-2px);
-    }
-
-    input[type="text"], textarea {
-        border: 1px solid #b9cde0;
-        border-radius: 6px;
-        padding: 9px;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    textarea {
-        font-family: Consolas, monospace;
-    }
-
-    #myTextarea {
-        width: 100%;
-        min-height: 350px;
-        background: #f5f8fc;
-    }
-
-    #myText1 {
-        width: 100%;
-    }
-
-    .section {
-        background: #f4f8fc;
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 10px;
-    }
-
-    #myBold {
-        color: #245b91;
-        font-size: 22px;
-    }
-
-    #myRotate {
-        display: inline-block;
-        padding: 10px;
-        background: #dceeff;
-        border-radius: 7px;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 400px;
-    }
-
-    th, td {
-        border: 1px solid #b9cde0;
-        padding: 9px;
-        text-align: left;
-    }
-
-    th {
-        background: #dceeff;
-    }
-
-    a {
-        color: #1769aa;
+    input, textarea, button, table {
+        font-family: "Segoe UI", Arial, sans-serif;
     }
 </style>
-</head>
 
-<body>
 
-<div class="container">
 
-<h1>Browser Hack</h1>
 
-<p id="myBold"><b>Browser Hack by Philipp</b></p>
 
-<p>
-Click the buttons to explore different browser objects,
-properties and methods.
-</p>
+<h2>My Extra Elements</h2>
 
-<div class="section">
-    <h3>Example elements</h3>
+<img id="myExtraImage" src="https://picsum.photos/200" width="200">
 
-    <p>My favourite fruits:</p>
+<table id="myExtraTable" border="1">
+    <tr><th>Name</th><th>Age</th></tr>
+    <tr><td>Philipp</td><td>16</td></tr>
+</table>
 
-    <ul id="myList">
-        <li>Strawberry</li>
-        <li>Mango</li>
-        <li>Watermelon</li>
-    </ul>
+<a id="myExtraLink" href="https://www.google.com">Google</a>
 
-    <p>
-        My favourite website:
-        <a id="myLink" href="https://www.wikipedia.org" target="_blank">
-            Wikipedia
-        </a>
-    </p>
+<ul id="myExtraList">
+    <li>Computer</li>
+    <li>Gaming</li>
+    <li>Programming</li>
+</ul>
 
-    <p id="myRotate">Rotate me!</p>
+<h2 id="myExtraHeading">My Extra Heading</h2>
 
-    <table id="myTable">
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-        </tr>
-        <tr>
-            <td>Michael</td>
-            <td>19</td>
-        </tr>
-        <tr>
-            <td>Emma</td>
-            <td>16</td>
-        </tr>
-    </table>
-</div>
+<video id="myExtraVideo" width="400" controls>
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    Your browser does not support HTML video.
+</video>
 
-<div class="section">
-    <h3>Object Sort</h3>
 
-    <form name="myForm2">
-        <textarea name="myTextarea" rows="3" cols="50">wow</textarea>
-        <br><br>
-        <input type="text" name="myText1" id="myText2" size="50">
-    </form>
-</div>
 
-<h3>Click the buttons to see all usable properties and methods of the object.</h3>
 
-<form name="myForm">
 
-    <input type="text" name="myText1" id="objectName" placeholder="Selected object">
 
-    <div class="section">
-        <h3>Buttons 1–7</h3>
 
-        <input type="button" value="1 window" onclick="myObjectData(window)">
-        <input type="button" value="2 document" onclick="myObjectData(document)">
-        <input type="button" value="3 document.myForm2" onclick="myObjectData(document.myForm2)">
-        <input type="button" value="4 myTextarea" onclick="myObjectData(document.myForm2.myTextarea)">
-        <br>
-        <input type="button" value="5 window.location" onclick="myObjectData(window.location)">
-        <input type="button" value="6 window.parent" onclick="myObjectData(window.parent)">
-        <input type="button" value="7 window.chrome" onclick="myObjectData(window.chrome)">
-    </div>
 
-    <div class="section">
-        <h3>Buttons 8–14</h3>
 
-        <input type="button" value="8 document.body.style" onclick="myObjectData(document.body.style)">
-        <input type="button" value="9 style" onclick="myObjectData(document.body.style)">
-        <input type="button" value="10 document.body" onclick="myObjectData(document.body)">
-        <br>
-        <input type="button" value="11 localStorage" onclick="myObjectData(window.localStorage)">
-        <input type="button" value="12 document.body.style" onclick="myObjectData(document.body.style)">
-        <input type="button" value="13 myText1" onclick="myObjectData(document.myForm2.myText1)">
-        <input type="button" value="14 getElementById" onclick="myObjectData(document.getElementById('myText2'))">
-    </div>
+<head><title>objects</title>
 
-    <div class="section">
-        <h3>Buttons 15–20</h3>
-
-        <input type="button" value="15 myList" onclick="myObjectData(document.getElementById('myList'))">
-
-        <input type="button" value="16 myTable" onclick="myObjectData(document.getElementById('myTable'))">
-
-        <input type="button" value="17 myLink" onclick="myObjectData(document.getElementById('myLink'))">
-
-        <input type="button" value="18 myRotate" onclick="rotateText(); myObjectData(document.getElementById('myRotate'))">
-
-        <input type="button" value="19 body style" onclick="changeBackground(); myObjectData(document.body.style)">
-
-        <input type="button" value="20 myBold" onclick="changeBold(); myObjectData(document.getElementById('myBold'))">
-    </div>
-
-    <h3>Selected object information</h3>
-
-    <textarea name="myTextarea" id="myTextarea" rows="20" cols="70" wrap="off"></textarea>
-
-</form>
-
-<br>
-
-<input type="button" value="Refresh" onclick="location.reload()">
-
-<input type="button" value="Back" style="font-size:18px" onclick="window.history.back()">
-
-</div>
 
 <script>
+document.name="myDocument"
+window.name="myWindow"
+document.cookie = "cookieName=fred"
 
-document.name = "myDocument";
-window.name = "myWindow";
-
-document.cookie = "cookieName=fred";
 
 var splitIndex = 0;
 var splitArray = new Array();
 
-function splits(string, text) {
-    var strLength = string.length;
-    var txtLength = text.length;
-
-    if (strLength == 0 || txtLength == 0) return;
+function splits(string,text) {
+    var strLength = string.length, txtLength = text.length;
+    if ((strLength == 0) || (txtLength == 0)) return;
 
     var i = string.indexOf(text);
-
+    if ((!i) && (text != string.substring(0,txtLength))) return;
     if (i == -1) {
         splitArray[splitIndex++] = string;
         return;
     }
 
-    splitArray[splitIndex++] = string.substring(0, i);
-
-    if (i + txtLength < strLength) {
-        splits(string.substring(i + txtLength, strLength), text);
-    }
+    splitArray[splitIndex++] = string.substring(0,i);
+    
+    if (i+txtLength < strLength)
+        splits(string.substring(i+txtLength,strLength),text);
 
     return;
 }
 
-function split(string, text) {
+function split(string,text) {
     splitIndex = 0;
-    splitArray = [];
-    splits(string, text);
+    splits(string,text);
 }
 
 function join(arrayName) {
     var temp = '';
-
-    for (var i = 0; i < splitIndex; i++) {
+    for (var i=0; i<splitIndex; i++)
         temp += arrayName[i] + '\n';
-    }
-
-    return temp;
+    if (escape(temp.substring(0,1)) == '%0A')
+        return temp.substring(1,temp.length);
+    else
+        return temp;
 }
 
 function sort(arrayName) {
-    for (var i = 0; i < splitIndex - 1; i++) {
-        for (var j = i + 1; j < splitIndex; j++) {
+    for (var i=0; i<(splitIndex-1); i++)
+        for (var j=i+1; j<splitIndex; j++)
             if (arrayName[j] < arrayName[i]) {
-                var temp = arrayName[i];
+                var dummy = arrayName[i];
                 arrayName[i] = arrayName[j];
-                arrayName[j] = temp;
+                arrayName[j] = dummy;
             }
-        }
-    }
 }
 
 function sorttext() {
-    var textArea = document.myForm2.myTextarea;
-
-    split(textArea.value, '\n');
+    split(document.myForm.myTextarea.value,'\n');
     sort(splitArray);
-    textArea.value = join(splitArray);
+    document.myForm.myTextarea.value = join(splitArray);
+}
+//--></script>
+
+<script language="JavaScript1.1"><!--
+function split(string,text) {
+    splitArray = string.split(text);
+    splitIndex = splitArray.length;
 }
 
-function myObjectData(myObject) {
 
-    var output = document.getElementById("myTextarea");
-    var objectName = document.getElementById("objectName");
 
-    output.value = "";
 
-    if (myObject === undefined || myObject === null) {
-        objectName.value = "Object not available";
-        output.value = "This object is not available in this browser.";
-        return;
-    }
 
-    objectName.value = myObject.name || myObject.constructor?.name || "Selected object";
 
-    var properties = [];
 
-    for (var prop in myObject) {
-        try {
-            properties.push(prop + " = " + myObject[prop]);
-        } catch (error) {
-            properties.push(prop + " = [not accessible]");
-        }
-    }
 
-    properties.sort();
 
-    output.value = properties.join("\n");
+function myObjectData(myObject){
+ window.status = 'Please Wait'
+ document.myForm.myText1.value = ''
+ document.myForm.myTextarea.value = ''
+ myLoop = 0
+ for (var prop in myObject){
+    myLoop+=1
+    document.myForm.myTextarea.value+=myObject.name+'.'+prop+'='+myObject[prop]+ '\n'
+    if (myLoop % 3 == 1){
+ window.status += '.'}   
+ }
+ document.myForm.myText1.value =this.parent.name + '.'+myObject.name
+ window.status += 'Loaded '  
+  sorttext() 
+ window.status += 'Sorted.'  
 }
 
-function rotateText() {
-    var element = document.getElementById("myRotate");
 
-    if (element.style.transform === "rotate(180deg)") {
-        element.style.transform = "rotate(0deg)";
-    } else {
-        element.style.transform = "rotate(180deg)";
-    }
+
+
+
+
+document.counter=0   // one time set counter = 0
+function moreAnimations(){
+  document.counter+=1
+  document.all.myPic1.style.pixelLeft+=2
+  document.all.myPic1.style.pixelTop+=1
+  if ((document.counter>10) && (document.counter<20)){
+      document.all.myPic1.style.height=parseInt(document.all.myPic1.style.height)+10
+  }
+
 }
 
-function changeBackground() {
-    if (document.body.style.backgroundColor === "rgb(255, 244, 204)") {
-        document.body.style.backgroundColor = "#eaf4ff";
-    } else {
-        document.body.style.backgroundColor = "#fff4cc";
-    }
-}
 
-function changeBold() {
-    var element = document.getElementById("myBold");
 
-    if (element.style.fontSize === "30px") {
-        element.style.fontSize = "22px";
-        element.style.color = "#245b91";
-    } else {
-        element.style.fontSize = "30px";
-        element.style.color = "#d35400";
-    }
-}
 
-</script>
+
+
+
+
+
+
+
+
+
+
+</script></head>
+
+
+
+<BODY 
+<br><br>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+
+
+<img id="move1" style="position:absolute;left:600px;top:560px" src="http://www.autos.ca/wp-content/uploads/2013/03/001-ferrari-laferrari.jpg" width="400" height="200">
+
+<form name="myForm2">
+  <textarea name="myTextarea">wow</textarea>
+
+  <input type=text name="myText1" id="myText2" size=50 value=""><br>
+
+
+</form>
+
+
+<h3>Click the buttons to see all useable properties and methods of the object. Click refresh to reset Browser</h3>
+<form name="myForm">
+
+
+
+
+<bgsound id="myFred3" src="">
+<input type=text name="myText1" size=50 value=""><br>
+
+
+<input type=button value="1 window" onclick="{myObjectData(window)}">
+<input type=button value="2 document" onclick="{myObjectData(document)}">
+<input type=button value="3 document.myForm2" onclick="{myObjectData(document.myForm2)}">
+<input type=button value="4 document.myForm2.myTextarea" onclick="{myObjectData(document.myForm2.myTextarea)}">
+
+
+<input type=button value="5 window.location" onclick="{myObjectData(window.location)}">
+<input type=button value="6 window.parent" onclick="{myObjectData(window.parent)}">
+<input type=button value="7 window.chrome" onclick="{myObjectData(window.chrome)}">
+<input type=button value="8 document.all.move1.style" onclick="{myObjectData(document.all.move1.style)}">
+<input type=button value="9 style" onclick="{myObjectData(style)}">
+<input type=button value="10 document.all.move1" onclick="{myObjectData(document.all.move1)}">
+<input type=button value="11 window.localStorage" onclick="{myObjectData(window.localStorage)}">
+<input type=button value="12 document.getElementById('move1').style" onclick="{myObjectData(document.getElementById('move1').style)}">
+<input type=button id="my10" value="13 document.myForm2.myText1" onclick="{myObjectData(document.myForm2.myText1)}">
+<input type=button value="14 document.getElementById('myText2')" onclick="{myObjectData(document.getElementById('myText2'))}">
+<input type=button value="15 Image" onclick="{myObjectData(document.getElementById('myExtraImage'))}">
+
+<input type=button value="16 Table" onclick="{myObjectData(document.getElementById('myExtraTable'))}">
+
+<input type=button value="17 Link" onclick="{myObjectData(document.getElementById('myExtraLink'))}">
+
+<input type=button value="18 List" onclick="{myObjectData(document.getElementById('myExtraList'))}">
+
+<input type=button value="19 Heading" onclick="{myObjectData(document.getElementById('myExtraHeading'))}">
+
+<input type=button value="20 Video" onclick="{myObjectData(document.getElementById('myExtraVideo'))}">
+<br>
+
+
+<textarea name="myTextarea" rows=20 cols=70 wrap></textarea>
+</form>
+
+
+
+
+
+
+<input type=button value="Back" style="font-size:25px" onclick="{window.history.back()}"><br><br>
 
 </body>
 </html>
